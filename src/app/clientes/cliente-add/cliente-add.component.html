@@ -1,0 +1,31 @@
+<mat-card class="card">
+
+    <mat-card-header>
+        <mat-card-title>Carga de nuevo cliente</mat-card-title>
+    </mat-card-header>
+
+    <form class="form" [formGroup]="clienteForm" (ngSubmit)="cargarCliente()">
+
+        <mat-card-content>
+            <mat-form-field class="full-width">
+                <input matInput formControlName="nombre" placeholder="Nombre completo">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+                <input matInput formControlName="dni" placeholder="DNI">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+                <mat-select formControlName="tipo" placeholder="Tipo">
+                    <mat-option value="Mayorista">Mayorista</mat-option>
+                    <mat-option value="Minorista">Minorista</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </mat-card-content>
+
+        <mat-card-actions>
+            <button mat-raised-button type="submit" color="primary">Continuar</button>
+        </mat-card-actions>
+    </form>
+
+</mat-card>

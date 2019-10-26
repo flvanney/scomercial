@@ -1,0 +1,30 @@
+<mat-card class="card">
+
+    <mat-card-header>
+        <mat-card-title>Lista de clientes</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <mat-table [dataSource]="clientes" class="mat-elevation-z8">
+
+            <ng-container matColumnDef="Nombre">
+                <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
+                <mat-cell *matCellDef="let cliente"> {{ cliente.nombre }} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="DNI">
+                <mat-header-cell *matHeaderCellDef> DNI </mat-header-cell>
+                <mat-cell *matCellDef="let cliente"> {{ cliente.dni }} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Tipo">
+                <mat-header-cell *matHeaderCellDef> Tipo </mat-header-cell>
+                <mat-cell *matCellDef="let cliente"> {{ cliente.tipo }} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+    </mat-card-content>
+
+</mat-card>
