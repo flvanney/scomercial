@@ -1,20 +1,19 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ClientesService } from '../clientes.service';
 import { Cliente } from '../cliente';
 import { Subscription } from 'rxjs';
 
-
 @Component({
-  selector: 'app-cliente-list',
-  templateUrl: './cliente-list.component.html',
-  styleUrls: ['./cliente-list.component.css']
+  selector: 'app-tabla-clientes',
+  templateUrl: './tabla-clientes.component.html',
+  styleUrls: ['./tabla-clientes.component.css']
 })
-export class ClienteListComponent implements OnInit, OnDestroy {
+export class TablaClientesComponent implements OnInit {
 
   clientes: Cliente[] = [];
   private clientesSub: Subscription;
 
-  displayedColumns = ['Nombre', 'DNI', 'Tipo'];
+  displayedColumns = ['nombre', 'apellido', 'direccion', 'factura'];
 
   constructor(private clientesService: ClientesService) { }
 
@@ -26,7 +25,4 @@ export class ClienteListComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
-    this.clientesSub.unsubscribe();
-  }
 }

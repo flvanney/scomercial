@@ -1,22 +1,41 @@
 const mongoose = require("mongoose");
 
-// El esquema es utilizado luego como plantilla para 
-// crear y exportar el modelo.
+// El esquema es utilizado luego como plantilla para  crear y exportar el modelo.
 const clienteSchema = mongoose.Schema({
+    organizacion: {
+        type: String,
+    },
     nombre: {
         type: String,
         required: true,
     },
-    dni: {
+    apellido: {
         type: String,
-        unique: true,
         required: true,
     },
-    tipo: {
+    direccion: {
+        type: String,
+        required: true,
+    },
+    direccionAlternativa: {
+        type: String,
+    },
+    provincia: {
+        type: String,
+        required: true,
+    },
+    ciudad: {
+        type: String,
+        required: true,
+    },
+    codigoPostal: {
+        type: Number,
+        required: true
+    },
+    factura: {
         type: String,
         required: true,
     }
-    // TODO: Completar con el resto de atributos
 })
 
 module.exports = mongoose.model('Cliente', clienteSchema);

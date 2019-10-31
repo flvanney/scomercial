@@ -1,0 +1,111 @@
+<form [formGroup]="clienteForm" novalidate (ngSubmit)="cargarCliente()">
+  <mat-card class="card">
+    <mat-card-header>
+      <mat-card-title>Nuevo cliente</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Organización" formControlName="organizacion">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Nombre" formControlName="nombre">
+            <mat-error *ngIf="clienteForm.controls['nombre'].hasError('required')">
+              El nombre es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Apellido" formControlName="apellido">
+            <mat-error *ngIf="clienteForm.controls['apellido'].hasError('required')">
+              El apellido del cliente es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Provincia" formControlName="provincia">
+              <mat-option *ngFor="let pr of provincias | orderBy:'nombre'" [value]="pr.nombre">
+                {{ pr.nombre }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="clienteForm.controls['provincia'].hasError('required')">
+              La provincia es <strong>requerida</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Ciudad" formControlName="ciudad">
+            <mat-error *ngIf="clienteForm.controls['ciudad'].hasError('required')">
+              La ciudad es <strong>requerida</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput #cp maxlength="5" placeholder="Código postal" type="number" formControlName="codigoPostal">
+            <mat-hint align="end">{{cp.value.length}} / 5</mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <textarea matInput placeholder="Dirección" formControlName="direccion"></textarea>
+            <mat-error *ngIf="clienteForm.controls['direccion'].hasError('required')">
+              La dirección es <strong>requerida</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="!tieneDirAlt">
+        <div class="col">
+          <button mat-button type="button" (click)="tieneDirAlt = !tieneDirAlt">
+            + Añadir dirección alternativa
+          </button>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="tieneDirAlt">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <textarea matInput placeholder="Dirección alternativa" formControlName="direccionAlternativa"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <mat-radio-group formControlName="factura">
+            <mat-radio-button value="A">Factura A</mat-radio-button>
+            <mat-radio-button value="B">Factura B</mat-radio-button>
+            <mat-radio-button value="C">Factura C</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit">Enviar</button>
+    </mat-card-actions>
+  </mat-card>
+</form>

@@ -22,16 +22,19 @@ mongoose.connect(DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true
     .then(() => {
         console.log("Conexión con MongoDB establecida. Vamos los pibes...");
     }).catch(() => {
-        console.log("Uy, se cayó el sistema.");
+        console.log("No se pudo conectar con MongoDB.");
     })
 
+const db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'Uy, se cayó el sistema:'));
+
+
 app.post("/clientes", (req, res) => {
-    const cliente = new Cliente({
-        nombre: req.body.nombre,
-        dni: req.body.dni,
-        tipo: req.body.tipo,
-    });
+    const cliente = new Cliente(req.body);
     cliente.save();
+    console.log(`Cliente '${req.body.nombre}' cargado.`);
+
     res.status(201).json({
         message: "Cliente agregado con éxito."
     })
