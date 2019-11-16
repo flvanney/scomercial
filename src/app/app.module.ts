@@ -1,21 +1,18 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { AgregarClienteComponent } from './clientes/agregar-cliente/agregar-cliente.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
-import { TablaClientesComponent } from './clientes/tabla-clientes/tabla-clientes.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
@@ -23,14 +20,36 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material';
+import { MAT_DATE_LOCALE } from '@angular/material';
 
 
 import { OrderModule } from 'ngx-order-pipe';
+
+import { AppComponent } from './app.component';
+import { AgregarClienteComponent } from './clientes/agregar-cliente/agregar-cliente.component';
+import { TablaClientesComponent } from './clientes/tabla-clientes/tabla-clientes.component';
+import { BienvenidoComponent } from './bienvenido/bienvenido.component';
+import { Error404Component } from './error404/error404.component';
+import { NotaDePedidoComponent } from './nota-de-pedido/nota-de-pedido.component';
+
+const appRoutes: Routes = [
+  { path: 'crear-cliente', component: AgregarClienteComponent },
+  { path: 'lista-clientes', component: TablaClientesComponent },
+  { path: 'crear-nota-de-pedido', component: NotaDePedidoComponent },
+  { path: '', component: BienvenidoComponent },
+  { path: '**', component: Error404Component }
+];
+
 @NgModule({
   declarations: [
     AppComponent,
     AgregarClienteComponent,
-    TablaClientesComponent
+    TablaClientesComponent,
+    BienvenidoComponent,
+    Error404Component,
+    NotaDePedidoComponent
   ],
   imports: [
     BrowserModule,
@@ -52,9 +71,14 @@ import { OrderModule } from 'ngx-order-pipe';
     MatCardModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    RouterModule.forRoot(appRoutes),
   ],
-  providers: [],
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'es-AR'},
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

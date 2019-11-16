@@ -1,0 +1,58 @@
+<form [formGroup]="pedidoForm" novalidate (ngSubmit)="cargarNotaDePedido()">
+  <mat-card class="card">
+    <mat-card-header>
+      <mat-card-title>Nueva nota de pedido</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <mat-form-field class="full-width">
+        <input matInput [matDatepicker]="picker" placeholder="Fecha de emisión" formControlName="fecha">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="esRequerido('fecha')">
+          La <strong>fecha de emisión</strong> es requerida
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-select placeholder="Cliente solicitante" formControlName="solicitante">
+          <mat-option *ngFor="let cli of clientes" [value]="cli._id">
+            {{ cli.nombre + ' ' + cli.apellido }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="esRequerido('solicitante')">
+          El <strong>cliente</strong> es requerido.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-select placeholder="Método de pago" formControlName="metodopago">
+          <mat-option *ngFor="let metodo of metodosDePago" [value]="metodo">
+            {{ metodo }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="esRequerido('solicitante')">
+          El <strong>método de pago</strong> es requerido.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-radio-group formControlName="envio">
+        <mat-radio-button value="1">Con envío</mat-radio-button>
+        <mat-radio-button value="0">Sin envío</mat-radio-button>
+      </mat-radio-group>
+
+      <mat-form-field class="full-width" appearance="outline">
+        <textarea matInput #observaciones placeholder="Observaciones" formControlName="observaciones"></textarea>
+        <mat-hint align="end">{{observaciones.value.length}} / 256</mat-hint>
+      </mat-form-field>
+
+    </mat-card-content>
+
+    <mat-divider></mat-divider>
+
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit">Enviar</button>
+    </mat-card-actions>
+  </mat-card>
+</form>

@@ -32,10 +32,6 @@ const clienteSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    factura: {
-        type: String,
-        required: true,
-    }
 })
 
 module.exports = mongoose.model('Cliente', clienteSchema);

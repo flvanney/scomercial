@@ -35,7 +35,6 @@ export class AgregarClienteComponent implements OnInit {
     private fb: FormBuilder,
   ) { }
 
-
   ngOnInit() {
     this.clientesService.traerProvincias();
     this.provinciasSub = this.clientesService.traerProvinciasListener()
@@ -44,12 +43,12 @@ export class AgregarClienteComponent implements OnInit {
       });
   }
 
-  onSubmit() {
-    alert('Thanks!');
-  }
-
   cargarCliente() {
     this.clientesService.cargarCliente(this.clienteForm.value);
+  }
+
+  esRequerido(campo: string) {
+    return this.clienteForm.controls[campo].hasError('required');
   }
 
 }

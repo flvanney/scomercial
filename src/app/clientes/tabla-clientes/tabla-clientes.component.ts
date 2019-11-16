@@ -13,7 +13,7 @@ export class TablaClientesComponent implements OnInit {
   clientes: Cliente[] = [];
   private clientesSub: Subscription;
 
-  displayedColumns = ['nombre', 'apellido', 'direccion', 'factura'];
+  displayedColumns = ['nombre', 'apellido', 'direccion'];
 
   constructor(private clientesService: ClientesService) { }
 
