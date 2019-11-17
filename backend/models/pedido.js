@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
-const Cliente = require("./models/cliente");
+const Cliente = require("./cliente");
+const Schema = mongoose.Schema;
 
-const notaPedidoSchema = mongoose.Schema({
+const pedidoSchema = Schema({
     nro:    Number,
     fecha:  Date,
     solicitante: [{ type: Schema.Types.ObjectId, ref: 'Cliente' }],
@@ -11,4 +12,4 @@ const notaPedidoSchema = mongoose.Schema({
     observaciones: String,
 });
 
-module.exports = mongoose.model('NotaPedido', notaPedidoSchema);
+module.exports = mongoose.model('Pedido', pedidoSchema);

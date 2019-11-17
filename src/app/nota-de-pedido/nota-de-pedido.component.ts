@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Cliente } from '../clientes/cliente';
 import { ClientesService } from '../clientes/clientes.service';
+import { PedidosService } from './pedidos.service';
 import { Subscription } from 'rxjs';
 import { FormBuilder, Validators } from '@angular/forms';
 
@@ -14,8 +15,7 @@ export class NotaDePedidoComponent implements OnInit {
   private clientesSub: Subscription;
 
   pedidoForm = this.fb.group({
-    nro: ['00000001', Validators.required],
-    fecha: [null, Validators.required],
+    fecha: [this.getFechaHoy(), Validators.required],
     solicitante: [null, Validators.required],
     metodopago: [null, Validators.required],
     envio: null,
@@ -26,7 +26,8 @@ export class NotaDePedidoComponent implements OnInit {
 
   constructor(
     private clientesService: ClientesService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private pedidosService: PedidosService
   ) { }
 
   ngOnInit() {
@@ -37,8 +38,13 @@ export class NotaDePedidoComponent implements OnInit {
       });
   }
 
-  cargarNotaDePedido() {
-    console.log(`Llamada a cargarNotaDePedido()`);
+  getFechaHoy() {
+    return new Date().toISOString().substring(0, 10);
+
+  }
+
+  cargarPedido() {
+    this.pedidosService.cargarPedido(this.pedidoForm.value);
   }
 
   esRequerido(campo: string) {
