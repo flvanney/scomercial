@@ -4,6 +4,8 @@ import { ClientesService } from '../clientes/clientes.service';
 import { PedidosService } from './pedidos.service';
 import { Subscription } from 'rxjs';
 import { FormBuilder, Validators } from '@angular/forms';
+import { ArticulosService } from '../articulos.service';
+import { Articulo } from '../articulo';
 
 @Component({
   selector: 'app-nota-de-pedido',
@@ -14,9 +16,13 @@ export class NotaDePedidoComponent implements OnInit {
   clientes: Cliente[] = [];
   private clientesSub: Subscription;
 
+  articulos: any[] = [];
+  private articulosSub: Subscription;
+
   pedidoForm = this.fb.group({
     fecha: [this.getFechaHoy(), Validators.required],
     solicitante: [null, Validators.required],
+    articulo: [null, Validators.required],
     metodopago: [null, Validators.required],
     envio: null,
     observaciones: null,
@@ -27,7 +33,8 @@ export class NotaDePedidoComponent implements OnInit {
   constructor(
     private clientesService: ClientesService,
     private fb: FormBuilder,
-    private pedidosService: PedidosService
+    private pedidosService: PedidosService,
+    private articulosService: ArticulosService
   ) { }
 
   ngOnInit() {
@@ -36,11 +43,17 @@ export class NotaDePedidoComponent implements OnInit {
       .subscribe((clientes: Cliente[]) => {
         this.clientes = clientes;
       });
+
+    this.articulosService.traerArticulos();
+    this.articulosService.traerArticuloListener()
+      .subscribe((articulos: any[]) => {
+        this.articulos = articulos;
+      });
+
   }
 
   getFechaHoy() {
     return new Date().toISOString().substring(0, 10);
-
   }
 
   cargarPedido() {

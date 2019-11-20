@@ -15,7 +15,7 @@ app.use((req, res, next) => {
     next();
 });
 
-mongoose.connect(process.env.BD_URL, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
+mongoose.connect(process.env.URL_BD, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
     .then(() => {
         console.log("Conexión con MongoDB establecida. Vamos los pibes...");
     }).catch(() => {
@@ -26,12 +26,17 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Uy, se cayó el sistema:'));
 
 
-/* Acá se cargan y definen las rutas de las consultas*/
+/* =================================================
+ Acá se cargan y definen las rutas de las consultas
+==================================================*/
 
 const rutasClientes = require("./routes/clientes");
 app.use('/clientes', rutasClientes);
 
 const rutasPedidos = require("./routes/pedidos");
 app.use('/pedidos', rutasPedidos);
+
+const rutasArticulos = require("./routes/articulos");
+app.use('/articulos', rutasArticulos);
 
 module.exports = app;

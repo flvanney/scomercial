@@ -27,6 +27,17 @@
       </mat-form-field>
 
       <mat-form-field class="full-width">
+        <mat-select placeholder="Artículo" formControlName="articulo">
+          <mat-option *ngFor="let art of articulos" [value]="art._id">
+            {{ art.nombre }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="esRequerido('articulo')">
+          El <strong>artículo</strong> es requerido.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
         <mat-select placeholder="Método de pago" formControlName="metodopago">
           <mat-option *ngFor="let metodo of metodosDePago" [value]="metodo">
             {{ metodo }}
@@ -44,7 +55,7 @@
 
       <mat-form-field class="full-width" appearance="outline">
         <textarea matInput #observaciones placeholder="Observaciones" formControlName="observaciones"></textarea>
-        <mat-hint align="end">{{observaciones.value.length}} / 256</mat-hint>
+        <mat-hint align="end">{{ observaciones.value.length }} / 256</mat-hint>
       </mat-form-field>
 
     </mat-card-content>
