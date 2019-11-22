@@ -38,8 +38,10 @@ import { BienvenidoComponent } from './bienvenido/bienvenido.component';
 import { Error404Component } from './error404/error404.component';
 import { NotaDePedidoComponent } from './nota-de-pedido/nota-de-pedido.component';
 import { VentaComponent } from './venta/venta.component';
+import { ListaDeArticulosComponent } from './lista-de-articulos/lista-de-articulos.component';
 
 const appRoutes: Routes = [
+  { path: 'lista-articulos', component: ListaDeArticulosComponent},
   { path: 'crear-cliente', component: AgregarClienteComponent },
   { path: 'lista-clientes', component: TablaClientesComponent },
   { path: 'crear-nota-de-pedido', component: NotaDePedidoComponent },
@@ -56,7 +58,8 @@ const appRoutes: Routes = [
     BienvenidoComponent,
     Error404Component,
     NotaDePedidoComponent,
-    VentaComponent
+    VentaComponent,
+    ListaDeArticulosComponent
   ],
   imports: [
     BrowserModule,
