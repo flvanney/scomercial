@@ -15,9 +15,6 @@ const cuentaCorrienteSchema = mongoose.Schema({
         type: Number,
     },
 
-    tipo:{
-        type:String,
-    },
 })
 
 module.exports = mongoose.model('CuentaCorriente', cuentaCorrienteSchema);

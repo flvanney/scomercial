@@ -23,6 +23,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material';
 import { MAT_DATE_LOCALE } from '@angular/material';
+import { MatMenuModule } from '@angular/material/menu'; 
 
 import { registerLocaleData } from '@angular/common';
 import esAR from '@angular/common/locales/es-AR';
@@ -36,11 +37,13 @@ import { TablaClientesComponent } from './clientes/tabla-clientes/tabla-clientes
 import { BienvenidoComponent } from './bienvenido/bienvenido.component';
 import { Error404Component } from './error404/error404.component';
 import { NotaDePedidoComponent } from './nota-de-pedido/nota-de-pedido.component';
+import { VentaComponent } from './venta/venta.component';
 
 const appRoutes: Routes = [
   { path: 'crear-cliente', component: AgregarClienteComponent },
   { path: 'lista-clientes', component: TablaClientesComponent },
   { path: 'crear-nota-de-pedido', component: NotaDePedidoComponent },
+  { path: 'generar-venta', component: VentaComponent },
   { path: '', component: BienvenidoComponent },
   { path: '**', component: Error404Component }
 ];
@@ -52,7 +55,8 @@ const appRoutes: Routes = [
     TablaClientesComponent,
     BienvenidoComponent,
     Error404Component,
-    NotaDePedidoComponent
+    NotaDePedidoComponent,
+    VentaComponent
   ],
   imports: [
     BrowserModule,
@@ -77,6 +81,7 @@ const appRoutes: Routes = [
     MatSortModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatMenuModule,
     RouterModule.forRoot(appRoutes),
   ],
   providers: [
