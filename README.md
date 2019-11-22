@@ -6,6 +6,8 @@ Cliente: cuando el cliente va a pagar, verificiar si el cliente esta activo y si
 en caso contrario verificar limite de credito y notas de credito.
 # Sistema comercial :bank:
 
+//La venta tira un error porque le falta hasta el nombre, no se asusten. Todo esta bajo control
+
 ## Como hacer que funcione
 
 1. Instalar [nodeJS](https://nodejs.org/es/).
