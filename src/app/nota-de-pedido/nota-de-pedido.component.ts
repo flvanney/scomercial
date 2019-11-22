@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { FormBuilder, Validators, FormGroup, AbstractControl, FormArray, FormControl } from '@angular/forms';
+
 import { Cliente } from '../clientes/cliente';
 import { ClientesService } from '../clientes/clientes.service';
 import { PedidosService } from './pedidos.service';
-import { Subscription } from 'rxjs';
-import { FormBuilder, Validators } from '@angular/forms';
-import { ArticulosService } from '../articulos.service';
 import { Articulo } from '../articulo';
+import { ArticulosService } from '../articulos.service';
+
+import { formatCurrency } from '@angular/common';
 
 @Component({
   selector: 'app-nota-de-pedido',
@@ -21,11 +24,11 @@ export class NotaDePedidoComponent implements OnInit {
 
   pedidoForm = this.fb.group({
     fecha: [this.getFechaHoy(), Validators.required],
-    solicitante: [null, Validators.required],
-    articulo: [null, Validators.required],
+    cliente: [null, Validators.required],
+    ventas: this.fb.array([this.crearVenta()], [this.validarVenta]),
     metodopago: [null, Validators.required],
-    envio: null,
-    observaciones: null,
+    envio: [null, Validators.required],
+    observaciones: null
   });
 
   metodosDePago = ['Contado', 'Tarjeta de crédito', 'Tarjeta de débito', 'Cheque'];
@@ -46,22 +49,79 @@ export class NotaDePedidoComponent implements OnInit {
 
     this.articulosService.traerArticulos();
     this.articulosService.traerArticuloListener()
-      .subscribe((articulos: any[]) => {
+      .subscribe((articulos: Articulo[]) => {
         this.articulos = articulos;
       });
+  }
 
+  crearVenta(): FormGroup {
+    return this.fb.group({
+      articulo: [null, [Validators.required]],
+      cantidad: [1, [Validators.required, Validators.min(1)]],
+      precio: [0, [Validators.required, Validators.min(1)]],
+    });
+  }
+
+  cargarPedido() {
+    console.log(`FORM: ${JSON.stringify(this.pedidoForm.value)}`);
+    this.pedidosService.cargarPedido(this.pedidoForm.value);
+    // this.pedidoForm.reset();
+  }
+
+  get traerVentas() {
+    return this.pedidoForm.get('ventas') as FormArray;
+  }
+
+  agregarFilaVenta() {
+    this.traerVentas.push(this.crearVenta());
+  }
+
+  eliminarFilaVenta(i: number) {
+    this.traerVentas.removeAt(i);
+  }
+
+  validarVenta(control: AbstractControl): { [key: string]: boolean | null } {
+    // TODO
+    // El stock no reservado debe ser mayor a la cantidad que se va a comprar
+    const invalid = control.value < 0;
+    return invalid ? { ventaInvalid: true } : null;
   }
 
   getFechaHoy() {
     return new Date().toISOString().substring(0, 10);
   }
 
-  cargarPedido() {
-    this.pedidosService.cargarPedido(this.pedidoForm.value);
-  }
-
   esRequerido(campo: string) {
     return this.pedidoForm.controls[campo].hasError('required');
   }
+
+  traerPrecios(i: number) {
+    /* Si el usuario seleccionó un artículo se le devuelve la lista 
+    de precios que le corresponde al mismo. Sino, una lista vacía. */
+
+    const sinSeleccionar = this.pedidoForm.value.ventas[i].articulo == null ? true : false;
+
+    return sinSeleccionar ? [] : this.pedidoForm.value.ventas[i].articulo.precios;
+  }
+
+  calcularImporte(i: number) {
+    /* El importe es el producto entre el precio de lista seleccionado
+    y la cantidad de artículos. */
+
+    const venta = this.pedidoForm.value.ventas[i];
+
+    if (venta != undefined) {
+      const cantidad = venta.cantidad == null ? 0 : venta.cantidad;
+      const precio = venta.precio == null ? 0 : venta.precio;
+      const importe = cantidad * precio;
+      return this.formatearMoneda(importe);
+    }
+    return '';
+  }
+
+  public formatearMoneda(monto: number) {
+    return formatCurrency(monto, 'esAR', '$', 'ARS');
+  }
+
 
 }

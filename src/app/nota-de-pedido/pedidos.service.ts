@@ -16,9 +16,15 @@ export class PedidosService {
   }
 
   cargarPedido(datos) {
-    // TODO: generar nro de manera autoincremental.
+    // TODO: generar nro de venta de manera autoincremental.
+
+    datos.ventas.forEach(fila => {
+      fila.articulo = fila.articulo._id;
+    });
 
     const nuevoPedido: Pedido = datos;
+
+
     this.http
       .post<Pedido>(`${this.BASE_URL}/pedidos`, nuevoPedido)
       .subscribe(res => {

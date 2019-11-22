@@ -7,45 +7,23 @@ const articuloSchema = mongoose.Schema({
         required: true,
     },
     
-    familia: {
-        type: String,
-    },
+    familia: String,
 
     cantidad:{
         type: Number,
         required: true,
     },
 
-    reservada:{
-        type: Number,
-    },
+    reservada: Number,
 
     habilitado:{
         type: Boolean,
         required: true,
     },
 
-    precio1:{
-        type: Number,
-        required: true,
-    },
+    precios: [Number],
 
-
-    precio2:{
-        type: Number,
-    },
-
-    precio3:{
-        type: Number,
-    },
-
-    precio4:{
-        type: Number,
-    },
-
-    descripcion:{
-        type: String,
-    },
+    descripcion: String,
 })
 
 module.exports = mongoose.model('Articulo', articuloSchema);

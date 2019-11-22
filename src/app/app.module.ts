@@ -24,6 +24,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material';
 import { MAT_DATE_LOCALE } from '@angular/material';
 
+import { registerLocaleData } from '@angular/common';
+import esAR from '@angular/common/locales/es-AR';
+registerLocaleData(esAR, 'esAR');
 
 import { OrderModule } from 'ngx-order-pipe';
 

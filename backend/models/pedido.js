@@ -1,14 +1,25 @@
 const mongoose = require("mongoose");
 const Cliente = require("./cliente");
+const Articulo = require("./articulo");
 const Schema = mongoose.Schema;
 
 const pedidoSchema = Schema({
-    nro:    Number,
+    nro: { type: Number, unique: true },
+
     fecha:  Date,
-    solicitante: [{ type: Schema.Types.ObjectId, ref: 'Cliente' }],
-    // Ref a articulos
+
+    cliente: { type: Schema.Types.ObjectId, ref: 'Cliente' },
+
+    ventas: [{
+        articulo: { type: Schema.Types.ObjectId, ref: 'Articulo' },
+        cantidad: Number,
+        precio: Number,
+    }],
+
     metodopago: String,
+
     envio: Boolean,
+
     observaciones: String,
 });
 
