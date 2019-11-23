@@ -23,6 +23,7 @@ export class NotaDePedidoComponent implements OnInit {
   private articulosSub: Subscription;
 
   pedidoForm = this.fb.group({
+    nro: null,
     fecha: [this.getFechaHoy(), Validators.required],
     cliente: [null, Validators.required],
     ventas: this.fb.array([this.crearVenta()], [this.validarVenta]),
@@ -63,9 +64,8 @@ export class NotaDePedidoComponent implements OnInit {
   }
 
   cargarPedido() {
-    console.log(`FORM: ${JSON.stringify(this.pedidoForm.value)}`);
     this.pedidosService.cargarPedido(this.pedidoForm.value);
-    // this.pedidoForm.reset();
+    this.pedidoForm.reset({ fecha: this.getFechaHoy() })
   }
 
   get traerVentas() {
@@ -104,6 +104,12 @@ export class NotaDePedidoComponent implements OnInit {
     return sinSeleccionar ? [] : this.pedidoForm.value.ventas[i].articulo.precios;
   }
 
+  mayorANueve() {
+    // Se usa para bloquear el botón de agregar 
+    // ventas cuando éstas son más de 9.
+    return this.traerVentas.controls.length > 9;
+  }
+
   calcularImporte(i: number) {
     /* El importe es el producto entre el precio de lista seleccionado
     y la cantidad de artículos. */
@@ -122,6 +128,5 @@ export class NotaDePedidoComponent implements OnInit {
   public formatearMoneda(monto: number) {
     return formatCurrency(monto, 'esAR', '$', 'ARS');
   }
-
 
 }

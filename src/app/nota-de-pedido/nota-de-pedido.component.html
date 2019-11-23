@@ -1,30 +1,55 @@
 <form [formGroup]="pedidoForm" novalidate (ngSubmit)="cargarPedido()">
   <mat-card class="card">
     <mat-card-header>
-      <mat-card-title>Nueva nota de pedido</mat-card-title>
+      <mat-card-title>Nuevo documento de venta</mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
 
-      <mat-form-field class="full-width">
-        <input matInput [matDatepicker]="picker" placeholder="Fecha de emisión" formControlName="fecha">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-error *ngIf="esRequerido('fecha')">
-          La <strong>fecha de emisión</strong> es requerida
-        </mat-error>
-      </mat-form-field>
+      <table class="full-width">
+        <tr>
 
-      <mat-form-field class="full-width">
-        <mat-select placeholder="Cliente" formControlName="cliente">
-          <mat-option *ngFor="let cli of clientes" [value]="cli._id">
-            {{ cli.nombre + ' ' + cli.apellido }}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="esRequerido('cliente')">
-          El <strong>cliente</strong> es requerido.
-        </mat-error>
-      </mat-form-field>
+          <td>
+            <mat-form-field class="full-width">
+              <input matInput [matDatepicker]="picker" placeholder="Fecha de emisión" formControlName="fecha">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="esRequerido('fecha')">
+                La <strong>fecha de emisión</strong> es requerida
+              </mat-error>
+            </mat-form-field>
+          </td>
+
+          <td>
+            <mat-form-field class="full-width">
+              <mat-select placeholder="Cliente" formControlName="cliente">
+                <mat-option *ngFor="let cli of clientes" [value]="cli._id">
+                  {{ cli.nombre + ' ' + cli.apellido }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="esRequerido('cliente')">
+                El <strong>cliente</strong> es requerido.
+              </mat-error>
+            </mat-form-field>
+          </td>
+
+          <td>
+            <mat-form-field class="full-width">
+              <mat-select placeholder="Vendedor">
+                <mat-option>
+                  Test
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+
+        </tr>
+      </table>
+
+      <div style="margin-top: 1%; margin-bottom: 1%;">
+        <button mat-stroked-button color="primary" type="button" (click)="agregarFilaVenta()"
+          [disabled]="mayorANueve()">+ Añadir fila</button>
+      </div>
 
       <div formArrayName="ventas" *ngFor="let venta of traerVentas.controls; let i = index;">
         <div [formGroupName]="i">
@@ -73,12 +98,17 @@
 
               </td>
 
+              <td>
+                <button mat-mini-fab color="warn" type="button" (click)="eliminarFilaVenta(i)"
+                  [disabled]="i == 0">x</button>
+              </td>
+
             </tr>
           </table>
         </div>
       </div>
 
-      <mat-form-field class="full-width">
+      <mat-form-field>
         <mat-select placeholder="Método de pago" formControlName="metodopago">
           <mat-option *ngFor="let metodo of metodosDePago" [value]="metodo">
             {{ metodo }}

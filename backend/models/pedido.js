@@ -4,9 +4,12 @@ const Articulo = require("./articulo");
 const Schema = mongoose.Schema;
 
 const pedidoSchema = Schema({
-    nro: { type: Number, unique: true },
+    nro: {
+        type: Number,
+        unique: true
+    },
 
-    fecha:  Date,
+    fecha: Date,
 
     cliente: { type: Schema.Types.ObjectId, ref: 'Cliente' },
 

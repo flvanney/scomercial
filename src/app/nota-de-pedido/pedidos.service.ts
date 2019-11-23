@@ -9,26 +9,30 @@ export class PedidosService {
 
   private BASE_URL = `http://localhost:3000`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   traerPedidos() {
     // this.http.get()
   }
 
-  cargarPedido(datos) {
-    // TODO: generar nro de venta de manera autoincremental.
+  traerUltimoPedido() {
+    return this.http.get(`${this.BASE_URL}/pedidos/ult`);
+  }
 
+  cargarPedido(datos) {
     datos.ventas.forEach(fila => {
       fila.articulo = fila.articulo._id;
     });
 
-    const nuevoPedido: Pedido = datos;
+    this.traerUltimoPedido().subscribe(pedido => {
+      pedido == null ? datos.nro = 1 : datos.nro = pedido['nro'] + 1;
+      this.http
+        .post(`${this.BASE_URL}/pedidos`, datos)
+        .subscribe(res => {
+          console.log(res);
+        });
+    });
 
-
-    this.http
-      .post<Pedido>(`${this.BASE_URL}/pedidos`, nuevoPedido)
-      .subscribe(res => {
-        console.log(res);
-      });
   }
 }

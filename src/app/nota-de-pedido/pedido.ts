@@ -2,7 +2,7 @@ export class Pedido {
     constructor(
         // tslint:disable-next-line: variable-name
         public _id: string,
-        public nro: string,
+        public nro: number,
         public fecha: string,
         public cliente: string,
         public ventas: Array<Venta>,
