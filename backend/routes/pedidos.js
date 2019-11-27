@@ -5,7 +5,7 @@ const Pedido = require("../models/pedido");
 
 router.post('/', (req, res) => {
     const pedido = new Pedido(req.body);
-    
+
     pedido.save();
 
     res.status(201).json({
@@ -22,5 +22,14 @@ router.get('/ult', (req, res) => {
             res.status(200).json(ultimo)
         });
 })
+
+router.get('/', (req, res) => {
+    Pedido
+        .find()
+        .then(clientes => {
+            res.status(200).json(clientes)
+        });
+})
+
 
 module.exports = router

@@ -46,18 +46,15 @@
         </tr>
       </table>
 
-      <div style="margin-top: 1%; margin-bottom: 1%;">
-        <button mat-stroked-button color="primary" type="button" (click)="agregarFilaVenta()"
-          [disabled]="mayorANueve()">+ Añadir fila</button>
-      </div>
+      <button mat-stroked-button color="primary" type="button" (click)="agregarFilaVenta()" [disabled]="mayorANueve()">+
+        Añadir fila</button>
 
       <div formArrayName="ventas" *ngFor="let venta of traerVentas.controls; let i = index;">
-        <div [formGroupName]="i">
+        <div [formGroupName]="i" style="display: inline;">
           <table class="full-width" cellspacing="0">
             <tr>
 
               <td>
-
                 <mat-form-field class="full-width">
                   <mat-select placeholder="Artículo" formControlName="articulo">
                     <mat-option *ngFor="let art of articulos" [value]="art">
@@ -65,37 +62,34 @@
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
-
               </td>
 
               <td>
-
                 <mat-form-field class="full-width">
                   <input matInput type="number" min=1 placeholder="Cantidad" formControlName="cantidad">
                 </mat-form-field>
-
               </td>
 
               <td>
-
                 <mat-form-field class="full-width">
                   <mat-select placeholder="Precio unitario" formControlName="precio">
                     <mat-option *ngFor="let precio of traerPrecios(i)" [value]="precio">
                       {{ formatearMoneda(precio) }}
                     </mat-option>
                   </mat-select>
-                  <mat-hint align="start">Seleccione un artículo para acceder a sus precios de lista.</mat-hint>
                 </mat-form-field>
-
               </td>
 
               <td>
+                <mat-form-field class="full-width">
+                  <input matInput type="number" placeholder="Diferencia" formControlName="diferencia">
+                </mat-form-field>
+              </td>
 
+              <td>
                 <mat-form-field class="full-width">
                   <input disabled matInput placeholder="Importe" [value]="calcularImporte(i)">
-                  <mat-hint align="start">Seleccione art., cant. y precio.</mat-hint>
                 </mat-form-field>
-
               </td>
 
               <td>
@@ -108,34 +102,59 @@
         </div>
       </div>
 
-      <mat-form-field>
-        <mat-select placeholder="Método de pago" formControlName="metodopago">
-          <mat-option *ngFor="let metodo of metodosDePago" [value]="metodo">
-            {{ metodo }}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="esRequerido('cliente')">
-          El <strong>método de pago</strong> es requerido.
-        </mat-error>
-      </mat-form-field>
+      <div>
+        <table class="full-width" cellspacing="0">
+          <tr>
 
-      <mat-radio-group formControlName="envio">
-        <mat-radio-button value="1">Con envío</mat-radio-button>
-        <mat-radio-button value="0">Sin envío</mat-radio-button>
-      </mat-radio-group>
+            <td>
+              <mat-radio-group formControlName="envio">
+                <mat-radio-button value="1">Con envío</mat-radio-button>
+                <mat-radio-button value="0">Sin envío</mat-radio-button>
+              </mat-radio-group>
+            </td>
 
-      <mat-form-field class="full-width" appearance="outline">
-        <textarea rows="5" matInput #observaciones placeholder="Observaciones" formControlName="observaciones"
-          maxlength="512" style="resize: none;"></textarea>
-        <mat-hint align="end">{{ observaciones.value.length }} / 512</mat-hint>
-      </mat-form-field>
+            <td>
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Método de pago" formControlName="metodopago">
+                  <mat-option *ngFor="let metodo of metodosDePago" [value]="metodo">
+                    {{ metodo }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="esRequerido('cliente')">
+                  El <strong>método de pago</strong> es requerido.
+                </mat-error>
+              </mat-form-field>
+            </td>
+
+            <td>
+              <button mat-stroked-button color="primary" type="button" (click)="calcularImporteTotal()">Calcular
+                total</button>
+            </td>
+
+            <td>
+              <mat-form-field class="full-width">
+                <input disabled matInput placeholder="Importe total" [value]="formatearMoneda(importeTotal)">
+              </mat-form-field>
+            </td>
+
+          </tr>
+        </table>
+      </div>
+
+      <div style="margin-top: 1%">
+        <mat-form-field class="full-width" appearance="outline">
+          <textarea rows="5" matInput #observaciones placeholder="Observaciones" formControlName="observaciones"
+            maxlength="512" style="resize: none;"></textarea>
+          <mat-hint align="end">{{ observaciones.value.length }} / 512</mat-hint>
+        </mat-form-field>
+      </div>
 
     </mat-card-content>
 
     <mat-divider></mat-divider>
 
     <mat-card-actions>
-      <button mat-raised-button color="primary" type="submit">Enviar</button>
+      <button mat-raised-button color="primary" type="submit">Guardar</button>
     </mat-card-actions>
   </mat-card>
 </form>

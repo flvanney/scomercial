@@ -23,18 +23,6 @@ const articuloSchema = mongoose.Schema({
 
     precios: [Number],
 
-    precio2:{
-        type: Number,
-    },
-
-    precio3:{
-        type: Number,
-    },
-
-    precio4:{
-        type: Number,
-    },
-
     descripcion:{
         type: String,
     },

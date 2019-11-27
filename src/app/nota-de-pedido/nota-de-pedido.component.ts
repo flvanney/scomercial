@@ -22,6 +22,8 @@ export class NotaDePedidoComponent implements OnInit {
   articulos: any[] = [];
   private articulosSub: Subscription;
 
+  importeTotal = 0;
+
   pedidoForm = this.fb.group({
     nro: null,
     fecha: [this.getFechaHoy(), Validators.required],
@@ -60,6 +62,7 @@ export class NotaDePedidoComponent implements OnInit {
       articulo: [null, [Validators.required]],
       cantidad: [1, [Validators.required, Validators.min(1)]],
       precio: [0, [Validators.required, Validators.min(1)]],
+      diferencia: 0,
     });
   }
 
@@ -119,10 +122,18 @@ export class NotaDePedidoComponent implements OnInit {
     if (venta != undefined) {
       const cantidad = venta.cantidad == null ? 0 : venta.cantidad;
       const precio = venta.precio == null ? 0 : venta.precio;
-      const importe = cantidad * precio;
+      const diferencia = venta.diferencia == null ? 0 : venta.diferencia;
+      const importe = (precio + diferencia) * cantidad;
       return this.formatearMoneda(importe);
     }
     return '';
+  }
+
+  calcularImporteTotal() {
+    this.pedidoForm.value.ventas.forEach(venta => {
+      this.importeTotal += (venta.precio + venta.diferencia) * venta.cantidad;
+    });
+    return this.importeTotal;
   }
 
   public formatearMoneda(monto: number) {
