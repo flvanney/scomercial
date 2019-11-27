@@ -3,7 +3,6 @@ import { Subscription } from 'rxjs';
 import { Articulo } from '../articulo';
 import { ArticulosService } from '../articulos.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from 'constants';
 
 export interface ArticuloInterface{
   nombre: string;
@@ -31,16 +30,14 @@ export class ListaDeArticulosComponent implements OnInit {
     this.articulosService.traerArticuloListener()
       .subscribe((articulos: Articulo[]) => {
         this.articulos = articulos;
-      });
-    this.dataSource = new MatTableDataSource<ArticuloInterface>(this.articulos);
-    console.log(this.articulos);
-    //console.log(this.dataSource);
-  }
+        this.dataSource = new MatTableDataSource<ArticuloInterface>(this.articulos);
+      });}
+
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-}
+
 
 /*  traerPrecios(i: number) {
     /* Si el usuario seleccionó un artículo se le devuelve la lista 
@@ -56,4 +53,4 @@ export class ListaDeArticulosComponent implements OnInit {
   }
 
 */
-
+}

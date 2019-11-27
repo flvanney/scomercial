@@ -1,9 +1,8 @@
-<p>lista-de-articulos works!</p>
 <mat-form-field>
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar articulo">
 </mat-form-field>
 <div class="mat-elevation-z8">
-    <table mat-table class="full-width-table" matSort aria-label="Elements" [dataSource]="articulos">
+    <table mat-table class="full-width-table" matSort aria-label="Elements" [dataSource]="dataSource">
 
         <ng-container matColumnDef="nombre">
             <th mat-header-cell *matHeaderCellDef>Nombre</th>
