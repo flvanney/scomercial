@@ -23,7 +23,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material';
 import { MAT_DATE_LOCALE } from '@angular/material';
-import { MatMenuModule } from '@angular/material/menu'; 
+import { MatMenuModule } from '@angular/material/menu';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { registerLocaleData } from '@angular/common';
 import esAR from '@angular/common/locales/es-AR';
@@ -36,16 +37,15 @@ import { AgregarClienteComponent } from './clientes/agregar-cliente/agregar-clie
 import { TablaClientesComponent } from './clientes/tabla-clientes/tabla-clientes.component';
 import { BienvenidoComponent } from './bienvenido/bienvenido.component';
 import { Error404Component } from './error404/error404.component';
-import { NotaDePedidoComponent } from './nota-de-pedido/nota-de-pedido.component';
-import { VentaComponent } from './venta/venta.component';
-import { ListaDeArticulosComponent } from './lista-de-articulos/lista-de-articulos.component';
+import { AgregarVentaComponent } from './ventas/agregar-venta.component';
+import { ListaDeArticulosComponent } from './articulos/lista-de-articulos/lista-de-articulos.component';
+import { CargaArticuloComponent } from './articulos/carga-articulo/carga-articulo.component';
 
 const appRoutes: Routes = [
-  { path: 'lista-articulos', component: ListaDeArticulosComponent},
+  { path: 'lista-articulos', component: ListaDeArticulosComponent },
   { path: 'crear-cliente', component: AgregarClienteComponent },
+  { path: 'agregar-venta', component: AgregarVentaComponent },
   { path: 'lista-clientes', component: TablaClientesComponent },
-  { path: 'crear-nota-de-pedido', component: NotaDePedidoComponent },
-  { path: 'generar-venta', component: VentaComponent },
   { path: '', component: BienvenidoComponent },
   { path: '**', component: Error404Component }
 ];
@@ -57,9 +57,9 @@ const appRoutes: Routes = [
     TablaClientesComponent,
     BienvenidoComponent,
     Error404Component,
-    NotaDePedidoComponent,
-    VentaComponent,
-    ListaDeArticulosComponent
+    AgregarVentaComponent,
+    ListaDeArticulosComponent,
+    CargaArticuloComponent,
   ],
   imports: [
     BrowserModule,
@@ -85,10 +85,11 @@ const appRoutes: Routes = [
     MatDatepickerModule,
     MatNativeDateModule,
     MatMenuModule,
+    MatExpansionModule,
     RouterModule.forRoot(appRoutes),
   ],
   providers: [
-    {provide: MAT_DATE_LOCALE, useValue: 'es-AR'},
+    { provide: MAT_DATE_LOCALE, useValue: 'es-AR' },
   ],
   bootstrap: [AppComponent]
 })

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Pedido } from './pedido';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +22,7 @@ export class PedidosService {
   cargarPedido(datos) {
     datos.ventas.forEach(fila => {
       fila.articulo = fila.articulo._id;
+      fila.precio += fila.diferencia;
     });
 
     this.traerUltimoPedido().subscribe(pedido => {
@@ -33,6 +33,5 @@ export class PedidosService {
           console.log(res);
         });
     });
-
   }
 }

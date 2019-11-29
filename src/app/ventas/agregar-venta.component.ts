@@ -4,18 +4,18 @@ import { FormBuilder, Validators, FormGroup, AbstractControl, FormArray, FormCon
 
 import { Cliente } from '../clientes/cliente';
 import { ClientesService } from '../clientes/clientes.service';
-import { PedidosService } from './pedidos.service';
-import { Articulo } from '../articulo';
-import { ArticulosService } from '../articulos.service';
+import { PedidosService } from './venta.service';
+import { Articulo } from '../articulos/articulo';
+import { ArticulosService } from '../articulos/articulos.service';
 
 import { formatCurrency } from '@angular/common';
 
 @Component({
-  selector: 'app-nota-de-pedido',
-  templateUrl: './nota-de-pedido.component.html',
-  styleUrls: ['./nota-de-pedido.component.css']
+  selector: 'app-agregar-venta',
+  templateUrl: './agregar-venta.component.html',
+  styleUrls: ['./agregar-venta.component.css']
 })
-export class NotaDePedidoComponent implements OnInit {
+export class AgregarVentaComponent implements OnInit {
   clientes: Cliente[] = [];
   private clientesSub: Subscription;
 
