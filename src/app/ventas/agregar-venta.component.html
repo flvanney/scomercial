@@ -6,139 +6,106 @@
 
     <mat-card-content>
 
-      <table class="full-width">
-        <tr>
 
-          <td>
-            <mat-form-field class="full-width">
-              <input matInput [matDatepicker]="picker" placeholder="Fecha de emisión" formControlName="fecha">
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-              <mat-error *ngIf="esRequerido('fecha')">
-                La <strong>fecha de emisión</strong> es requerida
-              </mat-error>
-            </mat-form-field>
-          </td>
+      <div class="flex">
+        <mat-form-field class="child">
+          <input matInput [matDatepicker]="picker" placeholder="Fecha de emisión" formControlName="fecha">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="esRequerido('fecha')">
+            La <strong>fecha de emisión</strong> es requerida
+          </mat-error>
+        </mat-form-field>
 
-          <td>
-            <mat-form-field class="full-width">
-              <mat-select placeholder="Cliente" formControlName="cliente">
-                <mat-option *ngFor="let cli of clientes" [value]="cli._id">
-                  {{ cli.nombre + ' ' + cli.apellido }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="esRequerido('cliente')">
-                El <strong>cliente</strong> es requerido.
-              </mat-error>
-            </mat-form-field>
-          </td>
+        <mat-form-field class="child g-1">
+          <mat-select placeholder="Cliente" formControlName="cliente">
+            <mat-option *ngFor="let cli of clientes" [value]="cli._id">
+              {{ cli.nombre + ' ' + cli.apellido }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="esRequerido('cliente')">
+            El <strong>cliente</strong> es requerido.
+          </mat-error>
+        </mat-form-field>
 
-          <td>
-            <mat-form-field class="full-width">
-              <mat-select placeholder="Vendedor">
-                <mat-option>
-                  Test
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </td>
-
-        </tr>
-      </table>
+        <mat-form-field class="child g-1">
+          <mat-select placeholder="Vendedor">
+            <mat-option>
+              Test
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
       <button mat-stroked-button color="primary" type="button" (click)="agregarFilaVenta()" [disabled]="mayorANueve()">+
         Añadir fila</button>
 
       <div formArrayName="ventas" *ngFor="let venta of traerVentas.controls; let i = index;">
-        <div [formGroupName]="i" style="display: inline;">
-          <table class="full-width" cellspacing="0">
-            <tr>
+        <div [formGroupName]="i" class="flex">
 
-              <td>
-                <mat-form-field class="full-width">
-                  <mat-select placeholder="Artículo" formControlName="articulo">
-                    <mat-option *ngFor="let art of articulos" [value]="art">
-                      {{ art.nombre }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </td>
+          <mat-form-field class="child g-3">
+            <mat-select placeholder="Artículo" formControlName="articulo">
+              <mat-option *ngFor="let art of articulos" [value]="art">
+                {{ art.nombre }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-              <td>
-                <mat-form-field class="full-width">
-                  <input matInput type="number" min=1 placeholder="Cantidad" formControlName="cantidad">
-                </mat-form-field>
-              </td>
+          <mat-form-field class="child g-1">
+            <input matInput type="number" min=1 placeholder="Cantidad" formControlName="cantidad">
+          </mat-form-field>
 
-              <td>
-                <mat-form-field class="full-width">
-                  <mat-select placeholder="Precio unitario" formControlName="precio">
-                    <mat-option *ngFor="let precio of traerPrecios(i)" [value]="precio">
-                      {{ formatearMoneda(precio) }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </td>
+          <mat-form-field class="child g-1">
+            <mat-select placeholder="Precio unitario" formControlName="precio">
+              <mat-option *ngFor="let precio of traerPrecios(i)" [value]="precio">
+                {{ formatearMoneda(precio) }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-              <td>
-                <mat-form-field class="full-width">
-                  <input matInput type="number" placeholder="Diferencia" formControlName="diferencia">
-                </mat-form-field>
-              </td>
+          <mat-form-field class="child g-1">
+            <input matInput type="number" placeholder="Diferencia" formControlName="diferencia">
+          </mat-form-field>
 
-              <td>
-                <mat-form-field class="full-width">
-                  <input disabled matInput placeholder="Importe" [value]="calcularImporte(i)">
-                </mat-form-field>
-              </td>
+          <mat-form-field class="child g-1">
+            <input disabled matInput placeholder="Importe" [value]="calcularImporte(i)">
+          </mat-form-field>
 
-              <td>
-                <button mat-mini-fab color="warn" type="button" (click)="eliminarFilaVenta(i)"
-                  [disabled]="i == 0">x</button>
-              </td>
+          <div class="child">
+            <button mat-mini-fab color="warn" type="button" (click)="eliminarFilaVenta(i)"
+              [disabled]="i == 0">x</button>
+          </div>
 
-            </tr>
-          </table>
         </div>
       </div>
 
-      <div>
-        <table class="full-width" cellspacing="0">
-          <tr>
+      <div class="flex">
 
-            <td>
-              <mat-radio-group formControlName="envio">
-                <mat-radio-button value="1">Con envío</mat-radio-button>
-                <mat-radio-button value="0">Sin envío</mat-radio-button>
-              </mat-radio-group>
-            </td>
+        <mat-radio-group formControlName="envio" class="child">
+          <mat-radio-button value="1">Con envío</mat-radio-button>
+          <mat-radio-button value="0">Sin envío</mat-radio-button>
+        </mat-radio-group>
 
-            <td>
-              <mat-form-field class="full-width">
-                <mat-select placeholder="Método de pago" formControlName="metodopago">
-                  <mat-option *ngFor="let metodo of metodosDePago" [value]="metodo">
-                    {{ metodo }}
-                  </mat-option>
-                </mat-select>
-                <mat-error *ngIf="esRequerido('cliente')">
-                  El <strong>método de pago</strong> es requerido.
-                </mat-error>
-              </mat-form-field>
-            </td>
+        <mat-form-field class="child g-1">
+          <mat-select placeholder="Método de pago" formControlName="metodopago">
+            <mat-option *ngFor="let metodo of metodosDePago" [value]="metodo">
+              {{ metodo }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="esRequerido('cliente')">
+            El <strong>método de pago</strong> es requerido.
+          </mat-error>
+        </mat-form-field>
 
-            <td>
-              <button mat-stroked-button color="primary" type="button" (click)="calcularImporteTotal()">Calcular
-                total</button>
-            </td>
 
-            <td>
-              <mat-form-field class="full-width">
-                <input disabled matInput placeholder="Importe total" [value]="formatearMoneda(importeTotal)">
-              </mat-form-field>
-            </td>
+        <mat-form-field class="child g-1">
+          <input disabled matInput placeholder="Importe total" [value]="formatearMoneda(importeTotal)">
+          <span matPrefix>
+            <button mat-button color="primary" type="button" (click)="calcularImporteTotal()" style="margin-right: 5px;">Calcular
+              total</button>
+          </span>
+        </mat-form-field>
 
-          </tr>
-        </table>
       </div>
 
       <div style="margin-top: 1%">

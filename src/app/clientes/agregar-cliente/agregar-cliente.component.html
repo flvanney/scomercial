@@ -5,83 +5,74 @@
     </mat-card-header>
     <mat-card-content>
 
-      <div class="col">
-        <mat-form-field class="full-width">
+      <div class="flex">
+
+        <mat-form-field class="child">
           <input matInput placeholder="Organización" formControlName="organizacion">
         </mat-form-field>
+
+        <mat-form-field class="child">
+          <input matInput placeholder="Nombre" formControlName="nombre">
+          <mat-error *ngIf="esRequerido('nombre')">
+            El <strong>nombre</strong> del cliente es requerido.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="child">
+          <input matInput placeholder="Apellido" formControlName="apellido">
+          <mat-error *ngIf="esRequerido('apellido')">
+            El <strong>apellido</strong> del cliente es requerido.
+          </mat-error>
+        </mat-form-field>
+
       </div>
 
-      <div class="row">
-        <div class="col">
-          <mat-form-field class="full-width">
-            <input matInput placeholder="Nombre" formControlName="nombre">
-            <mat-error *ngIf="esRequerido('nombre')">
-              El <strong>nombre</strong> del cliente es requerido.
-            </mat-error>
-          </mat-form-field>
-        </div>
+      <div class="flex">
+        <mat-form-field class="child">
+          <mat-select placeholder="Provincia" formControlName="provincia">
+            <mat-option *ngFor="let pr of provincias | orderBy:'nombre'" [value]="pr.nombre">
+              {{ pr.nombre }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="esRequerido('provincia')">
+            La provincia es <strong>requerida</strong>
+          </mat-error>
+        </mat-form-field>
 
-        <div class="col">
-          <mat-form-field class="full-width">
-            <input matInput placeholder="Apellido" formControlName="apellido">
-            <mat-error *ngIf="esRequerido('apellido')">
-              El <strong>apellido</strong> del cliente es requerido.
-            </mat-error>
-          </mat-form-field>
-        </div>
-      </div>
+        <mat-form-field class="child">
+          <input matInput placeholder="Ciudad" formControlName="ciudad">
+          <mat-error *ngIf="esRequerido('ciudad')">
+            La <strong>ciudad</strong> es requerida.
+          </mat-error>
+        </mat-form-field>
 
-      <div class="row">
-        <div class="col">
-          <mat-form-field class="full-width">
-            <mat-select placeholder="Provincia" formControlName="provincia">
-              <mat-option *ngFor="let pr of provincias | orderBy:'nombre'" [value]="pr.nombre">
-                {{ pr.nombre }}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="esRequerido('provincia')">
-              La provincia es <strong>requerida</strong>
-            </mat-error>
-          </mat-form-field>
-        </div>
-
-        <div class="col">
-          <mat-form-field class="full-width">
-            <input matInput placeholder="Ciudad" formControlName="ciudad">
-            <mat-error *ngIf="esRequerido('ciudad')">
-              La <strong>ciudad</strong> es requerida.
-            </mat-error>
-          </mat-form-field>
-        </div>
-      </div>
-
-      <div class="col">
-        <mat-form-field class="full-width">
+        <mat-form-field class="child">
           <input matInput #cp maxlength="5" placeholder="Código postal" type="number" formControlName="codigoPostal">
           <mat-hint align="end">{{cp.value.length}} / 5</mat-hint>
         </mat-form-field>
       </div>
 
-      <div class="col">
-        <mat-form-field class="full-width">
+      <div class="flex">
+        <mat-form-field class="child">
           <textarea matInput placeholder="Dirección" formControlName="direccion"></textarea>
           <mat-error *ngIf="esRequerido('direccion')">
             La <strong>dirección</strong> del cliente es requerida
           </mat-error>
         </mat-form-field>
-      </div>
 
-      <div class="col" *ngIf="!tieneDirAlt">
-        <button mat-button type="button" (click)="tieneDirAlt = !tieneDirAlt">
-          + Añadir dirección alternativa
-        </button>
-      </div>
+        <div class="child">
+          <div *ngIf="!tieneDirAlt">
+            <button mat-button type="button" (click)="tieneDirAlt = !tieneDirAlt">
+              + Añadir dirección alternativa
+            </button>
+          </div>
 
-
-      <div class="col" *ngIf="tieneDirAlt">
-        <mat-form-field class="full-width">
-          <textarea matInput placeholder="Dirección alternativa" formControlName="direccionAlternativa"></textarea>
-        </mat-form-field>
+          <div *ngIf="tieneDirAlt">
+            <mat-form-field class="full-width">
+              <textarea matInput placeholder="Dirección alternativa" formControlName="direccionAlternativa"></textarea>
+            </mat-form-field>
+          </div>
+        </div>
       </div>
 
     </mat-card-content>

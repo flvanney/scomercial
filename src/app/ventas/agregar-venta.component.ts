@@ -130,6 +130,7 @@ export class AgregarVentaComponent implements OnInit {
   }
 
   calcularImporteTotal() {
+    this.importeTotal = 0;
     this.pedidoForm.value.ventas.forEach(venta => {
       this.importeTotal += (venta.precio + venta.diferencia) * venta.cantidad;
     });

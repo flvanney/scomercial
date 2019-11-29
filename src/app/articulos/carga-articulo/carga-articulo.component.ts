@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ArticulosService } from '../articulos.service';
+
 
 @Component({
   selector: 'app-carga-articulo',
@@ -7,7 +10,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CargaArticuloComponent implements OnInit {
 
-  constructor() { }
+  artForm = this.fb.group({
+    
+  })
+
+  constructor(
+    private articulosService: ArticulosService,
+    private fb: FormBuilder,
+  ) { }
 
   ngOnInit() {
   }

@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ClientesService } from '../clientes.service';
-import { Subscription } from 'rxjs';
-
 
 @Component({
   selector: 'app-agregar-cliente',
@@ -28,7 +26,6 @@ export class AgregarClienteComponent implements OnInit {
   tieneDirAlt = false;
 
   provincias;
-  private provinciasSub: Subscription;
 
   constructor(
     private clientesService: ClientesService,
@@ -37,7 +34,7 @@ export class AgregarClienteComponent implements OnInit {
 
   ngOnInit() {
     this.clientesService.traerProvincias();
-    this.provinciasSub = this.clientesService.traerProvinciasListener()
+    this.clientesService.traerProvinciasListener()
       .subscribe((provincias) => {
         this.provincias = provincias;
       });
