@@ -26,7 +26,8 @@ export class ListaDeArticulosComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
-  constructor(private articulosService: ArticulosService) { }
+  constructor(
+    private articulosService: ArticulosService) { }
 
   ngOnInit() {
     this.articulosService.traerArticulos();
@@ -44,7 +45,7 @@ export class ListaDeArticulosComponent implements OnInit {
   }
 
   estaHabilitado(siONo) {
-    return siONo == true ? 'Sí': 'No';
+    return siONo == true ? 'Sí' : 'No';
   }
 
   color(habilitado) {

@@ -10,4 +10,14 @@ router.get('/', (req, res) => {
     });
 })
 
+router.post('/', (req, res) => {
+    const art = new Articulo(req.body);
+    art.save();
+
+    res.status(201).json({
+        message: "Artículo agregado con éxito."
+    })
+})
+
+
 module.exports = router;

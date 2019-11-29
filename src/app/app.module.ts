@@ -42,7 +42,8 @@ import { ListaDeArticulosComponent } from './articulos/lista-de-articulos/lista-
 import { CargaArticuloComponent } from './articulos/carga-articulo/carga-articulo.component';
 
 const appRoutes: Routes = [
-  { path: 'lista-articulos', component: ListaDeArticulosComponent },
+  { path: 'agregar-art', component: CargaArticuloComponent },
+  { path: 'lista-art', component: ListaDeArticulosComponent },
   { path: 'crear-cliente', component: AgregarClienteComponent },
   { path: 'agregar-venta', component: AgregarVentaComponent },
   { path: 'lista-clientes', component: TablaClientesComponent },

@@ -1,1 +1,78 @@
-<p>carga-articulo works!</p>
+<form [formGroup]="artForm" novalidate (ngSubmit)="cargarArt()">
+
+    <mat-card class="card">
+        <mat-card-header>
+            <mat-card-title>Nuevo artículo</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+
+            <div class="flex">
+
+                <mat-form-field class="child g-3">
+                    <input matInput placeholder="Nombre (*)" formControlName="nombre">
+                    <mat-error *ngIf="esRequerido('nombre')">
+                        El <strong>nombre</strong> del artículo es requerido.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="child g-1">
+                    <input matInput placeholder="Familia (*)" formControlName="familia">
+                    <mat-error *ngIf="esRequerido('familia')">
+                        La <strong>familia</strong> del artículo es requerida.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="child">
+                    <input type="number" min=0 matInput placeholder="Stock inicial (*)" formControlName="cantidad">
+                    <mat-error *ngIf="esRequerido('cantidad')">
+                        El <strong>stock</strong> del artículo es requerido.
+                    </mat-error>
+                </mat-form-field>
+
+            </div>
+
+            <div class="flex">
+                <mat-form-field class="child g-1">
+                    <span matPrefix>$ &nbsp;</span>
+                    <input type="number" min=0 matInput placeholder="Precio de lista 1 (*)" formControlName="p1">
+                    <mat-error *ngIf="esRequerido('p1')">
+                        El <strong>precio de lista 1</strong> es requerido.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="child g-1">
+                    <span matPrefix>$ &nbsp;</span>
+                    <input type="number" min=0 matInput placeholder="Precio de lista 2" formControlName="p2">
+                </mat-form-field>
+
+                <mat-form-field class="child g-1">
+                    <span matPrefix>$ &nbsp;</span>
+                    <input type="number" min=0 matInput placeholder="Precio de lista 3" formControlName="p4">
+                </mat-form-field>
+
+                <mat-form-field class="child g-1">
+                    <span matPrefix>$ &nbsp;</span>
+                    <input type="number" min=0 matInput placeholder="Precio de lista 4" formControlName="p4">
+                </mat-form-field>
+            </div>
+
+            <div style="margin-top: 1%">
+                <mat-form-field class="full-width" appearance="outline">
+                    <textarea rows="5" matInput #descripcion placeholder="Descripción del producto" formControlName="descripcion"
+                        maxlength="512" style="resize: none;"></textarea>
+                    <mat-hint align="end">{{ descripcion.value.length }} / 512</mat-hint>
+                </mat-form-field>
+            </div>
+
+
+        </mat-card-content>
+
+        <mat-divider></mat-divider>
+
+        <mat-card-actions>
+            <button mat-raised-button color="primary" type="submit">Guardar</button>
+        </mat-card-actions>
+    </mat-card>
+
+</form>
