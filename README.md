@@ -13,3 +13,13 @@ en caso contrario verificar limite de credito y notas de credito.
 1. Instalar [nodeJS](https://nodejs.org/es/).
 2. Desde una consola, pararse en la carpeta del proyecto y ejecutar `npm install` y `npm update` para descargar y actualizar todos los módulos y dependencias.
 3. Terminado eso, abrir dos consolas y parados en la carpeta raiz del proyecto ejecutar `ng serve` y `node server.js` para levantar la aplicación en Angular y el backend. Acceder mediante localhost:4200.
+
+
+## Posibles mejoras:
+
+* Valor mínimo en la venta.
+* Crédito y notas para el cliente.
+* Reportes (clientes que más compraron, qué artículos se vendieron más, etc.).
+* Factura en PDF.
+* Notificar de artículos con existencia menor a la mínima.
+* Historial de compras en tabla de clientes.
