@@ -6,8 +6,8 @@
 
     <mat-card-content>
 
-
       <div class="flex">
+
         <mat-form-field class="child">
           <input matInput [matDatepicker]="picker" placeholder="Fecha de emisión" formControlName="fecha">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -35,10 +35,13 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+
       </div>
 
-      <button mat-stroked-button color="primary" type="button" (click)="agregarFilaVenta()" [disabled]="mayorANueve()">+
-        Añadir fila</button>
+      <button mat-stroked-button color="primary" type="button" (click)="agregarFilaVenta()" [disabled]="mayorANueve()">
+        <mat-icon>add</mat-icon>
+        Añadir fila
+      </button>
 
       <div formArrayName="ventas" *ngFor="let venta of traerVentas.controls; let i = index;">
         <div [formGroupName]="i" class="flex">
@@ -72,8 +75,9 @@
           </mat-form-field>
 
           <div class="child">
-            <button mat-mini-fab color="warn" type="button" (click)="eliminarFilaVenta(i)"
-              [disabled]="i == 0">x</button>
+            <button mat-mini-fab color="warn" type="button" (click)="eliminarFilaVenta(i)" [disabled]="i == 0">
+              <mat-icon>clear</mat-icon>
+            </button>
           </div>
 
         </div>
@@ -101,8 +105,11 @@
         <mat-form-field class="child g-1">
           <input disabled matInput placeholder="Importe total" [value]="formatearMoneda(importeTotal)">
           <span matPrefix>
-            <button mat-button color="primary" type="button" (click)="calcularImporteTotal()" style="margin-right: 5px;">Calcular
-              total</button>
+            <button mat-button color="primary" type="button" (click)="calcularImporteTotal()"
+              style="margin-right: 5px;">
+              <mat-icon>shopping_cart</mat-icon>Calcular
+              total
+            </button>
           </span>
         </mat-form-field>
 
@@ -121,7 +128,8 @@
     <mat-divider></mat-divider>
 
     <mat-card-actions>
-      <button mat-raised-button color="primary" type="submit">Guardar</button>
+      <button mat-raised-button color="primary" type="submit"><mat-icon>save</mat-icon> Guardar</button>
     </mat-card-actions>
+
   </mat-card>
 </form>

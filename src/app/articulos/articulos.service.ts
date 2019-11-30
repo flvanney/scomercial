@@ -23,34 +23,54 @@ export class ArticulosService {
       });
   }
 
+  buscarArt(artId: string) {
+    return this.http
+      .get<Articulo>(`http://localhost:3000/articulos/${artId}`);
+  }
+
   traerArticuloListener() {
     return this.articulosActualizados.asObservable();
   }
 
-  cargarArt(data) {
+  guardarArt(data) {
+    const nuevoArt = this.crearNuevoArt(data);
+
+    this.http
+      .post<Articulo>(`http://localhost:3000/articulos`, nuevoArt)
+      .subscribe(() => {
+        this.articulos.push(nuevoArt);
+        this.articulosActualizados.next([... this.articulos]);
+      });
+  }
+
+  actualizarArt(id, data) {
+    data._id = id;
+    const art = this.crearNuevoArt(data);
+    this.http.put<Articulo>(`http://localhost:3000/articulos/${id}`, art);
+  }
+
+  crearNuevoArt(data) {
     let precios = [data.p1, data.p2, data.p3, data.p4];
 
     precios = precios.filter(el => {
       return el != null;
     })
 
+    let id = data.hasOwnProperty('_id') ? data._id : null;
+
     const nuevoArt: Articulo = {
+      _id: id,
       nombre: data.nombre,
       familia: data.familia,
       cantidad: data.cantidad,
       reservada: 0,
-      habilitado: true,
+      habilitado: data.habilitado,
       precios: precios,
-      descripcion: data.descripcion
+      descripcion: data.descripcion,
     };
 
-    this.http
-      .post<Articulo>(`http://localhost:3000/articulos`, nuevoArt)
-      .subscribe(respuesta => {
-        this.articulos.push(nuevoArt);
-        this.articulosActualizados.next([... this.articulos]);
-      });
-
+    return nuevoArt;
   }
+
 
 }

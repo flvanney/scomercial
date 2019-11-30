@@ -36,3 +36,15 @@ body {
 .col:last-child {
   margin-right: 0;
 }
+
+.snack-roja {
+  background: crimson;
+  color: white;
+  text-align: center;
+}
+
+.snack-verde {
+  background: forestgreen;
+  color: white;
+  text-align: center;
+}

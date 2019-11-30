@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ArticulosService } from '../articulos.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Articulo } from '../articulo';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -10,6 +13,10 @@ import { ArticulosService } from '../articulos.service';
 })
 export class CargaArticuloComponent implements OnInit {
 
+  private artId: string;
+  articulo: Articulo;
+  modo: string;
+
   artForm = this.fb.group({
     nombre: [null, Validators.required],
     familia: [null, Validators.required],
@@ -18,23 +25,90 @@ export class CargaArticuloComponent implements OnInit {
     p2: null,
     p3: null,
     p4: null,
+    habilitado: true,
     descripcion: null
   })
 
   constructor(
     private articulosService: ArticulosService,
     private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {
+
+    // Detecto si estoy editando o creando un art. nuevo.
+
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      if (paramMap.has('artId')) {
+        this.modo = 'editar';
+        this.artId = paramMap.get('artId');
+        this.articulosService.buscarArt(this.artId).subscribe(articulo => {
+          this.articulo = articulo;
+          this.artForm.patchValue(
+            {
+              nombre: this.articulo.nombre,
+              familia: this.articulo.familia,
+              cantidad: this.articulo.cantidad,
+              p1: this.articulo.precios[0],
+              p2: this.articulo.precios[1],
+              p3: this.articulo.precios[2],
+              p4: this.articulo.precios[3],
+              descripcion: this.articulo.descripcion,
+              habilitado: this.articulo.habilitado,
+            });
+        })
+      }
+      else {
+        this.modo = 'crear';
+        this.artId = null;
+      }
+    });
   }
 
-  cargarArt() {
-    this.articulosService.cargarArt(this.artForm.value);
+  guardarArt() {
+
+    /*  1er caso: que el formulario sea inválido
+        2do caso: que se esté modificando un artículo
+        3er caso: que se esté creando un artículo nuevo */
+
+    if (this.artForm.invalid) {
+      this.abrirSnackBar('No se guardó nada, completá todos los campos obligatorios flaco.', 'Y bueno', 'snack-roja');
+    }
+    else if (this.modoEditar()) {
+      this.articulosService.actualizarArt(this.articulo._id, this.artForm.value);
+      this.abrirSnackBar('Artículo modificado con éxito.', 'Okas', 'snack-verde');
+    } else {
+      this.articulosService.guardarArt(this.artForm.value);
+      this.abrirSnackBar('Artículo cargado con éxito.', 'Graciela', 'snack-verde');
+    }
+
+    this.reiniciarForm();
+  }
+
+  reiniciarForm() {
+    this.artForm.markAsPristine();
+    this.artForm.markAsUntouched();
+    this.artForm.updateValueAndValidity();
   }
 
   esRequerido(campo: string) {
     return this.artForm.controls[campo].hasError('required');
+  }
+
+  modoEditar(): boolean {
+    return this.modo == 'editar';
+  }
+
+  abrirSnackBar(msg: string, accion: string, clase: string) {
+    this.snackBar.open(msg, accion,
+      {
+        duration: 4000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'center',
+        panelClass: [clase]
+      })
   }
 
 

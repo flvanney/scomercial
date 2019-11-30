@@ -1,5 +1,6 @@
 export class Articulo {
     constructor(
+        public _id: string,
         public nombre: string,
         public familia: string,
         public cantidad: number,

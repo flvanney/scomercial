@@ -1,8 +1,9 @@
-<form [formGroup]="artForm" novalidate (ngSubmit)="cargarArt()">
+<form [formGroup]="artForm" (ngSubmit)="guardarArt()">
 
     <mat-card class="card">
+
         <mat-card-header>
-            <mat-card-title>Nuevo artículo</mat-card-title>
+            <mat-card-title>Artículo</mat-card-title>
         </mat-card-header>
 
         <mat-card-content>
@@ -33,6 +34,7 @@
             </div>
 
             <div class="flex">
+
                 <mat-form-field class="child g-1">
                     <span matPrefix>$ &nbsp;</span>
                     <input type="number" min=0 matInput placeholder="Precio de lista 1 (*)" formControlName="p1">
@@ -55,24 +57,31 @@
                     <span matPrefix>$ &nbsp;</span>
                     <input type="number" min=0 matInput placeholder="Precio de lista 4" formControlName="p4">
                 </mat-form-field>
+
             </div>
+
+            <mat-slide-toggle formControlName="habilitado">
+                Habilitado para la venta
+            </mat-slide-toggle>
 
             <div style="margin-top: 1%">
                 <mat-form-field class="full-width" appearance="outline">
-                    <textarea rows="5" matInput #descripcion placeholder="Descripción del producto" formControlName="descripcion"
-                        maxlength="512" style="resize: none;"></textarea>
+                    <textarea rows="5" matInput #descripcion placeholder="Descripción del producto"
+                        formControlName="descripcion" maxlength="512" style="resize: none;"></textarea>
                     <mat-hint align="end">{{ descripcion.value.length }} / 512</mat-hint>
                 </mat-form-field>
             </div>
-
 
         </mat-card-content>
 
         <mat-divider></mat-divider>
 
         <mat-card-actions>
-            <button mat-raised-button color="primary" type="submit">Guardar</button>
+            <button mat-raised-button color="primary" type="submit">
+                <mat-icon>save</mat-icon> Guardar
+            </button>
         </mat-card-actions>
+
     </mat-card>
 
 </form>

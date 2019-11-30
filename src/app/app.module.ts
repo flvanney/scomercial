@@ -25,6 +25,8 @@ import { MatNativeDateModule } from '@angular/material';
 import { MAT_DATE_LOCALE } from '@angular/material';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { registerLocaleData } from '@angular/common';
 import esAR from '@angular/common/locales/es-AR';
@@ -43,6 +45,7 @@ import { CargaArticuloComponent } from './articulos/carga-articulo/carga-articul
 
 const appRoutes: Routes = [
   { path: 'agregar-art', component: CargaArticuloComponent },
+  { path: 'editar-art/:artId', component: CargaArticuloComponent },
   { path: 'lista-art', component: ListaDeArticulosComponent },
   { path: 'crear-cliente', component: AgregarClienteComponent },
   { path: 'agregar-venta', component: AgregarVentaComponent },
@@ -87,6 +90,8 @@ const appRoutes: Routes = [
     MatNativeDateModule,
     MatMenuModule,
     MatExpansionModule,
+    MatSlideToggleModule,
+    MatSnackBarModule,
     RouterModule.forRoot(appRoutes),
   ],
   providers: [

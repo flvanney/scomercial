@@ -28,8 +28,17 @@
         </ng-container>
 
         <ng-container matColumnDef="cantidad">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Stock</th>
             <td mat-cell *matCellDef="let articulo">{{ articulo.cantidad }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="editar">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Editar</th>
+            <td mat-cell *matCellDef="let articulo">
+                <a mat-mini-fab [routerLink]="['/editar-art', articulo._id]">
+                    <mat-icon>edit</mat-icon>
+                </a>
+            </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
