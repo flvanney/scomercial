@@ -27,6 +27,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { registerLocaleData } from '@angular/common';
 import esAR from '@angular/common/locales/es-AR';
@@ -42,6 +43,7 @@ import { Error404Component } from './error404/error404.component';
 import { AgregarVentaComponent } from './ventas/agregar-venta.component';
 import { ListaDeArticulosComponent } from './articulos/lista-de-articulos/lista-de-articulos.component';
 import { CargaArticuloComponent } from './articulos/carga-articulo/carga-articulo.component';
+import { DialogoVentasComponent } from './clientes/dialogo-ventas/dialogo-ventas.component';
 
 const appRoutes: Routes = [
   { path: 'agregar-art', component: CargaArticuloComponent },
@@ -64,6 +66,10 @@ const appRoutes: Routes = [
     AgregarVentaComponent,
     ListaDeArticulosComponent,
     CargaArticuloComponent,
+    DialogoVentasComponent,
+  ],
+  entryComponents: [
+    DialogoVentasComponent
   ],
   imports: [
     BrowserModule,
@@ -92,6 +98,7 @@ const appRoutes: Routes = [
     MatExpansionModule,
     MatSlideToggleModule,
     MatSnackBarModule,
+    MatDialogModule,
     RouterModule.forRoot(appRoutes),
   ],
   providers: [

@@ -3,7 +3,7 @@ const Cliente = require("./cliente");
 const Articulo = require("./articulo");
 const Schema = mongoose.Schema;
 
-const pedidoSchema = Schema({
+const ventaSchema = Schema({
     nro: {
         type: Number,
         unique: true
@@ -26,4 +26,4 @@ const pedidoSchema = Schema({
     observaciones: String,
 });
 
-module.exports = mongoose.model('Pedido', pedidoSchema);
+module.exports = mongoose.model('Venta', ventaSchema);

@@ -3,7 +3,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { ClientesService } from '../clientes.service';
 import { Cliente } from '../cliente';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource, MatDialog } from '@angular/material';
+import { DialogoVentasComponent } from '../dialogo-ventas/dialogo-ventas.component';
 
 interface ClienteInterface {
   nombre: string;
@@ -21,12 +22,13 @@ export class TablaClientesComponent implements OnInit {
   clientes: Cliente[] = [];
   dataSource: MatTableDataSource<ClienteInterface>;
 
-  displayedColumns = ['nombre', 'apellido', 'direccion'];
+  displayedColumns = ['nombre', 'apellido', 'direccion', 'historial'];
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
-  constructor(private clientesService: ClientesService) { }
+  constructor(private clientesService: ClientesService,
+    private dialogo: MatDialog) { }
 
   ngOnInit() {
     this.clientesService.traerClientes();
@@ -41,6 +43,18 @@ export class TablaClientesComponent implements OnInit {
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  abrirDialogoHistorial(cliente) {
+    console.log(cliente);
+    const dialogRef = this.dialogo.open(DialogoVentasComponent, {
+      data: {
+        message: 'Test',
+        buttonText: {
+          cancel: 'XxX'
+        }
+      },
+    });
   }
 
 }

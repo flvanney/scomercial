@@ -4,7 +4,7 @@ import { FormBuilder, Validators, FormGroup, AbstractControl, FormArray, FormCon
 
 import { Cliente } from '../clientes/cliente';
 import { ClientesService } from '../clientes/clientes.service';
-import { PedidosService } from './venta.service';
+import { VentasService } from './venta.service';
 import { Articulo } from '../articulos/articulo';
 import { ArticulosService } from '../articulos/articulos.service';
 
@@ -24,7 +24,7 @@ export class AgregarVentaComponent implements OnInit {
 
   importeTotal = 0;
 
-  pedidoForm = this.fb.group({
+  ventaForm = this.fb.group({
     nro: null,
     fecha: [this.getFechaHoy(), Validators.required],
     cliente: [null, Validators.required],
@@ -39,7 +39,7 @@ export class AgregarVentaComponent implements OnInit {
   constructor(
     private clientesService: ClientesService,
     private fb: FormBuilder,
-    private pedidosService: PedidosService,
+    private ventasService: VentasService,
     private articulosService: ArticulosService
   ) { }
 
@@ -66,13 +66,13 @@ export class AgregarVentaComponent implements OnInit {
     });
   }
 
-  cargarPedido() {
-    this.pedidosService.cargarPedido(this.pedidoForm.value);
-    this.pedidoForm.reset({ fecha: this.getFechaHoy() })
+  cargarVenta() {
+    this.ventasService.cargarVenta(this.ventaForm.value);
+    this.ventaForm.reset({ fecha: this.getFechaHoy() })
   }
 
   get traerVentas() {
-    return this.pedidoForm.get('ventas') as FormArray;
+    return this.ventaForm.get('ventas') as FormArray;
   }
 
   agregarFilaVenta() {
@@ -95,16 +95,16 @@ export class AgregarVentaComponent implements OnInit {
   }
 
   esRequerido(campo: string) {
-    return this.pedidoForm.controls[campo].hasError('required');
+    return this.ventaForm.controls[campo].hasError('required');
   }
 
   traerPrecios(i: number) {
     /* Si el usuario seleccionó un artículo se le devuelve la lista 
     de precios que le corresponde al mismo. Sino, una lista vacía. */
 
-    const sinSeleccionar = this.pedidoForm.value.ventas[i].articulo == null ? true : false;
+    const sinSeleccionar = this.ventaForm.value.ventas[i].articulo == null ? true : false;
 
-    return sinSeleccionar ? [] : this.pedidoForm.value.ventas[i].articulo.precios;
+    return sinSeleccionar ? [] : this.ventaForm.value.ventas[i].articulo.precios;
   }
 
   mayorANueve() {
@@ -117,7 +117,7 @@ export class AgregarVentaComponent implements OnInit {
     /* El importe es el producto entre el precio de lista seleccionado
     y la cantidad de artículos. */
 
-    const venta = this.pedidoForm.value.ventas[i];
+    const venta = this.ventaForm.value.ventas[i];
 
     if (venta != undefined) {
       const cantidad = venta.cantidad == null ? 0 : venta.cantidad;
@@ -131,7 +131,7 @@ export class AgregarVentaComponent implements OnInit {
 
   calcularImporteTotal() {
     this.importeTotal = 0;
-    this.pedidoForm.value.ventas.forEach(venta => {
+    this.ventaForm.value.ventas.forEach(venta => {
       this.importeTotal += (venta.precio + venta.diferencia) * venta.cantidad;
     });
     return this.importeTotal;

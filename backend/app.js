@@ -33,8 +33,8 @@ db.on('error', console.error.bind(console, 'Uy, se cayó el sistema:'));
 const rutasClientes = require("./routes/clientes");
 app.use('/clientes', rutasClientes);
 
-const rutasPedidos = require("./routes/pedidos");
-app.use('/pedidos', rutasPedidos);
+const rutasVentas = require("./routes/ventas");
+app.use('/ventas', rutasVentas);
 
 const rutasArticulos = require("./routes/articulos");
 app.use('/articulos', rutasArticulos);
