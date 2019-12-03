@@ -46,15 +46,7 @@ export class TablaClientesComponent implements OnInit {
   }
 
   abrirDialogoHistorial(cliente) {
-    console.log(cliente);
-    const dialogRef = this.dialogo.open(DialogoVentasComponent, {
-      data: {
-        message: 'Test',
-        buttonText: {
-          cancel: 'XxX'
-        }
-      },
-    });
+    this.dialogo.open(DialogoVentasComponent, { data: cliente });
   }
 
 }

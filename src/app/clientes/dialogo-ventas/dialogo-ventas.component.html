@@ -1,5 +1,14 @@
 <mat-dialog-content>
-    Diálogo de prueba
+    <h2>{{ titulo }}</h2>
+    <div *ngIf="sinCompras(); then thenBlock else elseBlock"></div>
+    <ng-template #thenBlock>Este cliente todavía no ha realizado ninguna compra.</ng-template>
+    <ng-template #elseBlock>
+        <mat-list>
+            <mat-list-item *ngFor="let compra of compras"> {{ convertirStr(compra.fecha) }} {{ convertirStr(compra.ventas) }}</mat-list-item>
+        </mat-list>
+
+    </ng-template>
+
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-raised-button color="primary" mat-dialog-close tabindex="-1">Cerrar</button>

@@ -1,5 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { VentasService } from 'src/app/ventas/venta.service';
+import { Venta } from 'src/app/ventas/venta';
 
 
 @Component({
@@ -9,23 +11,30 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 })
 export class DialogoVentasComponent {
 
-  message: string = "Diálogo de prueba"
-  cancelButtonText = "Salir"
+  titulo: string;
+  compras = {};
 
   constructor(
+    private ventasService: VentasService,
     @Inject(MAT_DIALOG_DATA) private data: any,
     private dialogRef: MatDialogRef<DialogoVentasComponent>) {
-    if (data) {
-      this.message = data.message || this.message;
-      if (data.buttonText) {
-        this.cancelButtonText = data.buttonText.cancel || this.cancelButtonText;
-      }
-    }
-    this.dialogRef.updateSize('300vw', '300vw')
+    this.titulo = `Últimas compras de ${data.nombre} ${data.apellido}.`;
+    this.dialogRef.updateSize('800vw', '800vw');
+    this.ventasService.historialComprasCliente(data._id).subscribe(compras => {
+      this.compras = compras;
+    })
   }
 
   onConfirmClick(): void {
     this.dialogRef.close(true);
+  }
+
+  sinCompras(): boolean {
+    return Object.entries(this.compras).length === 0;
+  }
+
+  convertirStr(obj) {
+    return JSON.stringify(obj);
   }
 
 }

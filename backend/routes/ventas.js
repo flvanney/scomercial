@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const mongoose = require('mongoose');
 
 const Venta = require("../models/venta");
 
@@ -32,12 +33,16 @@ router.get('/', (req, res) => {
 })
 
 router.get('/:idCliente', (req, res) => {
-    Venta
+    if (mongoose.Types.ObjectId.isValid(req.params.idCliente)) {
+        Venta
         .find({ cliente: req.params.idCliente })
         .then(ventas => {
             res.status(200).json(ventas)
         });
+    } else {
+        res.status(404).send('ID inválida');
+    }
+    
 })
-
 
 module.exports = router

@@ -27,11 +27,11 @@ export class VentasService {
 
     this.traerUltimaVenta().subscribe(venta => {
       venta == null ? datos.nro = 1 : datos.nro = venta['nro'] + 1;
-      this.http
-        .post(`${this.BASE_URL}/ventas`, datos)
-        .subscribe(res => {
-          console.log(res);
-        });
+      this.http.post(`${this.BASE_URL}/ventas`, datos);
     });
+  }
+
+  historialComprasCliente(idCliente: string) {
+    return this.http.get(`${this.BASE_URL}/ventas/${idCliente}`);
   }
 }
