@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 
-const notaDebitoSchema = mongoose.Schema({
+const notaSchema = mongoose.Schema({
     numero: {
         type: Number,
-        required: true,
+        require: true,
     },
 
-    estado:{
+    estado: {
         type: String,
         required: true,
     },
@@ -16,15 +16,17 @@ const notaDebitoSchema = mongoose.Schema({
         required: true,
     },
 
-    tipoPago:{
-        type: String,
-    },
-
     fecha: {
         type: Date,
+        required:true,
+    },
+
+    tipoNota: {
+        type: String,
         required: true,
     },
 
+
 })
 
-module.exports = mongoose.model('NotaDebito', notaDebitoSchema);
+module.exports = mongoose.model('Nota', notaSchema);

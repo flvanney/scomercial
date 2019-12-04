@@ -1,5 +1,27 @@
 const mongoose = require("mongoose");
 
+const cuentaCorrienteSchema = mongoose.Schema({
+    estado:{
+        type:String,
+        required:true,
+    },
+
+    fechaDeActualizacion:{
+        type:Date,
+        required:true,
+    },
+
+    saldoGastado:{
+        type: Number,
+    },
+
+    creditoMaximo:{
+        type: Number,
+        required: true,
+    },
+
+})
+
 // El esquema es utilizado luego como plantilla para  crear y exportar el modelo.
 const clienteSchema = mongoose.Schema({
     organizacion: {
@@ -32,6 +54,8 @@ const clienteSchema = mongoose.Schema({
         type: Number,
         required: true
     },
+
+    cuenta: cuentaCorrienteSchema,
 })
 
 module.exports = mongoose.model('Cliente', clienteSchema);
