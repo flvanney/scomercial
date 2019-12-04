@@ -20,7 +20,8 @@ export class ListaDeArticulosComponent implements OnInit {
 
   articulos: any[] = [];
 
-  displayedColumns = ['codigo', 'nombre', 'marca', 'familia', 'descripcion', 'habilitado', 'cantidad', 'editar'];
+  displayedColumns = ['codigo', 'nombre', 'marca', 'familia', 'descripcion', 
+  'habilitado', 'cantidad', 'editar'];
   dataSource = new MatTableDataSource<ArticuloInterface>();
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -52,6 +53,9 @@ export class ListaDeArticulosComponent implements OnInit {
     return habilitado == true ? 'green' : 'red';
   }
 
+  stockInfMin(stockActual: number, stockMinimo) {
+    return stockMinimo > stockActual;
+  }
 
   /*  traerPrecios(i: number) {
       /* Si el usuario seleccionó un artículo se le devuelve la lista 
