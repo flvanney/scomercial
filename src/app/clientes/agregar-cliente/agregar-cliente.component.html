@@ -95,6 +95,35 @@
         </div>
       </div>
 
+      <div>
+          <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Cuenta cliente
+                </mat-panel-title>
+                <mat-panel-description>
+                  Datos relacionados a la cuenta del cliente (opcional)
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+             <div class="flex">
+                <mat-slide-toggle  class="child" formControlName="estado">
+                    Estado de la cuenta
+                </mat-slide-toggle>
+  
+                <mat-form-field class="child">
+                    <input matInput placeholder="Credito otorgado" formControlName="creditoMaximo">
+                </mat-form-field>
+
+                <mat-form-field class="child">
+                    <input matInput [matDatepicker]="picker2" placeholder="Fecha de Inicio" formControlName="fechaDeActualizacion">
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+  
+              </div>
+            </mat-expansion-panel>
+      </div>
+
     </mat-card-content>
 
     <mat-divider></mat-divider>

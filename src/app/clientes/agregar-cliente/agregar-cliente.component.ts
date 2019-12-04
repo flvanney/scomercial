@@ -25,7 +25,10 @@ export class AgregarClienteComponent implements OnInit {
     cuit:null,
     cuil:null,
     fechaDeInicio:null,
-  });
+    estado:false,
+    creditoMaximo:null,
+    fechaDeActualizacion:null,
+    });
 
   tieneDirAlt = false;
 
