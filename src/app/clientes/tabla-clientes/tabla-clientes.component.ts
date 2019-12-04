@@ -22,7 +22,7 @@ export class TablaClientesComponent implements OnInit {
   clientes: Cliente[] = [];
   dataSource: MatTableDataSource<ClienteInterface>;
 
-  displayedColumns = ['nombre', 'apellido', 'direccion', 'historial'];
+  displayedColumns = ['nombre', 'apellido', 'direccion', 'historial', 'editar'];
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;

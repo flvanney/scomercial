@@ -21,6 +21,10 @@ export class AgregarClienteComponent implements OnInit {
     codigoPostal: [null, Validators.compose([
       Validators.required, Validators.minLength(5), Validators.maxLength(5)])
     ],
+    telefono:null,
+    cuit:null,
+    cuil:null,
+    fechaDeInicio:null,
   });
 
   tieneDirAlt = false;

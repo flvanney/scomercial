@@ -12,24 +12,28 @@
         </mat-form-field>
 
         <mat-form-field class="child">
-          <input matInput placeholder="Nombre" formControlName="nombre">
+          <input matInput placeholder="Nombre (*)" formControlName="nombre">
           <mat-error *ngIf="esRequerido('nombre')">
             El <strong>nombre</strong> del cliente es requerido.
           </mat-error>
         </mat-form-field>
 
         <mat-form-field class="child">
-          <input matInput placeholder="Apellido" formControlName="apellido">
+          <input matInput placeholder="Apellido (*)" formControlName="apellido">
           <mat-error *ngIf="esRequerido('apellido')">
             El <strong>apellido</strong> del cliente es requerido.
           </mat-error>
         </mat-form-field>
 
+        <mat-form-field class="child">
+            <input matInput placeholder="Teléfono" formControlName="telefono">
+          </mat-form-field>
+
       </div>
 
       <div class="flex">
         <mat-form-field class="child">
-          <mat-select placeholder="Provincia" formControlName="provincia">
+          <mat-select placeholder="Provincia (*)" formControlName="provincia">
             <mat-option *ngFor="let pr of provincias | orderBy:'nombre'" [value]="pr.nombre">
               {{ pr.nombre }}
             </mat-option>
@@ -40,7 +44,7 @@
         </mat-form-field>
 
         <mat-form-field class="child">
-          <input matInput placeholder="Ciudad" formControlName="ciudad">
+          <input matInput placeholder="Ciudad (*)" formControlName="ciudad">
           <mat-error *ngIf="esRequerido('ciudad')">
             La <strong>ciudad</strong> es requerida.
           </mat-error>
@@ -50,6 +54,22 @@
           <input matInput #cp maxlength="5" placeholder="Código postal" type="number" formControlName="codigoPostal">
           <mat-hint align="end">{{cp.value.length}} / 5</mat-hint>
         </mat-form-field>
+      </div>
+
+      <div class="flex">
+          <mat-form-field class="child">
+              <input matInput placeholder="C.U.I.T" formControlName="cuit">
+          </mat-form-field>
+
+          <mat-form-field class="child">
+              <input matInput placeholder="C.U.I.L" formControlName="cuil">
+          </mat-form-field>
+
+          <mat-form-field class="child">
+              <input matInput [matDatepicker]="picker" placeholder="Fecha de Inicio" formControlName="fechaDeInicio">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
       </div>
 
       <div class="flex">

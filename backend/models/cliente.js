@@ -55,6 +55,22 @@ const clienteSchema = mongoose.Schema({
         required: true
     },
 
+    telefono:{
+        type:Number,
+    },
+
+    cuit:{
+        type:String,
+    },
+
+    cuil:{
+        type: String,
+    },
+
+    fechaDeInicio:{
+        type: Date,
+    },
+
     cuenta: cuentaCorrienteSchema,
 })
 
