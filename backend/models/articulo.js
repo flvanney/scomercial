@@ -1,35 +1,17 @@
 const mongoose = require("mongoose");
 
 const articuloSchema = mongoose.Schema({
-
-    nombre: {
-        type: String,
-        required: true,
-    },
-    
+    codigo: { type: String, required: true, unique: true },
+    nombre: { type: String, required: true },
+    marca: { type: String, required: true },
     familia: String,
-
-    cantidad:{
-        type: Number,
-        required: true,
-    },
-
+    cantidad: { type: Number, required: true },
+    cantidadMinima: Number,
     reservada: Number,
-
-    habilitado:{
-        type: Boolean,
-        required: true,
-    },
-
+    habilitado: { type: Boolean, required: true },
     precios: [Number],
-
-    descripcion:{
-        type: String,
-    },
-
-    iva: {
-        type: Number,
-    },
+    descripcion: String,
+    iva: Number
 })
 
 module.exports = mongoose.model('Articulo', articuloSchema);

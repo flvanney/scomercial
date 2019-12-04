@@ -18,9 +18,12 @@ export class CargaArticuloComponent implements OnInit {
   modo: string;
 
   artForm = this.fb.group({
+    codigo: [null, Validators.required],
     nombre: [null, Validators.required],
+    marca: [null, Validators.required],
     familia: [null, Validators.required],
     cantidad: [null, Validators.required],
+    cantidadMinima: null,
     p1: [null, Validators.required],
     p2: null,
     p3: null,
@@ -48,9 +51,12 @@ export class CargaArticuloComponent implements OnInit {
           this.articulo = articulo;
           this.artForm.patchValue(
             {
+              codigo: this.articulo.codigo,
               nombre: this.articulo.nombre,
+              marca: this.articulo.marca,
               familia: this.articulo.familia,
               cantidad: this.articulo.cantidad,
+              cantidadMinima: this.articulo.cantidadMinima,
               p1: this.articulo.precios[0],
               p2: this.articulo.precios[1],
               p3: this.articulo.precios[2],
@@ -82,15 +88,19 @@ export class CargaArticuloComponent implements OnInit {
     } else {
       this.articulosService.guardarArt(this.artForm.value);
       this.abrirSnackBar('Artículo cargado con éxito.', 'Graciela', 'snack-verde');
+      this.reiniciarForm();
+      this.limpiarErroresForm();
     }
-
-    this.reiniciarForm();
   }
 
   reiniciarForm() {
-    this.artForm.markAsPristine();
-    this.artForm.markAsUntouched();
-    this.artForm.updateValueAndValidity();
+    this.artForm.reset({ habilitado: true });
+  }
+
+  limpiarErroresForm() {
+    Object.keys(this.artForm.controls).forEach(key => {
+      this.artForm.get(key).setErrors(null);
+    });
   }
 
   esRequerido(campo: string) {
@@ -104,7 +114,7 @@ export class CargaArticuloComponent implements OnInit {
   abrirSnackBar(msg: string, accion: string, clase: string) {
     this.snackBar.open(msg, accion,
       {
-        duration: 4000,
+        duration: 5000,
         verticalPosition: 'bottom',
         horizontalPosition: 'center',
         panelClass: [clase]

@@ -9,6 +9,12 @@
         <mat-card-content>
 
             <div class="flex">
+                <mat-form-field class="child g-3">
+                    <input matInput placeholder="Código (*)" formControlName="codigo">
+                    <mat-error *ngIf="esRequerido('codigo')">
+                        El <strong>codigo</strong> del artículo es requerido.
+                    </mat-error>
+                </mat-form-field>
 
                 <mat-form-field class="child g-3">
                     <input matInput placeholder="Nombre (*)" formControlName="nombre">
@@ -18,22 +24,32 @@
                 </mat-form-field>
 
                 <mat-form-field class="child g-1">
+                    <input matInput placeholder="Marca (*)" formControlName="marca">
+                    <mat-error *ngIf="esRequerido('marca')">
+                        La <strong>marca</strong> del artículo es requerida.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="child g-1">
                     <input matInput placeholder="Familia (*)" formControlName="familia">
                     <mat-error *ngIf="esRequerido('familia')">
                         La <strong>familia</strong> del artículo es requerida.
                     </mat-error>
                 </mat-form-field>
+            </div>
 
-                <mat-form-field class="child">
+            <div class="flex">
+
+                <mat-form-field class="child g-1">
                     <input type="number" min=0 matInput placeholder="Stock inicial (*)" formControlName="cantidad">
                     <mat-error *ngIf="esRequerido('cantidad')">
                         El <strong>stock</strong> del artículo es requerido.
                     </mat-error>
                 </mat-form-field>
 
-            </div>
-
-            <div class="flex">
+                <mat-form-field class="child g-1">
+                    <input type="number" min=0 matInput placeholder="Stock mínimo" formControlName="cantidadMinima">
+                </mat-form-field>
 
                 <mat-form-field class="child g-1">
                     <span matPrefix>$ &nbsp;</span>

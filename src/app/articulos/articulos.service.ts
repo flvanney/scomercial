@@ -28,6 +28,11 @@ export class ArticulosService {
       .get<Articulo>(`http://localhost:3000/articulos/${artId}`);
   }
 
+  buscarArtLocal(artId: string) {
+    const i = this.articulos.findIndex(a => a._id === artId);
+    return this.articulos[i];
+  }
+
   traerArticuloListener() {
     return this.articulosActualizados.asObservable();
   }
@@ -44,9 +49,22 @@ export class ArticulosService {
   }
 
   actualizarArt(id, data) {
+    console.log('Entramos a actualizarArt');
+    
     data._id = id;
-    const art = this.crearNuevoArt(data);
-    this.http.put<Articulo>(`http://localhost:3000/articulos/${id}`, art);
+    const art: Articulo = this.crearNuevoArt(data);
+
+    this.http
+      .put<Articulo>(`http://localhost:3000/articulos/${id}`, art)
+      .subscribe(res => {
+        console.log(`Subscribe del put de articulos, ${this.articulos}`);
+        const nuevoArrArticulos = [...this.articulos];
+        const indiceArtDesactualizado = nuevoArrArticulos.findIndex(a => a._id === art._id);
+        nuevoArrArticulos[indiceArtDesactualizado] = art;
+        this.articulos = nuevoArrArticulos;
+        this.articulosActualizados.next([...this.articulos]);
+        console.log(`Subscribe del put de articulos, ${this.articulos}`);
+      });
   }
 
   crearNuevoArt(data) {
@@ -60,9 +78,12 @@ export class ArticulosService {
 
     const nuevoArt: Articulo = {
       _id: id,
+      codigo: data.codigo,
       nombre: data.nombre,
+      marca: data.marca,
       familia: data.familia,
       cantidad: data.cantidad,
+      cantidadMinima: data.cantidadMinima,
       reservada: 0,
       habilitado: data.habilitado,
       precios: precios,

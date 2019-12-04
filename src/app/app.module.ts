@@ -44,6 +44,7 @@ import { AgregarVentaComponent } from './ventas/agregar-venta.component';
 import { ListaDeArticulosComponent } from './articulos/lista-de-articulos/lista-de-articulos.component';
 import { CargaArticuloComponent } from './articulos/carga-articulo/carga-articulo.component';
 import { DialogoVentasComponent } from './clientes/dialogo-ventas/dialogo-ventas.component';
+import { FacturasComponent } from './facturas/facturas.component';
 
 const appRoutes: Routes = [
   { path: 'agregar-art', component: CargaArticuloComponent },
@@ -52,6 +53,7 @@ const appRoutes: Routes = [
   { path: 'crear-cliente', component: AgregarClienteComponent },
   { path: 'agregar-venta', component: AgregarVentaComponent },
   { path: 'lista-clientes', component: TablaClientesComponent },
+  { path: 'facturas', component: FacturasComponent },
   { path: '', component: BienvenidoComponent },
   { path: '**', component: Error404Component }
 ];
@@ -67,6 +69,7 @@ const appRoutes: Routes = [
     ListaDeArticulosComponent,
     CargaArticuloComponent,
     DialogoVentasComponent,
+    FacturasComponent,
   ],
   entryComponents: [
     DialogoVentasComponent

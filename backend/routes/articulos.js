@@ -23,11 +23,10 @@ router.post('/', (req, res) => {
 })
 
 router.put('/:artId', (req, res) => {
-    const art = new Articulo(req.body);
     Articulo
-        .updateOne({ _id: req.params.artId }, art)
-        .then(res => {
-            res.status(200).json({ mensaje: 'Artículo actualizado' });
+        .updateOne({ _id: req.params.artId }, req.body)
+        .then(result => {
+            res.status(200).json({ message: "Artículo actualizado con éxito." });
         });
 })
 

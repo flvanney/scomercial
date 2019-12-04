@@ -20,7 +20,7 @@ export class ListaDeArticulosComponent implements OnInit {
 
   articulos: any[] = [];
 
-  displayedColumns = ['nombre', 'familia', 'descripcion', 'habilitado', 'cantidad', 'editar'];
+  displayedColumns = ['codigo', 'nombre', 'marca', 'familia', 'descripcion', 'habilitado', 'cantidad', 'editar'];
   dataSource = new MatTableDataSource<ArticuloInterface>();
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
