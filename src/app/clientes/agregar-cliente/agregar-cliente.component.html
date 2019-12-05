@@ -26,8 +26,8 @@
         </mat-form-field>
 
         <mat-form-field class="child">
-            <input matInput placeholder="Teléfono" formControlName="telefono">
-          </mat-form-field>
+          <input matInput type="number" placeholder="Teléfono" formControlName="telefono">
+        </mat-form-field>
 
       </div>
 
@@ -51,30 +51,34 @@
         </mat-form-field>
 
         <mat-form-field class="child">
-          <input matInput #cp maxlength="5" placeholder="Código postal" type="number" formControlName="codigoPostal">
-          <mat-hint align="end">{{cp.value.length}} / 5</mat-hint>
+          <input matInput #cp maxlength="5" placeholder="Código postal (*)" type="number"
+            formControlName="codigoPostal">
+          <mat-error *ngIf="esRequerido('codigoPostal')">
+            La <strong>ciudad</strong> es requerida.
+          </mat-error>
         </mat-form-field>
       </div>
 
       <div class="flex">
-          <mat-form-field class="child">
-              <input matInput placeholder="C.U.I.T" formControlName="cuit">
-          </mat-form-field>
+        <mat-form-field class="child">
+          <input matInput placeholder="C.U.I.T" formControlName="cuit">
+        </mat-form-field>
 
-          <mat-form-field class="child">
-              <input matInput placeholder="C.U.I.L" formControlName="cuil">
-          </mat-form-field>
+        <mat-form-field class="child">
+          <input matInput placeholder="C.U.I.L" formControlName="cuil">
+        </mat-form-field>
 
-          <mat-form-field class="child">
-              <input matInput [matDatepicker]="picker" placeholder="Fecha de Inicio" formControlName="fechaDeInicio">
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
+        <mat-form-field class="child">
+          <input matInput [matDatepicker]="picker" placeholder="Fecha de inicio de actividad"
+            formControlName="fechaDeInicio">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
       </div>
 
       <div class="flex">
         <mat-form-field class="child">
-          <textarea matInput placeholder="Dirección" formControlName="direccion"></textarea>
+          <textarea matInput placeholder="Dirección (*)" formControlName="direccion"></textarea>
           <mat-error *ngIf="esRequerido('direccion')">
             La <strong>dirección</strong> del cliente es requerida
           </mat-error>
@@ -96,32 +100,33 @@
       </div>
 
       <div>
-          <mat-expansion-panel>
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  Cuenta cliente
-                </mat-panel-title>
-                <mat-panel-description>
-                  Datos relacionados a la cuenta del cliente (opcional)
-                </mat-panel-description>
-              </mat-expansion-panel-header>
-             <div class="flex">
-                <mat-slide-toggle  class="child" formControlName="estado">
-                    Estado de la cuenta
-                </mat-slide-toggle>
-  
-                <mat-form-field class="child">
-                    <input matInput placeholder="Credito otorgado" formControlName="creditoMaximo">
-                </mat-form-field>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Cuenta cliente
+            </mat-panel-title>
+            <mat-panel-description>
+              Datos relacionados a la cuenta del cliente (opcional)
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div class="flex">
+            <mat-slide-toggle class="child" formControlName="estado">
+              Cuenta activa
+            </mat-slide-toggle>
 
-                <mat-form-field class="child">
-                    <input matInput [matDatepicker]="picker2" placeholder="Fecha de Inicio" formControlName="fechaDeActualizacion">
-                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                    <mat-datepicker #picker2></mat-datepicker>
-                </mat-form-field>
-  
-              </div>
-            </mat-expansion-panel>
+            <mat-form-field class="child">
+              <input matInput type="number" placeholder="Monto de crédito otorgado" formControlName="creditoMaximo">
+            </mat-form-field>
+
+            <mat-form-field class="child">
+              <input matInput [matDatepicker]="picker2" placeholder="Fecha de actualización de recibo"
+                formControlName="fechaDeActualizacion">
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+
+          </div>
+        </mat-expansion-panel>
       </div>
 
     </mat-card-content>

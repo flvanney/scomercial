@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Cliente, Provincia } from './cliente';
+import { Cliente, Provincia, Cuenta } from './cliente';
 
 @Injectable({
   providedIn: 'root'
@@ -39,8 +39,41 @@ export class ClientesService {
     return this.provinciasActualizadas.asObservable();
   }
 
-  cargarCliente(datosNuevoCliente) {
-    const nuevoCliente: Cliente = datosNuevoCliente;
+  cargarCliente(datos) {
+    let nuevaCuenta: Cuenta;
+    if (datos.fechaDeActualizacion != null && datos.creditoMaximo != null) {
+      nuevaCuenta = {
+        estado: true,
+        fechaDeActualizacion: datos.fechaDeActualizacion,
+        saldoGastado: 0,
+        creditoMaximo: datos.creditoMaximo
+      }
+    } else {
+      nuevaCuenta = {
+        estado: false,
+        fechaDeActualizacion: null,
+        saldoGastado: 0,
+        creditoMaximo: 0
+      }
+    }
+
+    const nuevoCliente: Cliente = {
+      _id: null,
+      nombre: datos.nombre,
+      apellido: datos.apellido,
+      organizacion: datos.organizacion,
+      direccion: datos.direccion,
+      direccionAlternativa: datos.direccionAlternativa,
+      provincia: datos.provincia,
+      ciudad: datos.ciudad,
+      codigoPostal: datos.codigoPostal,
+      telefono: datos.telefono,
+      cuit: datos.cuit,
+      cuil: datos.cuil,
+      fechaDeInicio: datos.fechaDeInicio,
+      cuenta: nuevaCuenta,
+    }
+
     this.http
       .post<Cliente>(`${this.BASE_URL}/clientes`, nuevoCliente)
       .subscribe(respuesta => {
@@ -49,6 +82,7 @@ export class ClientesService {
         this.clientes.push(nuevoCliente);
         this.clientesActualizados.next([... this.clientes]);
       });
+
   }
 
   traerProvincias() {

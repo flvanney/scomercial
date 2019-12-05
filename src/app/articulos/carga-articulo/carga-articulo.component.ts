@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ArticulosService } from '../articulos.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Articulo } from '../articulo';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({

@@ -48,22 +48,18 @@ export class ArticulosService {
       });
   }
 
-  actualizarArt(id, data) {
-    console.log('Entramos a actualizarArt');
-    
+  actualizarArt(id, data) {    
     data._id = id;
     const art: Articulo = this.crearNuevoArt(data);
 
     this.http
       .put<Articulo>(`http://localhost:3000/articulos/${id}`, art)
       .subscribe(res => {
-        console.log(`Subscribe del put de articulos, ${this.articulos}`);
         const nuevoArrArticulos = [...this.articulos];
         const indiceArtDesactualizado = nuevoArrArticulos.findIndex(a => a._id === art._id);
         nuevoArrArticulos[indiceArtDesactualizado] = art;
         this.articulos = nuevoArrArticulos;
         this.articulosActualizados.next([...this.articulos]);
-        console.log(`Subscribe del put de articulos, ${this.articulos}`);
       });
   }
 

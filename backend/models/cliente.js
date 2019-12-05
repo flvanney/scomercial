@@ -1,21 +1,20 @@
 const mongoose = require("mongoose");
 
 const cuentaCorrienteSchema = mongoose.Schema({
-    estado:{
-        type:String,
-        required:true,
+    estado: {
+        type: Boolean,
+        required: true,
     },
 
-    fechaDeActualizacion:{
-        type:Date,
-        required:true,
+    fechaDeActualizacion: {
+        type: Date,
     },
 
-    saldoGastado:{
+    saldoGastado: {
         type: Number,
     },
 
-    creditoMaximo:{
+    creditoMaximo: {
         type: Number,
         required: true,
     },
@@ -55,19 +54,19 @@ const clienteSchema = mongoose.Schema({
         required: true
     },
 
-    telefono:{
-        type:Number,
+    telefono: {
+        type: Number,
     },
 
-    cuit:{
-        type:String,
-    },
-
-    cuil:{
+    cuit: {
         type: String,
     },
 
-    fechaDeInicio:{
+    cuil: {
+        type: String,
+    },
+
+    fechaDeInicio: {
         type: Date,
     },
 
