@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ClientesService } from '../clientes.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Cliente } from '../cliente';
 
 @Component({
   selector: 'app-agregar-cliente',
@@ -30,12 +32,16 @@ export class AgregarClienteComponent implements OnInit {
   });
 
   tieneDirAlt = false;
-
   provincias;
+
+  modo: string;
+  cliente: Cliente;
+  private clienteId: string;
 
   constructor(
     private clientesService: ClientesService,
     private fb: FormBuilder,
+    private route: ActivatedRoute,
     private snackBar: MatSnackBar
   ) { }
 
@@ -44,22 +50,51 @@ export class AgregarClienteComponent implements OnInit {
     this.clientesService.traerProvinciasListener()
       .subscribe((provincias) => {
         this.provincias = provincias;
-      });
+      })
+
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      if (paramMap.has('clienteId')) {
+        this.modo = 'editar';
+        this.clienteId = paramMap.get('clienteId');
+        this.clientesService.buscarCliente(this.clienteId).subscribe(cliente => {
+          this.cliente = cliente;
+          this.clienteForm.patchValue({
+            organizacion: this.cliente.organizacion,
+            nombre: this.cliente.nombre,
+            apellido: this.cliente.apellido,
+            provincia: this.cliente.provincia,
+            ciudad: this.cliente.ciudad,
+            direccion: this.cliente.direccion,
+            direccionAlternativa: this.cliente.direccionAlternativa,
+            factura: null,
+            codigoPostal: this.cliente.codigoPostal,
+            telefono: this.cliente.telefono,
+            cuit: this.cliente.cuit,
+            cuil: this.cliente.cuil,
+            fechaDeInicio: this.cliente.fechaDeInicio,
+            estado: this.cliente.cuenta.estado,
+            creditoMaximo: this.cliente.cuenta.creditoMaximo,
+            fechaDeActualizacion: this.cliente.cuenta.fechaDeActualizacion,
+          })
+        })
+      } else {
+        this.modo = 'crear';
+        this.clienteId = null;
+      }
+    })
   }
 
   cargarCliente() {
 
     if (this.clienteForm.invalid) {
-      this.abrirSnackBar('Complete todos los campos obligatorios.', 'OK', 'snack-roja');
+      this.abrirSnackBar('Complete todos los campos obligatorios.', 'snack-roja');
     }
-    /*
     else if (this.modoEditar()) {
-      this.clientesService.actualizarArt(this.articulo._id, this.artForm.value);
-      this.abrirSnackBar('Artículo modificado con éxito.', 'OK', 'snack-verde');
-    
-  } */ else {
+      this.clientesService.actualizarCliente(this.cliente._id, this.clienteForm.value);
+      this.abrirSnackBar('Artículo modificado con éxito.', 'snack-verde');
+    } else {
       this.clientesService.cargarCliente(this.clienteForm.value);
-      this.abrirSnackBar('Cliente cargado con éxito.', 'OK', 'snack-verde');
+      this.abrirSnackBar('Cliente cargado con éxito.', 'snack-verde');
       this.reiniciarForm();
       this.limpiarErroresForm();
     }
@@ -75,6 +110,9 @@ export class AgregarClienteComponent implements OnInit {
     });
   }
 
+  modoEditar(): boolean {
+    return this.modo == 'editar';
+  }
 
   esRequerido(campo: string) {
     return this.clienteForm.controls[campo].hasError('required');
@@ -84,8 +122,8 @@ export class AgregarClienteComponent implements OnInit {
     return new Date().toISOString().substring(0, 10);
   }
 
-  abrirSnackBar(msg: string, accion: string, clase: string) {
-    this.snackBar.open(msg, accion,
+  abrirSnackBar(msg: string, clase: string) {
+    this.snackBar.open(msg, 'OK',
       {
         duration: 5000,
         verticalPosition: 'bottom',

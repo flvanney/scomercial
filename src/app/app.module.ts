@@ -51,6 +51,7 @@ const appRoutes: Routes = [
   { path: 'editar-art/:artId', component: CargaArticuloComponent },
   { path: 'lista-art', component: ListaDeArticulosComponent },
   { path: 'crear-cliente', component: AgregarClienteComponent },
+  { path: 'editar-cliente/:clienteId', component: AgregarClienteComponent },
   { path: 'agregar-venta', component: AgregarVentaComponent },
   { path: 'lista-clientes', component: TablaClientesComponent },
   { path: 'facturas', component: FacturasComponent },

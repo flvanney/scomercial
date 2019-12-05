@@ -18,11 +18,31 @@ router.get('/', (req, res) => {
     });
 })
 
-router.delete('/:id', (req, res) => {
-    Cliente.deleteOne({ _id: req.params.id }).then(result => {
-        console.log(result);
-        res.status(200).json({ message: "Cliente eliminado con éxito." });
-    });
+router.get('/:clienteId', getCliente, (req, res) => {
+    res.json(res.cliente);
 });
+
+router.put('/:clienteId', (req, res) => {
+    Cliente
+        .updateOne({ _id: req.params.clienteId }, req.body)
+        .then(result => {
+            res.status(200).json({ message: "Cliente actualizado con éxito." })
+        })
+})
+
+async function getCliente(req, res, next) {
+    try {
+        cliente = await Cliente.findById(req.params.clienteId)
+        if (cliente == null) {
+            return res.status(404).json({ message: 'No se encontró el cliente' })
+        }
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+
+    res.cliente = cliente;
+    next();
+}
+
 
 module.exports = router

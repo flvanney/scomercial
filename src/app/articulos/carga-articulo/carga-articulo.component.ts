@@ -5,7 +5,6 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Articulo } from '../articulo';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-
 @Component({
   selector: 'app-carga-articulo',
   templateUrl: './carga-articulo.component.html',
@@ -120,6 +119,4 @@ export class CargaArticuloComponent implements OnInit {
         panelClass: [clase]
       })
   }
-
-
 }

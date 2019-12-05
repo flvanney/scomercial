@@ -78,7 +78,7 @@
 
       <div class="flex">
         <mat-form-field class="child">
-          <textarea matInput placeholder="Dirección (*)" formControlName="direccion"></textarea>
+          <input matInput placeholder="Dirección (*)" formControlName="direccion">
           <mat-error *ngIf="esRequerido('direccion')">
             La <strong>dirección</strong> del cliente es requerida
           </mat-error>
@@ -93,41 +93,42 @@
 
           <div *ngIf="tieneDirAlt">
             <mat-form-field class="full-width">
-              <textarea matInput placeholder="Dirección alternativa" formControlName="direccionAlternativa"></textarea>
+              <input matInput placeholder="Dirección alternativa" formControlName="direccionAlternativa">
             </mat-form-field>
           </div>
         </div>
       </div>
 
-      <div>
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Cuenta cliente
-            </mat-panel-title>
-            <mat-panel-description>
-              Datos relacionados a la cuenta del cliente (opcional)
-            </mat-panel-description>
-          </mat-expansion-panel-header>
-          <div class="flex">
-            <mat-slide-toggle class="child" formControlName="estado">
-              Cuenta activa
-            </mat-slide-toggle>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Cuenta cliente
+          </mat-panel-title>
+          <mat-panel-description>
+            Datos relacionados a la cuenta del cliente (opcional)
+          </mat-panel-description>
+        </mat-expansion-panel-header>
 
-            <mat-form-field class="child">
-              <input matInput type="number" placeholder="Monto de crédito otorgado" formControlName="creditoMaximo">
-            </mat-form-field>
+        <div class="flex">
 
-            <mat-form-field class="child">
-              <input matInput [matDatepicker]="picker2" placeholder="Fecha de actualización de recibo"
-                formControlName="fechaDeActualizacion">
-              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-              <mat-datepicker #picker2></mat-datepicker>
-            </mat-form-field>
+          <mat-slide-toggle class="child" formControlName="estado">
+            Cuenta activa
+          </mat-slide-toggle>
 
-          </div>
-        </mat-expansion-panel>
-      </div>
+          <mat-form-field class="child">
+            <input matInput type="number" placeholder="Monto de crédito otorgado" formControlName="creditoMaximo">
+          </mat-form-field>
+
+          <mat-form-field class="child">
+            <input matInput [matDatepicker]="picker2" placeholder="Última fecha de actualización de recibo"
+              formControlName="fechaDeActualizacion">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+
+        </div>
+
+      </mat-expansion-panel>
 
     </mat-card-content>
 

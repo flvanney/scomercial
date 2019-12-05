@@ -39,14 +39,48 @@ export class ClientesService {
     return this.provinciasActualizadas.asObservable();
   }
 
-  cargarCliente(datos) {
+  buscarCliente(clienteId: string) {
+    return this.http.get<Cliente>(`${this.BASE_URL}/clientes/${clienteId}`);
+  }
+
+  cargarCliente(data) {
+    const nuevoCliente: Cliente = this.crearNuevoCliente(data);
+
+    this.http
+      .post<Cliente>(`${this.BASE_URL}/clientes`, nuevoCliente)
+      .subscribe(respuesta => {
+        const id = respuesta._id;
+        nuevoCliente._id = id;
+        this.clientes.push(nuevoCliente);
+        this.clientesActualizados.next([... this.clientes]);
+      });
+  }
+
+  actualizarCliente(clienteId, data) {
+    data._id = clienteId;
+    const clienteActualizado: Cliente = this.crearNuevoCliente(data);
+    console.log(`Cliente creado de nuevo: ${JSON.stringify(clienteActualizado)}`);
+
+    this.http
+      .put<Cliente>(`${this.BASE_URL}/clientes/${clienteId}`, clienteActualizado)
+      .subscribe(res => {
+        const nuevoArrClientes = [... this.clientes];
+        const indiceClienteDesactualizado = nuevoArrClientes.findIndex(c => c._id === clienteActualizado._id);
+        nuevoArrClientes[indiceClienteDesactualizado] = clienteActualizado;
+        this.clientes = nuevoArrClientes;
+        this.clientesActualizados.next([... this.clientes]);
+      })
+  }
+
+  crearNuevoCliente(data): Cliente {
     let nuevaCuenta: Cuenta;
-    if (datos.fechaDeActualizacion != null && datos.creditoMaximo != null) {
+    if (data.estado == true && data.fechaDeActualizacion != null && data.creditoMaximo != null) {
+      // Solamente creo la cuenta cuando le pasan los 3 datos.
       nuevaCuenta = {
         estado: true,
-        fechaDeActualizacion: datos.fechaDeActualizacion,
+        fechaDeActualizacion: data.fechaDeActualizacion,
         saldoGastado: 0,
-        creditoMaximo: datos.creditoMaximo
+        creditoMaximo: data.creditoMaximo
       }
     } else {
       nuevaCuenta = {
@@ -57,32 +91,26 @@ export class ClientesService {
       }
     }
 
+    let id = data.hasOwnProperty('_id') ? data._id : null;
+
     const nuevoCliente: Cliente = {
-      _id: null,
-      nombre: datos.nombre,
-      apellido: datos.apellido,
-      organizacion: datos.organizacion,
-      direccion: datos.direccion,
-      direccionAlternativa: datos.direccionAlternativa,
-      provincia: datos.provincia,
-      ciudad: datos.ciudad,
-      codigoPostal: datos.codigoPostal,
-      telefono: datos.telefono,
-      cuit: datos.cuit,
-      cuil: datos.cuil,
-      fechaDeInicio: datos.fechaDeInicio,
+      _id: id,
+      nombre: data.nombre,
+      apellido: data.apellido,
+      organizacion: data.organizacion,
+      direccion: data.direccion,
+      direccionAlternativa: data.direccionAlternativa,
+      provincia: data.provincia,
+      ciudad: data.ciudad,
+      codigoPostal: data.codigoPostal,
+      telefono: data.telefono,
+      cuit: data.cuit,
+      cuil: data.cuil,
+      fechaDeInicio: data.fechaDeInicio,
       cuenta: nuevaCuenta,
     }
 
-    this.http
-      .post<Cliente>(`${this.BASE_URL}/clientes`, nuevoCliente)
-      .subscribe(respuesta => {
-        const id = respuesta._id;
-        nuevoCliente._id = id;
-        this.clientes.push(nuevoCliente);
-        this.clientesActualizados.next([... this.clientes]);
-      });
-
+    return nuevoCliente;
   }
 
   traerProvincias() {
