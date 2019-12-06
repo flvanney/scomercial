@@ -15,7 +15,7 @@ const ventaSchema = Schema({
     metodoDePago: String,
     envio: Boolean,
     observaciones: String,
-    gravado: Number,
+    desgravado: Number,
     montoTotal: Number
 });
 

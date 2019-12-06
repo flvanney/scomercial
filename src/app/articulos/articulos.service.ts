@@ -83,6 +83,7 @@ export class ArticulosService {
       reservada: 0,
       habilitado: data.habilitado,
       precios: precios,
+      iva: data.iva,
       descripcion: data.descripcion,
     };
 

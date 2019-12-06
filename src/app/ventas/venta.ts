@@ -9,7 +9,7 @@ export class Venta {
         public metodoDePago: string,
         public envio: boolean,
         public observaciones: string,
-        public gravado: number,
+        public desgravado: number,
         public montoTotal: number,
     ) { }
 }

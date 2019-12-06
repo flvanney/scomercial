@@ -28,6 +28,7 @@ export class CargaArticuloComponent implements OnInit {
     p3: null,
     p4: null,
     habilitado: true,
+    iva: [21, Validators.required],
     descripcion: null
   })
 
@@ -60,8 +61,9 @@ export class CargaArticuloComponent implements OnInit {
               p2: this.articulo.precios[1],
               p3: this.articulo.precios[2],
               p4: this.articulo.precios[3],
-              descripcion: this.articulo.descripcion,
               habilitado: this.articulo.habilitado,
+              iva: this.articulo.iva,
+              descripcion: this.articulo.descripcion,
             });
         })
       }

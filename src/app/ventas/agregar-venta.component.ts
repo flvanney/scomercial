@@ -23,7 +23,9 @@ export class AgregarVentaComponent implements OnInit {
   articulos: any[] = [];
   private articulosSub: Subscription;
 
-  importeTotal = 0;
+  importeTotalSinIva = 0;
+  importeTotalConIva = 0;
+  ivaTotal = 0;
 
   ventaForm = this.fb.group({
     fecha: [this.getFechaHoy(), Validators.required],
@@ -31,7 +33,7 @@ export class AgregarVentaComponent implements OnInit {
     ventas: this.fb.array([this.crearVenta()]),
     metodoDePago: [null, Validators.required],
     envio: ["1", Validators.required],
-    gravado: [21, Validators.required],
+    desgravado: [0, Validators.required],
     observaciones: null,
     montoTotal: null
   });
@@ -115,9 +117,6 @@ export class AgregarVentaComponent implements OnInit {
   }
 
   calcularImporte(i: number) {
-    /* El importe es ek precio de lista +/- la dif. multiplicado
-    por la cantidad de artículos. */
-
     const venta = this.ventaForm.value.ventas[i];
 
     if (venta != undefined) {
@@ -131,12 +130,21 @@ export class AgregarVentaComponent implements OnInit {
   }
 
   calcularImporteTotal() {
-    this.importeTotal = 0;
-    this.ventaForm.value.ventas.forEach(venta => {
-      this.importeTotal += (venta.precio + venta.diferencia) * venta.cantidad;
+    this.importeTotalSinIva = 0;
+    this.ivaTotal = 0;
+
+    this.ventaForm.value.ventas.forEach(fila => {
+      let importeFilaSinIva = (fila.precio + fila.diferencia) * fila.cantidad;
+      this.importeTotalSinIva += importeFilaSinIva;
+      this.ivaTotal += (importeFilaSinIva * fila.articulo.iva / 100);
     });
-    this.importeTotal += this.importeTotal * (this.ventaForm.value.gravado / 100);
-    return this.importeTotal;
+
+    this.importeTotalConIva = this.importeTotalSinIva + this.ivaTotal;
+    
+    // Aplico el descuento a toda la venta
+    this.importeTotalConIva -= (this.importeTotalConIva * this.ventaForm.value.desgravado / 100);
+
+    return this.importeTotalConIva;
   }
 
   public formatearMoneda(monto: number) {
@@ -148,7 +156,7 @@ export class AgregarVentaComponent implements OnInit {
   }
 
   actualizarValidacionStock(i) {
-    const stockArticulo = this.traerStockActual(i);
+    const stockArticulo = this.traerCampoArt(i, 'cantidad');
     const cantAVender = this.ventaForm.value.ventas[i].cantidad;
 
     const campoCant = this.ventaForm.controls.ventas['controls'][i]['controls'].cantidad;
@@ -160,9 +168,9 @@ export class AgregarVentaComponent implements OnInit {
     }
   }
 
-  traerStockActual(i) {
+  traerCampoArt(i, campo) {
     if (this.ventaForm.value.ventas[i].articulo) {
-      return this.ventaForm.value.ventas[i].articulo.cantidad;
+      return this.ventaForm.value.ventas[i].articulo[campo];
     }
   }
 

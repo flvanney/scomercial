@@ -52,6 +52,18 @@
                 </mat-form-field>
 
                 <mat-form-field class="child g-1">
+                    <input type="number" min=0 max=100 matInput placeholder="IVA (*)" formControlName="iva">
+                    <span matSuffix>%</span>
+                    <mat-error *ngIf="esRequerido('iva')">
+                        El <strong>IVA</strong> es requerido.
+                    </mat-error>
+                </mat-form-field>
+
+            </div>
+
+            <div class="flex">
+
+                <mat-form-field class="child g-1">
                     <span matPrefix>$ &nbsp;</span>
                     <input type="number" min=0 matInput placeholder="Precio de lista 1 (*)" formControlName="p1">
                     <mat-error *ngIf="esRequerido('p1')">

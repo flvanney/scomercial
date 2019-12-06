@@ -10,6 +10,7 @@ export class Articulo {
         public reservada: number,
         public habilitado: boolean,
         public precios: Array<number>,
+        public iva: number,
         public descripcion: string
     ) { }
 }
