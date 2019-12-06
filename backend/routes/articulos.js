@@ -30,6 +30,14 @@ router.put('/:artId', (req, res) => {
         });
 })
 
+router.put('/actualizar-stock/:artId', (req, res) => {
+    Articulo
+        .updateOne({ _id: req.params.artId }, { $inc: { cantidad: -req.body.cantidad } })
+        .then(result => {
+            res.status(200).json({ message: "Stock del artículo actualizado con éxito." })
+        });
+})
+
 async function getArticulo(req, res, next) {
     try {
         articulo = await Articulo.findById(req.params.artId)

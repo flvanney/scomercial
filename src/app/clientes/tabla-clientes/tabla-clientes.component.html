@@ -5,14 +5,14 @@
 <div class="mat-elevation-z8">
   <table mat-table class="full-width-table" matSort [dataSource]="dataSource">
 
-    <ng-container matColumnDef="nombre">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
-      <td mat-cell *matCellDef="let cliente">{{ cliente.nombre }}</td>
+    <ng-container matColumnDef="organizacion">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Organización</th>
+      <td mat-cell *matCellDef="let cliente">{{ cliente.organizacion }}</td>
     </ng-container>
 
-    <ng-container matColumnDef="apellido">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellido</th>
-      <td mat-cell *matCellDef="let cliente">{{ cliente.apellido }}</td>
+    <ng-container matColumnDef="nombreCompleto">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+      <td mat-cell *matCellDef="let cliente">{{ nombre(cliente) }}</td>
     </ng-container>
 
     <ng-container matColumnDef="direccion">
@@ -32,11 +32,11 @@
     <ng-container matColumnDef="editar">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Editar</th>
       <td mat-cell *matCellDef="let cliente">
-          <a class="centrar" mat-mini-fab [routerLink]="['/editar-cliente', cliente._id]">
-              <mat-icon>edit</mat-icon>
-          </a>
+        <a class="centrar" mat-mini-fab [routerLink]="['/editar-cliente', cliente._id]">
+          <mat-icon>edit</mat-icon>
+        </a>
       </td>
-  </ng-container>
+    </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
