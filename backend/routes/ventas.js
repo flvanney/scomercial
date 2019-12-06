@@ -5,8 +5,7 @@ const mongoose = require('mongoose');
 const Venta = require("../models/venta");
 
 router.post('/', (req, res) => {
-    const venta = new Venta(req.body);
-
+    const venta = new Venta(req.body);    
     venta.save();
 
     res.status(201).json({

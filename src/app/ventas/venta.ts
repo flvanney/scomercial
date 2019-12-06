@@ -6,9 +6,11 @@ export class Venta {
         public fecha: string,
         public cliente: string,
         public ventas: Array<Articulos>,
-        public metodopago: string,
+        public metodoDePago: string,
         public envio: boolean,
-        public observaciones: string
+        public observaciones: string,
+        public gravado: number,
+        public montoTotal: number,
     ) { }
 }
 

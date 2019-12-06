@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormBuilder, Validators, FormGroup, AbstractControl, FormArray, FormControl } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Cliente } from '../clientes/cliente';
 import { ClientesService } from '../clientes/clientes.service';
@@ -25,22 +26,24 @@ export class AgregarVentaComponent implements OnInit {
   importeTotal = 0;
 
   ventaForm = this.fb.group({
-    nro: null,
     fecha: [this.getFechaHoy(), Validators.required],
     cliente: [null, Validators.required],
-    ventas: this.fb.array([this.crearVenta()], [this.validarVenta]),
-    metodopago: [null, Validators.required],
-    envio: [null, Validators.required],
-    observaciones: null
+    ventas: this.fb.array([this.crearVenta()]),
+    metodoDePago: [null, Validators.required],
+    envio: ["1", Validators.required],
+    gravado: [21, Validators.required],
+    observaciones: null,
+    montoTotal: null
   });
 
-  metodosDePago = ['Contado', 'Tarjeta de crédito', 'Tarjeta de débito', 'Cheque'];
+  metodosDePago = ['Contado', 'Crédito', 'Tarjeta de crédito', 'Tarjeta de débito', 'Cheque'];
 
   constructor(
     private clientesService: ClientesService,
     private fb: FormBuilder,
     private ventasService: VentasService,
-    private articulosService: ArticulosService
+    private articulosService: ArticulosService,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {
@@ -67,8 +70,14 @@ export class AgregarVentaComponent implements OnInit {
   }
 
   cargarVenta() {
-    this.ventasService.cargarVenta(this.ventaForm.value);
-    this.ventaForm.reset({ fecha: this.getFechaHoy() })
+    this.ventaForm.value.montoTotal = this.calcularImporteTotal();
+    if (this.ventaForm.invalid) {
+      this.abrirSnackBar('Hay campos obligatorios sin completar o con errores', 'snack-roja');
+    } else {
+      this.abrirSnackBar('Venta registrada con éxito', 'snack-verde');
+      this.ventasService.cargarVenta(this.ventaForm.value);
+      this.ventaForm.reset({ fecha: this.getFechaHoy() });
+    }
   }
 
   get traerVentas() {
@@ -81,13 +90,6 @@ export class AgregarVentaComponent implements OnInit {
 
   eliminarFilaVenta(i: number) {
     this.traerVentas.removeAt(i);
-  }
-
-  validarVenta(control: AbstractControl): { [key: string]: boolean | null } {
-    // TODO
-    // El stock no reservado debe ser mayor a la cantidad que se va a comprar
-    const invalid = control.value < 0;
-    return invalid ? { ventaInvalid: true } : null;
   }
 
   getFechaHoy() {
@@ -108,14 +110,13 @@ export class AgregarVentaComponent implements OnInit {
   }
 
   mayorANueve() {
-    // Se usa para bloquear el botón de agregar 
-    // ventas cuando éstas son más de 9.
+    // Se usa para bloquear el botón de agregar ventas cuando éstas son más de 9.
     return this.traerVentas.controls.length > 9;
   }
 
   calcularImporte(i: number) {
-    /* El importe es el producto entre el precio de lista seleccionado
-    y la cantidad de artículos. */
+    /* El importe es ek precio de lista +/- la dif. multiplicado
+    por la cantidad de artículos. */
 
     const venta = this.ventaForm.value.ventas[i];
 
@@ -134,6 +135,7 @@ export class AgregarVentaComponent implements OnInit {
     this.ventaForm.value.ventas.forEach(venta => {
       this.importeTotal += (venta.precio + venta.diferencia) * venta.cantidad;
     });
+    this.importeTotal += this.importeTotal * (this.ventaForm.value.gravado / 100);
     return this.importeTotal;
   }
 
@@ -141,4 +143,40 @@ export class AgregarVentaComponent implements OnInit {
     return formatCurrency(monto, 'esAR', '$', 'ARS');
   }
 
+  esConCredito() {
+    return this.ventaForm.value.metodoDePago == "Crédito";
+  }
+
+  actualizarValidacionStock(i) {
+    const stockArticulo = this.traerStockActual(i);
+    const cantAVender = this.ventaForm.value.ventas[i].cantidad;
+
+    const campoCant = this.ventaForm.controls.ventas['controls'][i]['controls'].cantidad;
+
+    if (stockArticulo >= cantAVender) {
+      campoCant.setErrors(null);
+    } else {
+      campoCant.setErrors({ 'invalid': true });
+    }
+  }
+
+  traerStockActual(i) {
+    if (this.ventaForm.value.ventas[i].articulo) {
+      return this.ventaForm.value.ventas[i].articulo.cantidad;
+    }
+  }
+
+  noHayStock(i) {
+    return this.ventaForm.controls.ventas['controls'][i]['controls'].cantidad.status === "INVALID";
+  }
+
+  abrirSnackBar(msg: string, clase: string) {
+    this.snackBar.open(msg, 'OK',
+      {
+        duration: 5000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'center',
+        panelClass: [clase]
+      })
+  }
 }

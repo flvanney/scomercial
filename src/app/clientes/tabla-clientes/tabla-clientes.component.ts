@@ -22,7 +22,7 @@ export class TablaClientesComponent implements OnInit {
   clientes: Cliente[] = [];
   dataSource: MatTableDataSource<ClienteInterface>;
 
-  displayedColumns = ['nombre', 'apellido', 'direccion', 'historial', 'editar'];
+  displayedColumns = ['organizacion', 'nombreCompleto', 'direccion', 'historial', 'editar'];
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -47,6 +47,10 @@ export class TablaClientesComponent implements OnInit {
 
   abrirDialogoHistorial(cliente) {
     this.dialogo.open(DialogoVentasComponent, { data: cliente });
+  }
+
+  nombre(cliente) {
+    return `${cliente.nombre} ${cliente.apellido}`;
   }
 
 }
