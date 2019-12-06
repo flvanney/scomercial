@@ -46,6 +46,7 @@ import { CargaArticuloComponent } from './articulos/carga-articulo/carga-articul
 import { DialogoVentasComponent } from './clientes/dialogo-ventas/dialogo-ventas.component';
 import { FacturaComponent } from './facturas/facturas.component';
 import { NotasComponent } from './notas/notas.component';
+import { DialogoCuentaComponent } from './clientes/dialogo-cuenta/dialogo-cuenta.component';
 
 const appRoutes: Routes = [
   { path: 'agregar-art', component: CargaArticuloComponent },
@@ -74,9 +75,11 @@ const appRoutes: Routes = [
     DialogoVentasComponent,
     FacturaComponent,
     NotasComponent,
+    DialogoCuentaComponent,
   ],
   entryComponents: [
-    DialogoVentasComponent
+    DialogoVentasComponent,
+    DialogoCuentaComponent
   ],
   imports: [
     BrowserModule,

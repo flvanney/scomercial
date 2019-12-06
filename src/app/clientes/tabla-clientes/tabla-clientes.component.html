@@ -23,21 +23,25 @@
     <ng-container matColumnDef="historial">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Historial de compras</th>
       <td mat-cell *matCellDef="let cliente">
-        <a style="position: middler; left: 10%;" mat-mini-fab (click)="abrirDialogoHistorial(cliente)">
-          <mat-icon>link</mat-icon>
+        <a class="centrar" mat-button color="primary" (click)="abrirDialogoHistorial(cliente)">
+          <mat-icon>shopping_basket</mat-icon>
         </a>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="cuenta">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado de la cuenta</th>
-      <td mat-cell *matCellDef="let cliente">Link a ventana que muestre el estado de la cuenta</td>
+      <td mat-cell *matCellDef="let cliente">
+        <a class="centrar" mat-button color="primary" color="primary" (click)="abrirDialogoCuenta(cliente)">
+          <mat-icon>account_box</mat-icon>
+        </a>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="editar">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Editar</th>
       <td mat-cell *matCellDef="let cliente">
-        <a class="centrar" mat-mini-fab [routerLink]="['/editar-cliente', cliente._id]">
+        <a class="centrar" mat-button color="primary" [routerLink]="['/editar-cliente', cliente._id]">
           <mat-icon>edit</mat-icon>
         </a>
       </td>

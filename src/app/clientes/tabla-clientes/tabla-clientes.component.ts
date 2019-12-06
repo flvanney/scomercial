@@ -5,6 +5,7 @@ import { ClientesService } from '../clientes.service';
 import { Cliente } from '../cliente';
 import { MatTableDataSource, MatDialog } from '@angular/material';
 import { DialogoVentasComponent } from '../dialogo-ventas/dialogo-ventas.component';
+import { DialogoCuentaComponent } from '../dialogo-cuenta/dialogo-cuenta.component';
 
 interface ClienteInterface {
   nombre: string;
@@ -47,6 +48,10 @@ export class TablaClientesComponent implements OnInit {
 
   abrirDialogoHistorial(cliente) {
     this.dialogo.open(DialogoVentasComponent, { data: cliente });
+  }
+
+  abrirDialogoCuenta(cliente) {
+    this.dialogo.open(DialogoCuentaComponent, { data: cliente });
   }
 
   nombre(cliente) {
