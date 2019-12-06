@@ -1,0 +1,75 @@
+<form [formGroup]="notaForm" novalidate (ngSubmit)="guardarNota()">
+    <mat-card class="card">
+
+        <mat-card-header>
+            <mat-card-title>Generar nota de crédito o débito</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+
+            <div class="flex">
+
+                <mat-form-field class="child g1">
+                    <input matInput type="number" placeholder="Número de nota (*)" formControlName="numero">
+                    <mat-error *ngIf="esRequerido('numero')">
+                        El <strong>número</strong> de la nota es requerido.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="child g1">
+                    <input matInput [matDatepicker]="picker" placeholder="Fecha de emisión (*)" formControlName="fecha">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="esRequerido('fecha')">
+                        La <strong>fecha de emisión</strong> es requerida
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="child g3 ">
+                    <mat-select placeholder="Cliente (*)" formControlName="cliente">
+                        <mat-option *ngFor="let c of clientes" [value]="c._id">
+                            {{ nombre(c.nombre, c.apellido) }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="esRequerido('cliente')">
+                        El <strong>cliente</strong> es requerido.
+                    </mat-error>
+                </mat-form-field>
+
+            </div>
+
+            <div class="flex">
+
+                <mat-form-field class="child">
+                    <input matInput min=1 type="number" placeholder="Monto" formControlName="monto">
+                    <span matPrefix>$ &nbsp;</span>
+                    <mat-error *ngIf="esRequerido('cliente')">
+                        El <strong>monto</strong> de la nota es requerido.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-radio-group formControlName="tipoNota" class="child">
+                    <mat-radio-button value="C">Crédito</mat-radio-button>
+                    <mat-radio-button value="D">Débito</mat-radio-button>
+                </mat-radio-group>
+
+            </div>
+
+            <div style="margin-top: 1%">
+                <mat-form-field class="full-width" appearance="outline">
+                    <textarea rows="5" matInput #motivo placeholder="Motivo de creación de la nota"
+                        formControlName="motivo" maxlength="512" style="resize: none;"></textarea>
+                    <mat-hint align="end">{{ motivo.value.length }} / 512</mat-hint>
+                </mat-form-field>
+            </div>
+
+        </mat-card-content>
+
+        <mat-divider></mat-divider>
+
+        <mat-card-actions>
+            <button mat-raised-button color="primary" type="submit">Guardar</button>
+        </mat-card-actions>
+
+    </mat-card>
+</form>

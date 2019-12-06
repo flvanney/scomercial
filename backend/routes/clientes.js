@@ -30,6 +30,17 @@ router.put('/:clienteId', (req, res) => {
         })
 })
 
+router.put('/actualizar-cuenta/:clienteId', (req, res) => {
+    const dif = req.body.cuenta.saldoGastado;
+    const id = req.params.clienteId;
+
+    Cliente
+        .findByIdAndUpdate(id, { $inc: { 'cuenta.saldoGastado': dif } })
+        .then(result => {
+            res.status(200).json({ message: "Estado de la cuenta actualizado con éxito." })
+        });
+})
+
 async function getCliente(req, res, next) {
     try {
         cliente = await Cliente.findById(req.params.clienteId)

@@ -1,0 +1,22 @@
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: flex-start;
+}
+
+.child {
+  padding: 5px;
+}
+
+.g1 {
+  flex-grow: 1;
+}
+
+.g3 {
+  flex-grow: 3;
+}
+
+.mat-radio-button {
+  margin-right: 10px;
+}

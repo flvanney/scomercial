@@ -15,7 +15,7 @@ app.use((req, res, next) => {
     next();
 });
 
-mongoose.connect(process.env.URL_BD, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
+mongoose.connect(process.env.URL_BD, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false })
     .then(() => {
         console.log("Conexión con MongoDB establecida. Vamos los pibes...");
     }).catch(() => {
@@ -38,5 +38,8 @@ app.use('/ventas', rutasVentas);
 
 const rutasArticulos = require("./routes/articulos");
 app.use('/articulos', rutasArticulos);
+
+const rutasNotas = require("./routes/notas");
+app.use('/notas', rutasNotas);
 
 module.exports = app;

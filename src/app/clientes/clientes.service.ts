@@ -59,7 +59,6 @@ export class ClientesService {
   actualizarCliente(clienteId, data) {
     data._id = clienteId;
     const clienteActualizado: Cliente = this.crearNuevoCliente(data);
-    console.log(`Cliente creado de nuevo: ${JSON.stringify(clienteActualizado)}`);
 
     this.http
       .put<Cliente>(`${this.BASE_URL}/clientes/${clienteId}`, clienteActualizado)

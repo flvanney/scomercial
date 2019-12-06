@@ -23,8 +23,11 @@ export class DialogoVentasComponent {
     this.titulo = `Últimas compras de ${data.nombre} ${data.apellido}.`;
     this.dialogRef.updateSize('800vw', '800vw');
     this.ventasService.historialComprasCliente(data._id).subscribe((compras: Venta[]) => {
+      
+      // Todas las compras del cliente cuyo ID se pasó como parámetro.
       this.compras = compras;
 
+      // Este doble for es para (en la venta) reemplazar el id del artículo por su nombre.
       for (let i = 0; i < compras.length; i++) {
         const ventas = compras[i].ventas;
         for (let j = 0; j < ventas.length; j++) {
