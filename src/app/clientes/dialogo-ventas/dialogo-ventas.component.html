@@ -1,12 +1,21 @@
 <mat-dialog-content>
     <h2>{{ titulo }}</h2>
-    <div *ngIf="sinCompras(); then thenBlock else elseBlock"></div>
-    <ng-template #thenBlock>Este cliente todavía no ha realizado ninguna compra.</ng-template>
-    <ng-template #elseBlock>
-        <mat-list>
-            <mat-list-item *ngFor="let compra of compras"> {{ convertirStr(compra.fecha) }} {{ convertirStr(compra.ventas) }}</mat-list-item>
-        </mat-list>
 
+    <div *ngIf="sinCompras(); then thenBlock else elseBlock"></div>
+
+    <ng-template #thenBlock>Este cliente todavía no ha realizado ninguna compra.</ng-template>
+
+    <ng-template #elseBlock>
+        <ul>
+            <li *ngFor="let compra of compras">
+                {{ formatearVenta(compra) }}
+                <ul>
+                    <li *ngFor="let filaVenta of compra.ventas">
+                        {{ formatearFilaVenta(filaVenta) }}
+                    </li>
+                </ul>
+            </li>
+        </ul>
     </ng-template>
 
 </mat-dialog-content>
