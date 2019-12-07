@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ClientesService } from '../clientes/clientes.service';
 import { NotasService } from './notas.service';
-import { ActivatedRoute, ParamMap } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Cliente } from '../clientes/cliente';
 import { Subscription } from 'rxjs';
@@ -20,7 +19,6 @@ export class NotasComponent implements OnInit {
   constructor(private clientesService: ClientesService,
     private notasService: NotasService,
     private fb: FormBuilder,
-    private route: ActivatedRoute,
     private snackBar: MatSnackBar) { }
 
   ngOnInit() {
@@ -43,12 +41,7 @@ export class NotasComponent implements OnInit {
   guardarNota() {
     if (this.notaForm.invalid) {
       this.abrirSnackBar('Complete todos los campos obligatorios.', 'snack-roja');
-    }
-    /*
-    else if (this.modoEditar()) {
-      this.clientesService.actualizarCliente(this.cliente._id, this.clienteForm.value);
-      this.abrirSnackBar('Artículo modificado con éxito.', 'snack-verde');
-    } */ else {
+    } else {
       this.notasService.guardarNota(this.notaForm.value);
       this.abrirSnackBar('Nota guardada con éxito.', 'snack-verde');
       this.reiniciarForm();

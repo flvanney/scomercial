@@ -26,3 +26,15 @@ button {
 .g-3 {
   flex-grow: 3;
 }
+
+.margen-arriba {
+  margin-top: 0.5%;
+}
+
+.margen-abajo {
+  margin-bottom: 1%;
+}
+
+.fila {
+  margin-bottom: 0.5%;
+}

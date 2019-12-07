@@ -49,12 +49,19 @@ export class AgregarVentaComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.traerClientes();
+    this.traerArticulos();
+  }
+
+  traerClientes() {
     this.clientesService.traerClientes();
     this.clientesSub = this.clientesService.traerClienteListener()
       .subscribe((clientes: Cliente[]) => {
         this.clientes = clientes;
       });
+  }
 
+  traerArticulos() {
     this.articulosService.traerArticulos();
     this.articulosService.traerArticuloListener()
       .subscribe((articulos: Articulo[]) => {
@@ -66,20 +73,75 @@ export class AgregarVentaComponent implements OnInit {
     return this.fb.group({
       articulo: [null, [Validators.required]],
       cantidad: [1, [Validators.required, Validators.min(1)]],
-      precio: [0, [Validators.required, Validators.min(1)]],
+      precio: [null, [Validators.required, Validators.min(1)]],
       diferencia: 0,
     });
   }
 
-  cargarVenta() {
-    this.ventaForm.value.montoTotal = this.calcularImporteTotal();
+  async cargarVenta() {
+    this.ventaForm.value.montoTotal = this.importeTotalConIva;
     if (this.ventaForm.invalid) {
       this.abrirSnackBar('Hay campos obligatorios sin completar o con errores', 'snack-roja');
+    } else if (!this.tieneGuita) {
+      this.abrirSnackBar('El crédito del cliente no es lo suficientemente amplio para realizar esta compra', 'snack-roja');
     } else {
       this.abrirSnackBar('Venta registrada con éxito', 'snack-verde');
+      this.articulosService.actualizarStock(this.ventaForm.value);
       this.ventasService.cargarVenta(this.ventaForm.value);
-      this.ventaForm.reset({ fecha: this.getFechaHoy() });
+      this.traerArticulos();
+      this.ventaForm.reset({ fecha: this.getFechaHoy(), envio: "1" });
+      this.limpiarErroresForm();
     }
+  }
+
+  limpiarErroresForm() {
+    Object.keys(this.ventaForm.controls).forEach(key => {
+      this.ventaForm.get(key).setErrors(null);
+    });
+
+    for (let i = 0; i < this.ventaForm.controls.ventas['controls'].length; i++) {
+      let controls = this.ventaForm.controls.ventas['controls'][i]['controls'];
+      Object.keys(controls).forEach(key => {
+        controls[key].setErrors(null);
+      })
+    }
+  }
+
+  getGuitaCliente() {
+    if (this.elClienteFueSeleccionado()) {
+      const cliente = this.clientes.find(cliente => cliente._id === this.ventaForm.value.cliente);
+      const guitaCliente = cliente.cuenta.creditoMaximo - cliente.cuenta.saldoGastado;
+      return guitaCliente;
+    }
+  }
+
+  tieneGuita() {
+    if (this.elClienteFueSeleccionado()) {
+      return this.getGuitaCliente() + 10 >= this.importeTotalConIva;
+    }
+  }
+
+  elClienteFueSeleccionado() {
+    return this.ventaForm.value.cliente != null;
+  }
+
+  esConCredito() {
+    return this.ventaForm.value.metodoDePago == "Crédito";
+  }
+
+  leAlcanza() {
+    if (this.ventaForm.controls.ventas.status === "INVALID") {
+      return `Revise los campos obligatorios de los artículos para poder calcular el total.`
+    } else {
+      return `Actualmente, el cliente tiene un crédito disponible de ${this.formatearMoneda(this.getGuitaCliente())}, 
+      y se le descontará ${this.formatearMoneda(this.importeTotalConIva)} del mismo, quedándole para uso posterior un monto de
+    ${ this.formatearMoneda(this.getGuitaCliente() - this.importeTotalConIva)}.`
+    }
+  }
+
+  noLeAlcanza() {
+    return `El cliente no tiene crédito suficiente para realizar esta compra. Su crédito disponible es de ${this.formatearMoneda(this.getGuitaCliente())},
+        y el total de la compra alcanza los ${ this.formatearMoneda(this.importeTotalConIva)}.`
   }
 
   get traerVentas() {
@@ -134,25 +196,24 @@ export class AgregarVentaComponent implements OnInit {
     this.ivaTotal = 0;
 
     this.ventaForm.value.ventas.forEach(fila => {
-      let importeFilaSinIva = (fila.precio + fila.diferencia) * fila.cantidad;
-      this.importeTotalSinIva += importeFilaSinIva;
-      this.ivaTotal += (importeFilaSinIva * fila.articulo.iva / 100);
+      if (fila.articulo != null && fila.precio != null && fila.cantidad != null) {
+        let importeFilaSinIva = (fila.precio + fila.diferencia) * fila.cantidad;
+        this.importeTotalSinIva += importeFilaSinIva;
+        this.ivaTotal += (importeFilaSinIva * fila.articulo.iva / 100);
+      }
     });
 
     this.importeTotalConIva = this.importeTotalSinIva + this.ivaTotal;
-    
-    // Aplico el descuento a toda la venta
-    this.importeTotalConIva -= (this.importeTotalConIva * this.ventaForm.value.desgravado / 100);
 
+    // Aplico el descuento a toda la venta
+    if (this.ventaForm.value.desgravado != null) {
+      this.importeTotalConIva -= (this.importeTotalConIva * this.ventaForm.value.desgravado / 100);
+    }
     return this.importeTotalConIva;
   }
 
   public formatearMoneda(monto: number) {
     return formatCurrency(monto, 'esAR', '$', 'ARS');
-  }
-
-  esConCredito() {
-    return this.ventaForm.value.metodoDePago == "Crédito";
   }
 
   actualizarValidacionStock(i) {
@@ -163,6 +224,7 @@ export class AgregarVentaComponent implements OnInit {
 
     if (stockArticulo >= cantAVender) {
       campoCant.setErrors(null);
+      this.calcularImporteTotal();
     } else {
       campoCant.setErrors({ 'invalid': true });
     }

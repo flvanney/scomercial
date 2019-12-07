@@ -11,13 +11,15 @@
             <li> Esta cuenta tiene definido un límite de crédito máximo de
                 <strong>${{ cliente.cuenta.creditoMaximo }}</strong>.
             </li>
-            <li> Del crédito ha utilizado un total de ${{ cliente.cuenta.saldoGastado }}, por lo que tiene disponibles
+            <li> Del crédito ha utilizado un total de <span
+                    style="color: red"><strong>${{ cliente.cuenta.saldoGastado }}</strong></span>, por lo que tiene
+                disponibles
                 <span
                     style="color: green"><strong>${{ cliente.cuenta.creditoMaximo - cliente.cuenta.saldoGastado }}</strong></span>
                 para su uso.
             </li>
             <li> Su recibo de sueldo se actualizó por última vez el
-                {{ formatearFecha(cliente.cuenta.fechaDeActualizacion) }}.</li>
+                <strong>{{ formatearFecha(cliente.cuenta.fechaDeActualizacion) }}</strong>.</li>
         </ul>
     </ng-template>
 

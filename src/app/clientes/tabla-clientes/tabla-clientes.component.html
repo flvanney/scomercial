@@ -5,14 +5,14 @@
 <div class="mat-elevation-z8">
   <table mat-table class="full-width-table" matSort [dataSource]="dataSource">
 
-    <ng-container matColumnDef="organizacion">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Organización</th>
-      <td mat-cell *matCellDef="let cliente">{{ cliente.organizacion }}</td>
-    </ng-container>
-
     <ng-container matColumnDef="nombreCompleto">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
       <td mat-cell *matCellDef="let cliente">{{ nombre(cliente) }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="organizacion">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Organización</th>
+      <td mat-cell *matCellDef="let cliente">{{ cliente.organizacion }}</td>
     </ng-container>
 
     <ng-container matColumnDef="direccion">

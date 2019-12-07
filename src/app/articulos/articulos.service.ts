@@ -48,7 +48,7 @@ export class ArticulosService {
       });
   }
 
-  actualizarArt(id, data) {    
+  actualizarArt(id, data) {
     data._id = id;
     const art: Articulo = this.crearNuevoArt(data);
 
@@ -88,6 +88,27 @@ export class ArticulosService {
     };
 
     return nuevoArt;
+  }
+
+  actualizarStock(datos) {
+    let itemsActualizados = 0;
+
+    datos.ventas.forEach(fila => {
+      const id = fila.articulo._id;
+      fila.articulo = id;
+      fila.precio += fila.diferencia;
+      delete fila.diferencia;
+
+      this.http
+        .put(`http://localhost:3000/articulos/actualizar-stock/${id}`, { cantidad: fila.cantidad })
+        .subscribe(res => {
+          itemsActualizados += 1;
+          if (itemsActualizados === datos.ventas.length) {
+            this.traerArticulos();
+          }
+        });
+    });
+
   }
 
 

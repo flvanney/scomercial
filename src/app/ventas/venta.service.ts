@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Cliente } from '../clientes/cliente';
 
 @Injectable({
   providedIn: 'root'
@@ -20,23 +21,22 @@ export class VentasService {
   }
 
   cargarVenta(datos) {
-    datos.ventas.forEach(fila => {
-      const id = fila.articulo._id;
-      fila.articulo = id;
-      fila.precio += fila.diferencia;
-      delete fila.diferencia;
-
-      this.http
-        .put(`${this.BASE_URL}/articulos/actualizar-stock/${id}`, { cantidad: fila.cantidad })
-        .subscribe();
-    });
-
+    // Cargar venta
     this.traerUltimaVenta().subscribe(venta => {
       venta == null ? datos.nro = 1 : datos.nro = venta['nro'] + 1;
       this.http
         .post(`${this.BASE_URL}/ventas`, datos)
         .subscribe();
     });
+
+    // Actualizar estado de la cuenta si compró con crédito    
+    if (datos.metodoDePago === "Crédito") {
+      this.http
+        .put<Cliente>(`http://localhost:3000/clientes/actualizar-cuenta/${datos.cliente}`,
+          { cuenta: { saldoGastado: datos.montoTotal } })
+        .subscribe();
+    }
+
   }
 
   historialComprasCliente(idCliente: string) {
