@@ -32,5 +32,13 @@ export class DialogoCuentaComponent {
     return `${fecha.getDate()}/${fecha.getMonth()}/${fecha.getFullYear()}`;
   }
 
+  getSaldoGastado() {
+    return Math.round(this.cliente.cuenta.saldoGastado * 100) / 100;
+  }
+
+  getCreditoMaximo() {
+    return this.cliente.cuenta.creditoMaximo;
+  }
+
 
 }

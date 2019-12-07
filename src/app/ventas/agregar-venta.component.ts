@@ -78,7 +78,7 @@ export class AgregarVentaComponent implements OnInit {
     });
   }
 
-  async cargarVenta() {
+  cargarVenta() {
     this.ventaForm.value.montoTotal = this.importeTotalConIva;
     if (this.ventaForm.invalid) {
       this.abrirSnackBar('Hay campos obligatorios sin completar o con errores', 'snack-roja');
