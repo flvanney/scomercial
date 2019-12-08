@@ -40,5 +40,9 @@ export class DialogoCuentaComponent {
     return this.cliente.cuenta.creditoMaximo;
   }
 
+  getSaldoDisponible() {
+    return Math.round((this.getCreditoMaximo() - this.getSaldoGastado()) * 100)/100;
+  }
+
 
 }

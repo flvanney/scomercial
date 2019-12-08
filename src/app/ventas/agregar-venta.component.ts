@@ -30,6 +30,7 @@ export class AgregarVentaComponent implements OnInit {
   ventaForm = this.fb.group({
     fecha: [this.getFechaHoy(), Validators.required],
     cliente: [null, Validators.required],
+    vendedor: [null, Validators.required],
     ventas: this.fb.array([this.crearVenta()]),
     metodoDePago: [null, Validators.required],
     envio: ["1", Validators.required],
@@ -82,8 +83,10 @@ export class AgregarVentaComponent implements OnInit {
     this.ventaForm.value.montoTotal = this.importeTotalConIva;
     if (this.ventaForm.invalid) {
       this.abrirSnackBar('Hay campos obligatorios sin completar o con errores', 'snack-roja');
-    } else if (!this.tieneGuita) {
+    } else if (this.esConCredito() && !this.tieneGuita()) {
       this.abrirSnackBar('El crédito del cliente no es lo suficientemente amplio para realizar esta compra', 'snack-roja');
+    } else if (this.esConCredito() && !this.esCliente()) {
+      this.abrirSnackBar('El cliente no tiene una cuenta corriente habilitada', 'snack-roja');
     } else {
       this.abrirSnackBar('Venta registrada con éxito', 'snack-verde');
       this.articulosService.actualizarStock(this.ventaForm.value);
@@ -109,10 +112,14 @@ export class AgregarVentaComponent implements OnInit {
 
   getGuitaCliente() {
     if (this.elClienteFueSeleccionado()) {
-      const cliente = this.clientes.find(cliente => cliente._id === this.ventaForm.value.cliente);
+      const cliente = this.buscarCliente(this.ventaForm.value.cliente);
       const guitaCliente = cliente.cuenta.creditoMaximo - cliente.cuenta.saldoGastado;
       return guitaCliente;
     }
+  }
+
+  buscarCliente(idCliente): Cliente {
+    return this.clientes.find(cliente => cliente._id === idCliente);
   }
 
   tieneGuita() {
@@ -129,19 +136,13 @@ export class AgregarVentaComponent implements OnInit {
     return this.ventaForm.value.metodoDePago == "Crédito";
   }
 
-  leAlcanza() {
-    if (this.ventaForm.controls.ventas.status === "INVALID") {
-      return `Revise los campos obligatorios de los artículos para poder calcular el total.`
-    } else {
-      return `Actualmente, el cliente tiene un crédito disponible de ${this.formatearMoneda(this.getGuitaCliente())}, 
-      y se le descontará ${this.formatearMoneda(this.importeTotalConIva)} del mismo, quedándole para uso posterior un monto de
-    ${ this.formatearMoneda(this.getGuitaCliente() - this.importeTotalConIva)}.`
-    }
+  ventasIncompletas() {
+    return this.ventaForm.controls.ventas.status === "INVALID";
   }
 
-  noLeAlcanza() {
-    return `El cliente no tiene crédito suficiente para realizar esta compra. Su crédito disponible es de ${this.formatearMoneda(this.getGuitaCliente())},
-        y el total de la compra alcanza los ${ this.formatearMoneda(this.importeTotalConIva)}.`
+  esCliente() {
+    const cliente = this.buscarCliente(this.ventaForm.value.cliente);
+    return cliente.cuenta.estado === true;
   }
 
   get traerVentas() {

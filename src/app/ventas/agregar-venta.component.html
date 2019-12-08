@@ -29,11 +29,15 @@
         </mat-form-field>
 
         <mat-form-field class="child g-1">
-          <mat-select placeholder="Vendedor">
-            <mat-option>
-              Test
-            </mat-option>
+          <mat-select placeholder="Vendedor (*)" formControlName="vendedor">
+            <mat-option value="Juan Pablo Correa">Juan Pablo Correa</mat-option>
+            <mat-option value="Catalina Ávila">Catalina Ávila</mat-option>
+            <mat-option value="Sofía Blanco">Sofía Blanco</mat-option>
+            <mat-option value="Emilio Chávez">Emilio Chávez</mat-option>
           </mat-select>
+          <mat-error *ngIf="esRequerido('vendedor')">
+            El <strong>vendedor</strong> es requerido.
+          </mat-error>
         </mat-form-field>
 
         <mat-radio-group formControlName="envio" class="child">
@@ -184,10 +188,34 @@
             <mat-card-subtitle>Estado de la cuenta del cliente luego de realizar la transacción</mat-card-subtitle>
           </mat-card-header>
 
+          <!-- No hagan esto en sus casas -->
           <mat-card-content>
-            <div *ngIf="tieneGuita(); then thenBlock else elseBlock"></div>
-            <ng-template #thenBlock>{{ leAlcanza() }}</ng-template>
-            <ng-template #elseBlock>{{ noLeAlcanza() }}</ng-template>
+
+            <div class="flex" style="margin-left: 1.5%;" *ngIf="!esCliente()">
+              <mat-icon class="rojo">warning</mat-icon> No se puede completar la venta porque
+              el usuario seleccionado no tiene una cuenta corriente habilitada.
+            </div>
+
+            <div class="flex" style="margin-left: 1.5%;" *ngIf="ventasIncompletas() && esCliente()">
+              <mat-icon class="rojo">warning</mat-icon> Revise que los campos obligatorios de los
+              artículos estén completos para poder calcular el total de la venta.
+            </div>
+
+            <div class="flex" style="margin-left: 1.5%;" *ngIf="!ventasIncompletas() && esCliente() && !tieneGuita()">
+              <mat-icon class="rojo">warning</mat-icon> El cliente no tiene crédito suficiente para realizar
+              esta compra. Su crédito disponible es de &nbsp;
+              <strong> {{ this.formatearMoneda(this.getGuitaCliente()) }} </strong>, y el total de la compra
+              alcanza los &nbsp; <strong>{{ this.formatearMoneda(this.importeTotalConIva)}}</strong>.
+            </div>
+
+            <div class="flex" style="margin-left: 1.5%;" *ngIf="!ventasIncompletas() && esCliente() && tieneGuita()">
+              <mat-icon class="verde">check_circle</mat-icon> Actualmente, el cliente tiene un crédito disponible de
+              &nbsp; <strong>{{ formatearMoneda(this.getGuitaCliente()) }}</strong>, y se le descontará &nbsp; <strong>{{ formatearMoneda(this.importeTotalConIva) }}</strong>
+              &nbsp; del mismo,
+              quedándole para uso posterior un monto de &nbsp;
+              <strong> {{ formatearMoneda(getGuitaCliente() - importeTotalConIva) }}</strong>.
+            </div>
+
           </mat-card-content>
 
         </mat-card>

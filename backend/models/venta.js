@@ -7,6 +7,7 @@ const ventaSchema = Schema({
     nro: { type: Number, unique: true },
     fecha: Date,
     cliente: { type: Schema.Types.ObjectId, ref: 'Cliente' },
+    vendedor: String,
     ventas: [{
         articulo: { type: Schema.Types.ObjectId, ref: 'Articulo' },
         cantidad: Number,

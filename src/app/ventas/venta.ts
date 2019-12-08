@@ -5,6 +5,7 @@ export class Venta {
         public nro: number,
         public fecha: string,
         public cliente: string,
+        public vendedor: string,
         public ventas: Array<Articulos>,
         public metodoDePago: string,
         public envio: boolean,
