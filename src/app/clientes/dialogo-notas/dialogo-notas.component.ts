@@ -22,17 +22,12 @@ export class DialogoNotasComponent implements OnInit {
 
   ngOnInit() {
     this.clientesService.traerNotasCliente(this.cliente._id).subscribe((notas: Nota) => {
-      console.log(notas);
-      
       this.notas = notas;
     })
   }
 
   str(notas) {
-    console.log('STR: ' + this.notas);
     return JSON.stringify(notas);
   }
-
-
 
 }
