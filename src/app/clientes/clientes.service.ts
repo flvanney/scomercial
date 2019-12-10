@@ -45,6 +45,7 @@ export class ClientesService {
 
   cargarCliente(data) {
     const nuevoCliente: Cliente = this.crearNuevoCliente(data);
+    console.log(nuevoCliente);
 
     this.http
       .post<Cliente>(`${this.BASE_URL}/clientes`, nuevoCliente)
@@ -103,8 +104,10 @@ export class ClientesService {
       ciudad: data.ciudad,
       codigoPostal: data.codigoPostal,
       telefono: data.telefono,
+      dni: data.dni,
       cuit: data.cuit,
       cuil: data.cuil,
+      tipoFactura: data.tipoFactura,
       fechaDeInicio: data.fechaDeInicio,
       cuenta: nuevaCuenta,
     }
