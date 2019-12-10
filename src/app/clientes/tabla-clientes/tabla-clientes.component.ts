@@ -6,6 +6,7 @@ import { Cliente } from '../cliente';
 import { MatTableDataSource, MatDialog } from '@angular/material';
 import { DialogoVentasComponent } from '../dialogo-ventas/dialogo-ventas.component';
 import { DialogoCuentaComponent } from '../dialogo-cuenta/dialogo-cuenta.component';
+import {DialogoNotasComponent} from'../dialogo-notas/dialogo-notas.component';
 
 interface ClienteInterface {
   nombre: string;
@@ -23,7 +24,7 @@ export class TablaClientesComponent implements OnInit {
   clientes: Cliente[] = [];
   dataSource: MatTableDataSource<ClienteInterface>;
 
-  displayedColumns = ['nombreCompleto', 'organizacion', 'direccion', 'historial', 'cuenta', 'editar'];
+  displayedColumns = ['nombreCompleto', 'direccion', 'telefono', 'historial', 'notas', 'cuenta', 'editar'];
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -52,6 +53,10 @@ export class TablaClientesComponent implements OnInit {
 
   abrirDialogoCuenta(cliente) {
     this.dialogo.open(DialogoCuentaComponent, { data: cliente });
+  }
+
+  abrirDialogoNotas(cliente){
+    this.dialogo.open(DialogoNotasComponent, { data: cliente});
   }
 
   nombre(cliente) {
