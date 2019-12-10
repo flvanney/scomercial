@@ -36,6 +36,15 @@ export class DialogoCuentaComponent {
     return Math.round(this.cliente.cuenta.saldoGastado * 100) / 100;
   }
 
+  getSaldoGastadoSinNotas() {
+    const saldoGastado = Math.round(this.cliente.cuenta.saldoGastado * 100) / 100;
+    if (saldoGastado > 0) {
+      return saldoGastado;
+    } else {
+      return 0;
+    }
+  }
+
   getCreditoMaximo() {
     return this.cliente.cuenta.creditoMaximo;
   }
