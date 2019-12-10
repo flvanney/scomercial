@@ -76,6 +76,7 @@ export class AgregarVentaComponent implements OnInit {
       cantidad: [1, [Validators.required, Validators.min(1)]],
       precio: [null, [Validators.required, Validators.min(1)]],
       diferencia: 0,
+      totalFilaSinIva: null,
     });
   }
 
@@ -88,14 +89,20 @@ export class AgregarVentaComponent implements OnInit {
     } else if (this.esConCredito() && !this.esCliente()) {
       this.abrirSnackBar('El cliente no tiene una cuenta corriente habilitada', 'snack-roja');
     } else {
-      this.abrirSnackBar('Venta registrada con éxito', 'snack-verde');
       console.log(this.ventaForm.value);
+      this.abrirSnackBar('Venta registrada con éxito', 'snack-verde');
       this.articulosService.actualizarStock(this.ventaForm.value);
+      this.calcularTotalesFila();
       this.ventasService.cargarVenta(this.ventaForm.value);
-      this.traerArticulos();
       this.ventaForm.reset({ fecha: this.getFechaHoy(), envio: "1" });
       this.limpiarErroresForm();
     }
+  }
+
+  calcularTotalesFila() {
+    this.ventaForm.value.ventas.forEach((venta, index) => {
+      venta.totalFilaSinIva = this.calcularImporte(index);
+    })
   }
 
   limpiarErroresForm() {
@@ -188,7 +195,7 @@ export class AgregarVentaComponent implements OnInit {
       const precio = venta.precio == null ? 0 : venta.precio;
       const diferencia = venta.diferencia == null ? 0 : venta.diferencia;
       const importe = (precio + diferencia) * cantidad;
-      return this.formatearMoneda(importe);
+      return importe;
     }
     return '';
   }

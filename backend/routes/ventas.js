@@ -6,6 +6,7 @@ const Venta = require("../models/venta");
 
 router.post('/', (req, res) => {
     const venta = new Venta(req.body);    
+    console.log(venta);
     venta.save();
 
     res.status(201).json({
