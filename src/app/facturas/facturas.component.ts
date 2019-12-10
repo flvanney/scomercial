@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { formatCurrency } from '@angular/common';
 
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -21,7 +22,7 @@ import { VentasService } from '../ventas/venta.service';
   styleUrls: ['./facturas.component.css']
 })
 
-export class FacturaComponent{
+export class FacturaComponent {
 
   ventas: Venta[] = null;
   cargando: boolean;
@@ -30,9 +31,9 @@ export class FacturaComponent{
     private articulosService: ArticulosService,
     private ventasService: VentasService,
     private clientesService: ClientesService
-  ) {}
+  ) { }
 
-  displayedColumns = [ 'nombre', 'fecha', 'montoTotal', 'factura'];
+  displayedColumns = ['nombre', 'fecha', 'montoTotal', 'factura'];
   dataSource = new MatTableDataSource();
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -54,7 +55,7 @@ export class FacturaComponent{
       this.dataSource = new MatTableDataSource(this.ventas);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      
+
       console.log(this.ventas);
     })
   }
@@ -69,7 +70,7 @@ export class FacturaComponent{
     }
   }
 
-  generarFacturaB(){
+  generarFacturaB() {
     return this.facturado("Factura ORIGINAL", "B"), this.facturado("Factura COPIA", "B");
   }
 
@@ -77,7 +78,16 @@ export class FacturaComponent{
     return this.facturado("Factura ORIGINAL", "A"), this.facturado("Factura COPIA", "A");
   }
 
-  verTipoFactura(venta){
+  formatearFecha(fechaChota) {
+    const fecha = new Date(fechaChota);
+    return `${fecha.getDate()}/${fecha.getMonth()}/${fecha.getFullYear()}`;
+  }
+
+  public formatearMoneda(monto: number) {
+    return formatCurrency(monto, 'esAR', '$', 'ARS');
+  }
+
+  verTipoFactura(venta) {
     return venta.datosCliente.tipoFactura === "B"
   }
 
