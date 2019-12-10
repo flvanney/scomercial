@@ -1,3 +1,37 @@
+<!--
 <button (click)="generarFacturaB()">Factura B</button>
 <button (click)="generarFacturaA()">Factura A</button>
-<button (click)="generarRemito()">Remito</button>
+-->
+
+<mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar venta">
+</mat-form-field>
+
+<div class="mat-elevation-z8">
+
+    <table mat-table class="full-width-table" matSort [dataSource]="dataSource">
+
+        <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+            <td mat-cell *matCellDef="let venta">{{ venta.cliente }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="fecha">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+            <td mat-cell *matCellDef="let venta">{{ venta.fecha }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="monto">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Monto</th>
+            <td mat-cell *matCellDef="let venta">{{ venta.montoTotal }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+
+</div>
+

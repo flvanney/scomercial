@@ -1,14 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
+import { MatTableDataSource } from '@angular/material/table';
+
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-import { Cliente } from '../clientes/cliente';
-import { ClientesService } from '../clientes/clientes.service';
-//import { VentasService } from './venta.service';
-import { Articulo } from '../articulos/articulo';
-import { ArticulosService } from '../articulos/articulos.service';
 import { Venta } from '../ventas/venta';
+import { Cliente } from '../clientes/cliente';
+import { Articulo } from '../articulos/articulo';
+import { ClientesService } from '../clientes/clientes.service';
+import { ArticulosService } from '../articulos/articulos.service';
+import { VentasService } from '../ventas/venta.service';
 
 @Component({
   selector: 'app-factura',
@@ -16,33 +21,30 @@ import { Venta } from '../ventas/venta';
   styleUrls: ['./facturas.component.css']
 })
 
-/*export class Comprador {
-  compradorNombre: string;
-  compradorDomicilio: string;
-  compradorTelefono: string;
-  compradorDNI: string;
-}
+export class FacturaComponent{
 
-export class Articulos{
-  artCantidad: string;
-  artDescripcion: string;
-  artPrecio: number;
-  artIVA: number;
-}
+  ventas: Venta[] = null;
 
-export class ventaAsociada {
-  ventaFecha: string;
-  ventaFormaPago: string;
-  ventaCondicionIVA: string;
-  comprador: Comprador;
-  articulos: Articulos[]=[];
-}*/
+  constructor(
+    private articulosService: ArticulosService,
+    private ventasService: VentasService,
+    private clientesService: ClientesService
+  ) {}
 
-export class FacturaComponent {
+  displayedColumns = [ 'nombre', 'fecha', 'monto'];
+  dataSource = new MatTableDataSource();
 
-  constructor() { }
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   ngOnInit() {
+    this.ventasService.traerVentas().subscribe((ventas: Venta[]) => {
+      this.ventas = ventas;
+      this.dataSource = new MatTableDataSource(this.ventas);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+      console.log(this.dataSource);
+    })
   }
 
   generarFacturaB() {
