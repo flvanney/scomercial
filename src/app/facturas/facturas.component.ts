@@ -38,18 +38,18 @@ export class ventaAsociada {
   articulos: Articulos[]=[];
 }*/
 
-export class FacturaComponent{
+export class FacturaComponent {
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit() {
   }
 
-  generarFacturaB(){
+  generarFacturaB() {
     return this.facturado("Factura ORIGINAL", "B"), this.facturado("Factura COPIA", "B");
   }
 
-  generarFacturaA(){
+  generarFacturaA() {
     return this.facturado("Factura ORIGINAL", "A"), this.facturado("Factura COPIA", "A");
   }
 
@@ -73,7 +73,7 @@ export class FacturaComponent{
                 'Monteagudo 2700',
                 'Pergamino Buenos Aires',
                 'Tel:2477-412345',
-                'Responsable Inscripto',]
+                'IVA Responsable Inscripto',]
             },
             {
               width: '*',
@@ -128,7 +128,7 @@ export class FacturaComponent{
             body: [
               ['Cantidad', 'Cod', 'Descripcion', 'Prec.Unit.', 'IVA', 'Bonif.', 'Importe'],
               ['5', 'man01', 'Manaos Uva', '37', '21%', '100%', 'No tiene precio'],
-              ['1', 'EVA01', 'Kenji te vas a subir al Eva o no la concha de tu madre', '99x10^45', '0%', '0%', 'Una banda'],  
+              ['1', 'EVA01', 'Kenji te vas a subir al Eva o no la concha de tu madre', '99x10^45', '0%', '0%', 'Una banda'],
             ]
           }
         },
@@ -165,7 +165,113 @@ export class FacturaComponent{
     pdfMake.createPdf(facturaOriginal).download("factura");
   }
 
-  generarNumero(){
+  generarRemito() {
+    return this.remitado('REMITO ORIGINAL'), this.remitado('REMITO COPIA'), this.remitado('REMITO COPIA')
+  }
 
+  remitado(tipo: String) {
+    const remito = {
+      pageSize: 'A4',
+      content: [
+        {//Letra de la factura
+          text: "R",
+          style: 'letraFactura',
+        },
+        {
+          columns: [
+            {//Datos empresa
+              width: 'auto',
+              alignment: 'left',
+              type: 'none',
+              ul: [
+                tipo,
+                'UNNOBA',
+                'Monteagudo 2700',
+                'Pergamino Buenos Aires',
+                'Tel:2477-412345',
+                'IVA Responsable Inscripto',]
+            },
+            {
+              width: '*',
+              alignment: 'right',
+              type: 'none',
+              ul: [
+                'Remito:0001-000000001',
+                'Fecha: 06/12/2019',
+                'CUIT/CUIL: xxxxxxxxxxxx',
+                'Ingresos brutos: 0000000000',
+                'Inicio de actividades: 01/01/2006']
+            },]
+
+        },
+
+        {//Separador muy vago
+          text: ' '
+        },
+        //Datos del cliente
+        {
+          columns: [
+            {
+              width: '*',
+              alignment: 'left',
+              type: 'none',
+              ul: [
+                'Señor: {nombre.cliente}',
+                'Domicilio: {cliente.domicilio}',
+                'Localidad: {clinete.localidad}']
+            },
+            {
+              width: '*',
+              alignment: 'right',
+              type: 'none',
+              ul: [
+                'Condicion de IVA: {iva.cliente}',
+                'CUIT: cliente.cuit',
+                'Condicion de Pago: {formadepago}']
+            }
+          ]
+        },
+        {//Separador muy vago
+          text: ' '
+        },
+
+        {
+          table: {
+            widths: [50, 'auto', '*'],
+            body: [
+              ['Cant', 'Cod', 'Descripcion'],
+              ['5', 'man01', 'Manaos Uva'],
+              ['1', 'EVA01', 'Kenji te vas a subir al Eva o no la concha de tu madre'],
+            ]
+          }
+        },
+        { text: ' ' },
+        { text: ' ' },
+        {
+          type: 'none',
+          ul: [
+            'Lugar entrega:..............................................................................',
+            'Fecha entrega:..............................................................................',
+            'Forma envio:................................................................................',
+          ],
+        },
+        { text: ' ' },
+        {
+          type: 'none',
+          ul: [
+            'DNI:.................................................................................................',
+            'Firma y aclaracion: '
+          ]
+        }
+      ],
+      styles: {
+        letraFactura: {
+          bold: true,
+          alignment: 'center',
+          fontSize: 40,
+        },
+      }
+    };
+    pdfMake.createPdf(remito).download("remito");
   }
 }
