@@ -1,3 +1,6 @@
+import { Cliente } from '../clientes/cliente';
+import { Articulo } from '../articulos/articulo';
+
 export class Venta {
     constructor(
         // tslint:disable-next-line: variable-name
@@ -12,6 +15,7 @@ export class Venta {
         public observaciones: string,
         public desgravado: number,
         public montoTotal: number,
+        public datosCliente?: Cliente,
     ) { }
 }
 
@@ -20,5 +24,6 @@ class Articulos {
         public articulo: string,
         public cantidad: number,
         public precio: number,
+        public datosArticulo?: Articulo,
     ) { }
 }

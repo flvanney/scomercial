@@ -24,6 +24,7 @@ import { VentasService } from '../ventas/venta.service';
 export class FacturaComponent{
 
   ventas: Venta[] = null;
+  cargando: boolean;
 
   constructor(
     private articulosService: ArticulosService,
@@ -40,14 +41,30 @@ export class FacturaComponent{
   ngOnInit() {
     this.ventasService.traerVentas().subscribe((ventas: Venta[]) => {
       this.ventas = ventas;
+      this.ventas.forEach(venta => {
+        this.clientesService.buscarCliente(venta.cliente).subscribe((cliente: Cliente) => {
+          venta.datosCliente = cliente;
+        })
+        venta.ventas.forEach(venta => {
+          this.articulosService.buscarArt(venta.articulo).subscribe((art: Articulo) => {
+            venta.datosArticulo = art;
+          })
+        })
+      });
       this.dataSource = new MatTableDataSource(this.ventas);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
-      console.log(this.dataSource);
+      console.log(this.ventas);
     })
   }
 
-  generarFacturaB() {
+  getNombreCliente(venta) {
+    if (typeof venta.datosCliente != 'undefined') {
+      return `${venta.datosCliente.nombre} ${venta.datosCliente.apellido}`;
+    }
+  }
+
+  generarFacturaB(){
     return this.facturado("Factura ORIGINAL", "B"), this.facturado("Factura COPIA", "B");
   }
 
