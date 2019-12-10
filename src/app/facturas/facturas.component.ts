@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
+import { MatTableDataSource } from '@angular/material/table';
+
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 import { Venta } from '../ventas/venta';
@@ -26,9 +31,19 @@ export class FacturaComponent{
     private clientesService: ClientesService
   ) {}
 
+  displayedColumns = [ 'nombre', 'fecha', 'monto'];
+  dataSource = new MatTableDataSource();
+
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+
   ngOnInit() {
     this.ventasService.traerVentas().subscribe((ventas: Venta[]) => {
       this.ventas = ventas;
+      this.dataSource = new MatTableDataSource(this.ventas);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+      console.log(this.dataSource);
     })
   }
 
