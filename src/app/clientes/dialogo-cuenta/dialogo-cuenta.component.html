@@ -12,12 +12,12 @@
                 <strong>${{ getCreditoMaximo() }}</strong>.
             </li>
             <li> Del crédito ha utilizado un total de <span
-                    style="color: red"><strong>${{ getSaldoGastado() }}</strong></span>, por lo que tiene
-                disponibles
-                <span
-                    style="color: green"><strong>${{ getSaldoDisponible() }}</strong></span>
+                    style="color: red"><strong>${{ getSaldoGastadoSinNotas() }}</strong></span>
                 para su uso.
             </li>
+            <li>El saldo máximo disponible, teniendo en cuenta el crédito máximo y el balance de las notas, es de
+                    <span
+                    style="color: green"><strong>${{ getSaldoDisponible() }}</strong></span> </li>.
             <li> Su recibo de sueldo se actualizó por última vez el
                 <strong>{{ formatearFecha(cliente.cuenta.fechaDeActualizacion) }}</strong>.</li>
         </ul>
