@@ -32,7 +32,7 @@ export class FacturaComponent{
     private clientesService: ClientesService
   ) {}
 
-  displayedColumns = [ 'nombre', 'fecha', 'monto'];
+  displayedColumns = [ 'nombre', 'fecha', 'montoTotal', 'factura'];
   dataSource = new MatTableDataSource();
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -52,10 +52,15 @@ export class FacturaComponent{
         })
       });
       this.dataSource = new MatTableDataSource(this.ventas);
-      this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      
       console.log(this.ventas);
     })
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   getNombreCliente(venta) {
@@ -70,6 +75,10 @@ export class FacturaComponent{
 
   generarFacturaA() {
     return this.facturado("Factura ORIGINAL", "A"), this.facturado("Factura COPIA", "A");
+  }
+
+  verTipoFactura(venta){
+    return venta.datosCliente.tipoFactura === "B"
   }
 
   facturado(tipo, letra: String) {
@@ -187,6 +196,7 @@ export class FacturaComponent{
   generarRemito() {
     return this.remitado('REMITO ORIGINAL'), this.remitado('REMITO COPIA'), this.remitado('REMITO COPIA')
   }
+
 
   remitado(tipo: String) {
     const remito = {
