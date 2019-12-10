@@ -3,28 +3,72 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
+import { Cliente } from '../clientes/cliente';
+import { ClientesService } from '../clientes/clientes.service';
+//import { VentasService } from './venta.service';
+import { Articulo } from '../articulos/articulo';
+import { ArticulosService } from '../articulos/articulos.service';
+import { Venta } from '../ventas/venta';
+
 @Component({
   selector: 'app-factura',
   templateUrl: './facturas.component.html',
   styleUrls: ['./facturas.component.css']
 })
-export class FacturaComponent implements OnInit {
 
-  generarFacturaB() {
-    const documentDefinition = {
+/*export class Comprador {
+  compradorNombre: string;
+  compradorDomicilio: string;
+  compradorTelefono: string;
+  compradorDNI: string;
+}
+
+export class Articulos{
+  artCantidad: string;
+  artDescripcion: string;
+  artPrecio: number;
+  artIVA: number;
+}
+
+export class ventaAsociada {
+  ventaFecha: string;
+  ventaFormaPago: string;
+  ventaCondicionIVA: string;
+  comprador: Comprador;
+  articulos: Articulos[]=[];
+}*/
+
+export class FacturaComponent{
+
+  constructor() {}
+
+  ngOnInit() {
+  }
+
+  generarFacturaB(){
+    return this.facturado("Factura ORIGINAL", "B"), this.facturado("Factura COPIA", "B");
+  }
+
+  generarFacturaA(){
+    return this.facturado("Factura ORIGINAL", "A"), this.facturado("Factura COPIA", "A");
+  }
+
+  facturado(tipo, letra: String) {
+    const facturaOriginal = {
       pageSize: 'A4',
       content: [
         {//Letra de la factura
-          text: 'B', style: 'letraFactura'
+          text: letra,
+          style: 'letraFactura',
         },
         {
           columns: [
-            {//Datos Empresa
+            {//Datos empresa
               width: 'auto',
               alignment: 'left',
               type: 'none',
               ul: [
-                'FACTURA Original',
+                tipo,
                 'UNNOBA',
                 'Monteagudo 2700',
                 'Pergamino Buenos Aires',
@@ -36,9 +80,9 @@ export class FacturaComponent implements OnInit {
               alignment: 'right',
               type: 'none',
               ul: [
-                'Nº factura:0001-000000001',
+                'Nº factura:0002-000000001',
                 'Fecha: 06/12/2019',
-                'CUIT/CUIL: 23341441439',
+                'CUIT/CUIL: xxxxxxxxxxxx',
                 'Ingresos brutos: 0000000000',
                 'Inicio de actividades: 01/01/2006']
             },]
@@ -118,12 +162,10 @@ export class FacturaComponent implements OnInit {
         }
       }
     };
-    pdfMake.createPdf(documentDefinition).download("facturaB");
+    pdfMake.createPdf(facturaOriginal).download("factura");
   }
 
-  constructor() { }
+  generarNumero(){
 
-  ngOnInit() {
   }
-
 }
