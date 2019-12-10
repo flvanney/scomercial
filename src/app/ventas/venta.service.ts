@@ -13,7 +13,7 @@ export class VentasService {
   }
 
   traerVentas() {
-    this.http.get(`${this.BASE_URL}/ventas`);
+    return this.http.get(`${this.BASE_URL}/ventas`);
   }
 
   traerUltimaVenta() {

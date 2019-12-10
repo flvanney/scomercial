@@ -3,12 +3,12 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-import { Cliente } from '../clientes/cliente';
-import { ClientesService } from '../clientes/clientes.service';
-//import { VentasService } from './venta.service';
-import { Articulo } from '../articulos/articulo';
-import { ArticulosService } from '../articulos/articulos.service';
 import { Venta } from '../ventas/venta';
+import { Cliente } from '../clientes/cliente';
+import { Articulo } from '../articulos/articulo';
+import { ClientesService } from '../clientes/clientes.service';
+import { ArticulosService } from '../articulos/articulos.service';
+import { VentasService } from '../ventas/venta.service';
 
 @Component({
   selector: 'app-factura',
@@ -16,33 +16,20 @@ import { Venta } from '../ventas/venta';
   styleUrls: ['./facturas.component.css']
 })
 
-/*export class Comprador {
-  compradorNombre: string;
-  compradorDomicilio: string;
-  compradorTelefono: string;
-  compradorDNI: string;
-}
-
-export class Articulos{
-  artCantidad: string;
-  artDescripcion: string;
-  artPrecio: number;
-  artIVA: number;
-}
-
-export class ventaAsociada {
-  ventaFecha: string;
-  ventaFormaPago: string;
-  ventaCondicionIVA: string;
-  comprador: Comprador;
-  articulos: Articulos[]=[];
-}*/
-
 export class FacturaComponent{
 
-  constructor() {}
+  ventas: Venta[] = null;
+
+  constructor(
+    private articulosService: ArticulosService,
+    private ventasService: VentasService,
+    private clientesService: ClientesService
+  ) {}
 
   ngOnInit() {
+    this.ventasService.traerVentas().subscribe((ventas: Venta[]) => {
+      this.ventas = ventas;
+    })
   }
 
   generarFacturaB(){
