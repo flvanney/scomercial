@@ -128,4 +128,8 @@ export class ClientesService {
       });
   }
 
+  traerNotasCliente(clienteId) {
+    return this.http.get(`${this.BASE_URL}/notas/${clienteId}`);
+  }
+
 }

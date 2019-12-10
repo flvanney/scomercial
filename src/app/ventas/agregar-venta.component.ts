@@ -89,8 +89,9 @@ export class AgregarVentaComponent implements OnInit {
       this.abrirSnackBar('El cliente no tiene una cuenta corriente habilitada', 'snack-roja');
     } else {
       this.abrirSnackBar('Venta registrada con éxito', 'snack-verde');
-      this.articulosService.actualizarStock(this.ventaForm.value);
-      this.ventasService.cargarVenta(this.ventaForm.value);
+      console.log(this.ventaForm.value);
+      // this.articulosService.actualizarStock(this.ventaForm.value);
+      // this.ventasService.cargarVenta(this.ventaForm.value);
       this.traerArticulos();
       this.ventaForm.reset({ fecha: this.getFechaHoy(), envio: "1" });
       this.limpiarErroresForm();
