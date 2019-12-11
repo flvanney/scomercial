@@ -55,8 +55,6 @@ export class FacturaComponent {
       this.dataSource = new MatTableDataSource(this.ventas);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-
-      console.log(this.ventas);
     })
   }
 
@@ -92,7 +90,7 @@ export class FacturaComponent {
   }
 
   verTipoFactura(venta: Venta) {
-    if (venta.datosCliente !== undefined){
+    if (typeof venta.datosCliente != 'undefined'){
       return venta.datosCliente.tipoFactura === "B"}
   }
 
@@ -340,7 +338,7 @@ export class FacturaComponent {
             },
             ],
             ...articulos.map(art => {
-              return [art.cantidad, art.articulo, art.datosArticulo, art.precio, art.totalFilaSinIva];
+              return [art.cantidad, art.datosArticulo.nombre, art.datosArticulo.descripcion, art.precio, art.totalFilaSinIva];
             })
           ]
         }
