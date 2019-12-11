@@ -91,13 +91,20 @@ export class FacturaComponent {
     return formatCurrency(monto, 'esAR', '$', 'ARS');
   }
 
-  verTipoFactura(venta) {
+  verTipoFactura(venta: Venta) {
     return venta.datosCliente.tipoFactura === "B"
   }
 
-  facturado(tipo, letra: String, venta: Venta) {
+  facturado(tipo: String, letra: String, venta: Venta) {
     let fecha = this.getFechaHoy();
-    fecha= this.formatearFecha(fecha);
+    let IVACliente;
+    if (letra === "B") {
+      IVACliente = "Consumidor Final";
+    }
+    else {
+      IVACliente = "Responsable Inscripto";
+    }
+    //fecha= this.formatearFecha(fecha);
     const facturaOriginal = {
       pageSize: 'A4',
       content: [
@@ -144,7 +151,7 @@ export class FacturaComponent {
               alignment: 'left',
               type: 'none',
               ul: [
-                'Razon social: '+ venta.datosCliente.organizacion,
+                'Razon social: ' + venta.datosCliente.nombre + ' ' + venta.datosCliente.apellido,
                 'Domicilio: ' + venta.datosCliente.direccion,
                 'Localidad: ' + venta.datosCliente.ciudad + ' ' + venta.datosCliente.provincia,
                 'Condicion de venta: ' + venta.metodoDePago,]
@@ -155,27 +162,17 @@ export class FacturaComponent {
               alignment: 'right',
               type: 'none',
               ul: [
-                'Telefono: '+ venta.datosCliente.telefono,
-                'Fecha: '+ fecha,
-                'DNI: '+ venta.datosCliente.cuil,
-                'Condicion de IVA: '+ venta.datosCliente.provincia,]
+                'Telefono: ' + venta.datosCliente.telefono,
+                'Fecha: ' + fecha,
+                'DNI: ' + venta.datosCliente.dni,
+                'Condicion de IVA: ' + IVACliente,]
             },]
-
         },
         {//Separador muy vago
           text: ' '
         },
 
-        {
-          table: {
-            widths: [50, 'auto', '*', 'auto', 50, 'auto'],
-            body: [
-              ['Cantidad', 'Cod', 'Descripcion', 'Prec.Unit.', 'IVA', 'Importe'],
-              ['5', 'man01', 'Manaos Uva', '37', '21%', 'No tiene precio'],
-              ['1', 'EVA01', 'Kenji te vas a subir al Eva o no la concha de tu madre', '99x10^45', '0%', 'Una banda'],
-            ]
-          }
-        },
+        this.getTablaFactura(venta),
 
         {//Separador muy vago
           text: ' '
@@ -183,7 +180,7 @@ export class FacturaComponent {
 
         {
           alignment: 'right',
-          text: 'Importe total: '+ venta.montoTotal,
+          text: 'Importe total: ' + venta.montoTotal,
         },
 
         {//Separador muy vago
@@ -319,26 +316,52 @@ export class FacturaComponent {
     };
     pdfMake.createPdf(remito).download("remito");
   }
-  getTablaFactura(articulos: Articulo[]){
-    const art = [];
-    articulos.forEach(Articulo => art.push(
-      [{
-        columns: [
-          [{
-            text: Articulo.cantidad,
-          },
-          {
-            text: Articulo.codigo,
-          },
-          {
-            text: Articulo.descripcion,
-          },
-          {
-            text: Articulo.
-          }
-        ]
-        ]
-      }]
-    ))
+  getTablaFactura(venta: Venta) {
+    let articulos = venta.ventas;
+    return {
+        table: {
+          widths: [50, 'auto', '*', 'auto', 'auto'],
+          body: [
+            [{
+              text: 'Cantidad',
+            },
+            {
+              text: 'Cod',
+            },
+            {
+              text: 'Descripcion',
+            },
+            {
+              text: 'Prec.Unit.',
+            },
+            {
+              text: 'Importe',
+            },
+            ],
+            ...articulos.map(art => {
+              return [art.cantidad, art.articulo, art.datosArticulo, art.precio, art.totalFilaSinIva];
+            })
+          ]
+        }
+      }
+    }
   }
-}
+  /*
+  buildTableBody(venta: Venta, columns) {
+    var body = [];
+    var art = venta.ventas;
+    body.push(columns);
+    
+    art.forEach(function(row) {
+        var dataRow = [];
+    
+        columns.forEach(function(column) {
+        //    alert(row[column].toString())
+            dataRow.push(row[column].toString());
+            });
+    
+        body.push(dataRow);
+    });
+    
+    return body;
+  }*/
