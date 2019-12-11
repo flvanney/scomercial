@@ -26,7 +26,6 @@ import { VentasService } from '../ventas/venta.service';
 export class FacturaComponent {
 
   ventas: Venta[] = null;
-  cargando: boolean;
 
   constructor(
     private articulosService: ArticulosService,
@@ -69,12 +68,8 @@ export class FacturaComponent {
     }
   }
 
-  generarFacturaB(venta: Venta) {
-    return this.facturado("Factura ORIGINAL", "B", venta), this.facturado("Factura COPIA", "B", venta);
-  }
-
-  generarFacturaA(venta: Venta) {
-    return this.facturado("Factura ORIGINAL", "A", venta), this.facturado("Factura COPIA", "A", venta);
+  generarFactura(venta: Venta, tipoFactura: String) {
+    return this.facturado("Factura ORIGINAL", tipoFactura, "Factura ORIGINAL", venta), this.facturado("Factura COPIA", "B", "Factura DUPLICADA", venta);
   }
 
   getFechaHoy() {
@@ -86,16 +81,17 @@ export class FacturaComponent {
     return `${fecha.getDate()}/${fecha.getMonth()}/${fecha.getFullYear()}`;
   }
 
-  public formatearMoneda(monto: number) {
+  formatearMoneda(monto: number) {
     return formatCurrency(monto, 'esAR', '$', 'ARS');
   }
 
   verTipoFactura(venta: Venta) {
-    if (typeof venta.datosCliente != "undefined"){
-    return venta.datosCliente.tipoFactura === "B";}
+    if (typeof venta.datosCliente != "undefined") {
+      return venta.datosCliente.tipoFactura === "B";
+    }
   }
 
-  facturado(tipo: String, letra: String, venta: Venta) {
+  facturado(tipo: String, letra: String, nombreArchivo: string, venta: Venta) {
     let fecha = this.getFechaHoy();
     let IVACliente = "Responsable Inscripto";
     let total = numerosletras(venta.montoTotal, 'nominal', 2, 'CENTAVOS');
@@ -151,7 +147,7 @@ export class FacturaComponent {
               ul: [
                 'Razon social: ' + venta.datosCliente.nombre + ' ' + venta.datosCliente.apellido,
                 'Domicilio: ' + venta.datosCliente.direccion,
-                'Localidad: ' + venta.datosCliente.ciudad + ' ' + venta.datosCliente.provincia,
+                'Localidad: ' + venta.datosCliente.provincia + ', ' + venta.datosCliente.ciudad,
                 'Condicion de venta: ' + venta.metodoDePago,]
             },
             {
@@ -178,7 +174,7 @@ export class FacturaComponent {
 
         {
           alignment: 'right',
-          text: 'Importe total: ' + venta.montoTotal,
+          text: 'Importe total: ' + this.formatearMoneda(venta.montoTotal),
         },
 
         {//Separador muy vago
@@ -201,15 +197,15 @@ export class FacturaComponent {
         }
       }
     };
-    pdfMake.createPdf(facturaOriginal).download("factura");
+    pdfMake.createPdf(facturaOriginal).download(nombreArchivo);
   }
 
   generarRemito(venta: Venta) {
-    return this.remitado('REMITO ORIGINAL', venta), this.remitado('REMITO COPIA', venta), this.remitado('REMITO COPIA', venta)
+    return this.remitado('REMITO ORIGINAL', 'REMITO ORIGINAL', venta), this.remitado('REMITO COPIA', 'REMITO DUPLICADO', venta), this.remitado('REMITO COPIA', 'REMITO TRIPLICADO', venta);
   }
 
 
-  remitado(tipo: String, venta: Venta) {
+  remitado(tipo: String, nombreArchivo: String, venta: Venta) {
     let fecha = this.getFechaHoy();
     const remito = {
       pageSize: 'A4',
@@ -229,7 +225,7 @@ export class FacturaComponent {
                 'UNNOBA',
                 'Monteagudo 2700',
                 'Pergamino Buenos Aires',
-                'Tel:2477-412345',
+                'Tel: 2477-412345',
                 'IVA Responsable Inscripto',]
             },
             {
@@ -238,7 +234,7 @@ export class FacturaComponent {
               type: 'none',
               ul: [
                 'Remito:0001-000000001',
-                'Fecha: ' +  fecha,
+                'Fecha: ' + fecha,
                 'CUIT/CUIL: xxxxxxxxxxxx',
                 'Ingresos brutos: 0000000000',
                 'Inicio de actividades: 01/01/2006']
@@ -257,16 +253,16 @@ export class FacturaComponent {
               alignment: 'left',
               type: 'none',
               ul: [
-                'Señor: ' + venta.datosCliente.nombre + ' ' + venta.datosCliente.apellido, 
+                'Señor: ' + venta.datosCliente.nombre + ' ' + venta.datosCliente.apellido,
                 'Domicilio: ' + venta.datosCliente.direccion,
-                'Localidad: ' + venta.datosCliente.ciudad  + ' ' + venta.datosCliente.provincia]
+                'Localidad: ' + venta.datosCliente.provincia + ', ' + venta.datosCliente.ciudad]
             },
             {
               width: '*',
               alignment: 'right',
               type: 'none',
               ul: [
-                'Condicion de IVA: {iva.cliente}',
+                'Condicion de IVA: Responsable Inscripto',
                 'CUIT: ' + venta.datosCliente.cuil,
                 'Condicion de Pago: ' + venta.metodoDePago]
             }
@@ -305,59 +301,62 @@ export class FacturaComponent {
         },
       }
     };
-    pdfMake.createPdf(remito).download("remito");
+    pdfMake.createPdf(remito).download(nombreArchivo);
   }
+
   getTablaFactura(venta: Venta) {
     let articulos = venta.ventas;
+    console.log(articulos);
+
     return {
-        table: {
-          widths: [50, 'auto', '*', 'auto', 'auto'],
-          body: [
-            [{
-              text: 'Cantidad',
-            },
-            {
-              text: 'Cod',
-            },
-            {
-              text: 'Descripcion',
-            },
-            {
-              text: 'Prec.Unit.',
-            },
-            {
-              text: 'Importe',
-            },
-            ],
-            ...articulos.map(art => {
-              return [art.cantidad, art.datosArticulo.nombre, art.datosArticulo.descripcion, art.precio, art.totalFilaSinIva];
-            })
-          ]
-        }
+      table: {
+        widths: ['auto', 'auto', 'auto', '*', 'auto', 'auto', 'auto'],
+        body: [
+          [
+            { text: 'Cód.' },
+            { text: 'Nombre' },
+            { text: 'Cant.' },
+            { text: 'Descripción' },
+            { text: 'P.U.' },
+            { text: 'IVA' },
+            { text: 'Importe' }
+          ],
+          ...articulos.map(art => {
+            return [
+              art.datosArticulo.codigo,
+              art.datosArticulo.nombre,
+              art.cantidad,
+              art.datosArticulo.descripcion,
+              this.formatearMoneda(art.precio),
+              art.datosArticulo.iva + '%',
+              this.formatearMoneda(art.totalFilaSinIva)];
+          })
+        ]
       }
     }
-
-    getTablaRemito(venta: Venta) {
-      let articulos = venta.ventas;
-      return {
-          table: {
-            widths: [50, 'auto', '*'],
-            body: [
-              [{
-                text: 'Cantidad',
-              },
-              {
-                text: 'Cod',
-              },
-              {
-                text: 'Descripcion',
-              },
-              ],
-              ...articulos.map(art => {
-                return [art.cantidad, art.datosArticulo.nombre, art.datosArticulo.descripcion];
-              })
-            ]
-          }
-        }
-      }
   }
+
+  getTablaRemito(venta: Venta) {
+    let articulos = venta.ventas;
+    return {
+      table: {
+        widths: ['auto', 'auto', '*'],
+        body: [
+          [{
+            text: 'Cant.',
+          },
+          {
+            text: 'Nombre',
+          },
+          {
+            text: 'Descripción',
+          },
+          ],
+          ...articulos.map(art => {
+            return [art.cantidad, art.datosArticulo.nombre, art.datosArticulo.descripcion];
+          })
+        ]
+      }
+    }
+  }
+}
