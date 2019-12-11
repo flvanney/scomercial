@@ -27,6 +27,7 @@
     "material-design-icons": "^3.0.1",
     "mongoose": "^5.8.0",
     "ngx-order-pipe": "^2.0.4",
+    "numeros_a_letras": "^1.0.7",
     "pdfmake": "^0.1.62",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",

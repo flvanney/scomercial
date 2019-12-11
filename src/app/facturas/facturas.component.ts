@@ -3,6 +3,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { formatCurrency } from '@angular/common';
 
+import * as numerosletras from 'numeros_a_letras';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { MatTableDataSource } from '@angular/material/table';
@@ -97,6 +98,7 @@ export class FacturaComponent {
   facturado(tipo: String, letra: String, venta: Venta) {
     let fecha = this.getFechaHoy();
     let IVACliente = "Responsable Inscripto";
+    let total = numerosletras(venta.montoTotal, 'nominal', 2, 'CENTAVOS');
     if (letra === "B") {
       IVACliente = "Consumidor Final";
     }
@@ -184,7 +186,7 @@ export class FacturaComponent {
         },
 
         {//Esto va a ser un dolor de huevos...
-          text: 'Son Pesos SIETE MIL TRESCIENTOS OCHENTA Y CINCO con VEINTISEIS'
+          text: 'Son Pesos ' + total,
         }
 
       ],
