@@ -265,7 +265,7 @@ export class AgregarVentaComponent implements OnInit {
   }
 
   getDireccionCliente() {
-    if (this.ventaForm.value.cliente !== null && this.ventaForm.controls.direccionEnvio.untouched) {
+    if (this.ventaForm.value.cliente !== null) {
       const cliente = this.buscarCliente(this.ventaForm.value.cliente);
       return cliente.direccion;
     } else {
