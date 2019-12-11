@@ -23,8 +23,10 @@ export class AgregarClienteComponent implements OnInit {
     factura: null,
     codigoPostal: [null, Validators.required],
     telefono: null,
+    dni: [null, Validators.required],
     cuit: null,
     cuil: null,
+    tipoFactura: ["A", Validators.required],
     fechaDeInicio: null,
     estado: false,
     creditoMaximo: null,
@@ -69,8 +71,10 @@ export class AgregarClienteComponent implements OnInit {
             factura: null,
             codigoPostal: this.cliente.codigoPostal,
             telefono: this.cliente.telefono,
+            dni: this.cliente.dni,
             cuit: this.cliente.cuit,
             cuil: this.cliente.cuil,
+            tipoFactura: this.cliente.tipoFactura,
             fechaDeInicio: this.cliente.fechaDeInicio,
             estado: this.cliente.cuenta.estado,
             creditoMaximo: this.cliente.cuenta.creditoMaximo,
@@ -85,13 +89,12 @@ export class AgregarClienteComponent implements OnInit {
   }
 
   cargarCliente() {
-
     if (this.clienteForm.invalid) {
       this.abrirSnackBar('Complete todos los campos obligatorios.', 'snack-roja');
     }
     else if (this.modoEditar()) {
       this.clientesService.actualizarCliente(this.cliente._id, this.clienteForm.value);
-      this.abrirSnackBar('Artículo modificado con éxito.', 'snack-verde');
+      this.abrirSnackBar('Cliente modificado con éxito.', 'snack-verde');
     } else {
       this.clientesService.cargarCliente(this.clienteForm.value);
       this.abrirSnackBar('Cliente cargado con éxito.', 'snack-verde');
@@ -101,7 +104,7 @@ export class AgregarClienteComponent implements OnInit {
   }
 
   reiniciarForm() {
-    this.clienteForm.reset();
+    this.clienteForm.reset({ tipoFactura: "A" });
   }
 
   limpiarErroresForm() {

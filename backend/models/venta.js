@@ -12,6 +12,7 @@ const ventaSchema = Schema({
         articulo: { type: Schema.Types.ObjectId, ref: 'Articulo' },
         cantidad: Number,
         precio: Number,
+        totalFilaSinIva: Number,
     }],
     metodoDePago: String,
     envio: Boolean,

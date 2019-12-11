@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { formatCurrency } from '@angular/common';
 
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -21,7 +22,7 @@ import { VentasService } from '../ventas/venta.service';
   styleUrls: ['./facturas.component.css']
 })
 
-export class FacturaComponent{
+export class FacturaComponent {
 
   ventas: Venta[] = null;
   cargando: boolean;
@@ -30,9 +31,9 @@ export class FacturaComponent{
     private articulosService: ArticulosService,
     private ventasService: VentasService,
     private clientesService: ClientesService
-  ) {}
+  ) { }
 
-  displayedColumns = [ 'nombre', 'fecha', 'monto'];
+  displayedColumns = ['nombre', 'fecha', 'montoTotal', 'factura'];
   dataSource = new MatTableDataSource();
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -52,10 +53,15 @@ export class FacturaComponent{
         })
       });
       this.dataSource = new MatTableDataSource(this.ventas);
-      this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+
       console.log(this.ventas);
     })
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   getNombreCliente(venta) {
@@ -64,7 +70,7 @@ export class FacturaComponent{
     }
   }
 
-  generarFacturaB(venta: Venta){
+  generarFacturaB(venta: Venta) {
     return this.facturado("Factura ORIGINAL", "B", venta), this.facturado("Factura COPIA", "B", venta);
   }
 
@@ -76,10 +82,22 @@ export class FacturaComponent{
     return new Date().toISOString().substring(0, 10);
   }
 
+  formatearFecha(fechaChota) {
+    const fecha = new Date(fechaChota);
+    return `${fecha.getDate()}/${fecha.getMonth()}/${fecha.getFullYear()}`;
+  }
+
+  public formatearMoneda(monto: number) {
+    return formatCurrency(monto, 'esAR', '$', 'ARS');
+  }
+
+  verTipoFactura(venta) {
+    return venta.datosCliente.tipoFactura === "B"
+  }
+
   facturado(tipo, letra: String, venta: Venta) {
-
-    let fecha = this.getFechaHoy().toString();
-
+    let fecha = this.getFechaHoy();
+    fecha= this.formatearFecha(fecha);
     const facturaOriginal = {
       pageSize: 'A4',
       content: [
@@ -194,6 +212,7 @@ export class FacturaComponent{
   generarRemito(venta: Venta) {
     return this.remitado('REMITO ORIGINAL'), this.remitado('REMITO COPIA'), this.remitado('REMITO COPIA')
   }
+
 
   remitado(tipo: String) {
     const remito = {

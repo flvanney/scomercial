@@ -36,7 +36,6 @@ export class VentasService {
           { cuenta: { saldoGastado: datos.montoTotal } })
         .subscribe();
     }
-
   }
 
   historialComprasCliente(idCliente: string) {

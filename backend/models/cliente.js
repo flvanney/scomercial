@@ -54,17 +54,11 @@ const clienteSchema = mongoose.Schema({
         required: true
     },
 
-    telefono: {
-        type: Number,
-    },
-
-    cuit: {
-        type: String,
-    },
-
-    cuil: {
-        type: String,
-    },
+    telefono: Number,
+    dni: String,
+    cuit: String,
+    cuil: String,
+    tipoFactura: String,
 
     fechaDeInicio: {
         type: Date,

@@ -26,6 +26,13 @@
         </mat-form-field>
 
         <mat-form-field class="child">
+          <input matInput placeholder="DNI (*)" formControlName="dni">
+          <mat-error *ngIf="esRequerido('dni')">
+            El <strong>DNI</strong> del cliente es requerido.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="child">
           <input matInput type="number" placeholder="Teléfono" formControlName="telefono">
         </mat-form-field>
 
@@ -57,6 +64,11 @@
             La <strong>ciudad</strong> es requerida.
           </mat-error>
         </mat-form-field>
+
+        <mat-radio-group formControlName="tipoFactura" class="child">
+            <mat-radio-button value="A">Factura A</mat-radio-button>
+            <mat-radio-button value="B">Factura B</mat-radio-button>
+          </mat-radio-group>
       </div>
 
       <div class="flex">

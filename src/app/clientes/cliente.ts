@@ -11,8 +11,10 @@ export class Cliente {
         public ciudad: string,
         public codigoPostal: string,
         public telefono: string,
+        public dni: string,
         public cuit: string,
         public cuil: string,
+        public tipoFactura: string,
         public fechaDeInicio: string,
         public cuenta: Cuenta
     ) { }

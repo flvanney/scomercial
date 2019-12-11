@@ -24,6 +24,7 @@ class Articulos {
         public articulo: string,
         public cantidad: number,
         public precio: number,
+        public totalFilaSinIva: number,
         public datosArticulo?: Articulo,
     ) { }
 }

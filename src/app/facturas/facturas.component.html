@@ -18,13 +18,33 @@
 
         <ng-container matColumnDef="fecha">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
-            <td mat-cell *matCellDef="let venta">{{ venta.fecha }}</td>
+            <td mat-cell *matCellDef="let venta">{{ formatearFecha(venta.fecha) }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="monto">
+        <ng-container matColumnDef="montoTotal">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Monto</th>
-            <td mat-cell *matCellDef="let venta">{{ venta.montoTotal }}</td>
+            <td mat-cell *matCellDef="let venta">{{ formatearMoneda(venta.montoTotal) }}</td>
         </ng-container>
+
+        <ng-container matColumnDef="factura">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Factura</th>
+            <td mat-cell *matCellDef="let venta">
+                <div *ngIf="verTipoFactura(venta); then thenBlock else elseBlock"></div>
+                <ng-template #thenBlock>
+                    <button (click)="generarFacturaB()" mat-stroked-button>Factura B</button>
+                </ng-template>
+                <ng-template #elseBlock>
+                    <button (click)="generarFacturaA()" mat-stroked-button>Factura A</button>
+                </ng-template>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="remito">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Remito</th>
+            <td mat-cell *matCellDef="let venta">
+            <button (click)="generarRemito()" mat-stroked-button>Remito</button>
+        </ng-container>
+
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -34,4 +54,3 @@
     <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
 
 </div>
-
