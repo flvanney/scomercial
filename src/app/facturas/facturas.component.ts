@@ -64,15 +64,22 @@ export class FacturaComponent{
     }
   }
 
-  generarFacturaB(){
-    return this.facturado("Factura ORIGINAL", "B"), this.facturado("Factura COPIA", "B");
+  generarFacturaB(venta: Venta){
+    return this.facturado("Factura ORIGINAL", "B", venta), this.facturado("Factura COPIA", "B", venta);
   }
 
-  generarFacturaA() {
-    return this.facturado("Factura ORIGINAL", "A"), this.facturado("Factura COPIA", "A");
+  generarFacturaA(venta: Venta) {
+    return this.facturado("Factura ORIGINAL", "A", venta), this.facturado("Factura COPIA", "A", venta);
   }
 
-  facturado(tipo, letra: String) {
+  getFechaHoy() {
+    return new Date().toISOString().substring(0, 10);
+  }
+
+  facturado(tipo, letra: String, venta: Venta) {
+
+    let fecha = this.getFechaHoy().toString();
+
     const facturaOriginal = {
       pageSize: 'A4',
       content: [
@@ -100,7 +107,6 @@ export class FacturaComponent{
               type: 'none',
               ul: [
                 'Nº factura:0002-000000001',
-                'Fecha: 06/12/2019',
                 'CUIT/CUIL: xxxxxxxxxxxx',
                 'Ingresos brutos: 0000000000',
                 'Inicio de actividades: 01/01/2006']
@@ -120,9 +126,10 @@ export class FacturaComponent{
               alignment: 'left',
               type: 'none',
               ul: [
-                'Razon social: {cliente.name}',
-                'Domicilio: {cliente.domicilio}',
-                'Condicion de venta: {venta.formaPago}']
+                'Razon social: '+ venta.datosCliente.organizacion,
+                'Domicilio: ' + venta.datosCliente.direccion,
+                'Localidad: ' + venta.datosCliente.ciudad + ' ' + venta.datosCliente.provincia,
+                'Condicion de venta: ' + venta.metodoDePago,]
             },
             {
               style: 'datosComprador',
@@ -130,10 +137,10 @@ export class FacturaComponent{
               alignment: 'right',
               type: 'none',
               ul: [
-                'Telefono: {cliente.telefono}',
-                'Fecha: {venta.fecha}',
-                'DNI: {cliente.DNI}',
-                'Condicion de IVA: {venta?.condicion}',]
+                'Telefono: '+ venta.datosCliente.telefono,
+                'Fecha: '+ fecha,
+                'DNI: '+ venta.datosCliente.cuil,
+                'Condicion de IVA: '+ venta.datosCliente.provincia,]
             },]
 
         },
@@ -143,11 +150,11 @@ export class FacturaComponent{
 
         {
           table: {
-            widths: [50, 'auto', '*', 'auto', 50, 50, 'auto'],
+            widths: [50, 'auto', '*', 'auto', 50, 'auto'],
             body: [
-              ['Cantidad', 'Cod', 'Descripcion', 'Prec.Unit.', 'IVA', 'Bonif.', 'Importe'],
-              ['5', 'man01', 'Manaos Uva', '37', '21%', '100%', 'No tiene precio'],
-              ['1', 'EVA01', 'Kenji te vas a subir al Eva o no la concha de tu madre', '99x10^45', '0%', '0%', 'Una banda'],
+              ['Cantidad', 'Cod', 'Descripcion', 'Prec.Unit.', 'IVA', 'Importe'],
+              ['5', 'man01', 'Manaos Uva', '37', '21%', 'No tiene precio'],
+              ['1', 'EVA01', 'Kenji te vas a subir al Eva o no la concha de tu madre', '99x10^45', '0%', 'Una banda'],
             ]
           }
         },
@@ -158,7 +165,7 @@ export class FacturaComponent{
 
         {
           alignment: 'right',
-          text: 'Importe total: ${importe loco}'
+          text: 'Importe total: '+ venta.montoTotal,
         },
 
         {//Separador muy vago
@@ -184,7 +191,7 @@ export class FacturaComponent{
     pdfMake.createPdf(facturaOriginal).download("factura");
   }
 
-  generarRemito() {
+  generarRemito(venta: Venta) {
     return this.remitado('REMITO ORIGINAL'), this.remitado('REMITO COPIA'), this.remitado('REMITO COPIA')
   }
 
@@ -292,5 +299,27 @@ export class FacturaComponent{
       }
     };
     pdfMake.createPdf(remito).download("remito");
+  }
+  getTablaFactura(articulos: Articulo[]){
+    const art = [];
+    articulos.forEach(Articulo => art.push(
+      [{
+        columns: [
+          [{
+            text: Articulo.cantidad,
+          },
+          {
+            text: Articulo.codigo,
+          },
+          {
+            text: Articulo.descripcion,
+          },
+          {
+            text: Articulo.
+          }
+        ]
+        ]
+      }]
+    ))
   }
 }
