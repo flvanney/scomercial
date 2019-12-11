@@ -1,3 +1,21 @@
-<p>dialogo-notas works!</p>
+<mat-dialog-content>
+    <h2>Historial de notas de {{ getNombreCliente() }}</h2>
 
-{{ str(notas) }}
+    <div *ngIf="sinNotas(); then thenBlock else elseBlock"></div>
+
+    <ng-template #thenBlock>No hay notas que mostrar.</ng-template>
+
+    <ng-template #elseBlock>
+        <ul>
+            <li *ngFor="let nota of notas">
+                El {{ formatearFecha(nota.fecha) }} se ingresó una nota de {{ formatearTipoNota(nota.tipoNota) }}
+                con monto equivalente a {{ formatearMoneda(nota.monto) }} con el motivo: «{{ nota.motivo }}».
+            </li>
+        </ul>
+    </ng-template>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-raised-button color="primary" mat-dialog-close tabindex="-1">Cerrar</button>
+</mat-dialog-actions>
