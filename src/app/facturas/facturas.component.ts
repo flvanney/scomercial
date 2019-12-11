@@ -90,18 +90,15 @@ export class FacturaComponent {
   }
 
   verTipoFactura(venta: Venta) {
-    if (typeof venta.datosCliente != 'undefined'){
-      return venta.datosCliente.tipoFactura === "B"}
+    if (typeof venta.datosCliente != "undefined"){
+    return venta.datosCliente.tipoFactura === "B";}
   }
 
   facturado(tipo: String, letra: String, venta: Venta) {
     let fecha = this.getFechaHoy();
-    let IVACliente;
+    let IVACliente = "Responsable Inscripto";
     if (letra === "B") {
       IVACliente = "Consumidor Final";
-    }
-    else {
-      IVACliente = "Responsable Inscripto";
     }
     //fecha= this.formatearFecha(fecha);
     const facturaOriginal = {
@@ -206,11 +203,12 @@ export class FacturaComponent {
   }
 
   generarRemito(venta: Venta) {
-    return this.remitado('REMITO ORIGINAL'), this.remitado('REMITO COPIA'), this.remitado('REMITO COPIA')
+    return this.remitado('REMITO ORIGINAL', venta), this.remitado('REMITO COPIA', venta), this.remitado('REMITO COPIA', venta)
   }
 
 
-  remitado(tipo: String) {
+  remitado(tipo: String, venta: Venta) {
+    let fecha = this.getFechaHoy();
     const remito = {
       pageSize: 'A4',
       content: [
@@ -238,7 +236,7 @@ export class FacturaComponent {
               type: 'none',
               ul: [
                 'Remito:0001-000000001',
-                'Fecha: 06/12/2019',
+                'Fecha: ' +  fecha,
                 'CUIT/CUIL: xxxxxxxxxxxx',
                 'Ingresos brutos: 0000000000',
                 'Inicio de actividades: 01/01/2006']
@@ -257,9 +255,9 @@ export class FacturaComponent {
               alignment: 'left',
               type: 'none',
               ul: [
-                'Señor: {nombre.cliente}',
-                'Domicilio: {cliente.domicilio}',
-                'Localidad: {clinete.localidad}']
+                'Señor: ' + venta.datosCliente.nombre + ' ' + venta.datosCliente.apellido, 
+                'Domicilio: ' + venta.datosCliente.direccion,
+                'Localidad: ' + venta.datosCliente.ciudad  + ' ' + venta.datosCliente.provincia]
             },
             {
               width: '*',
@@ -267,8 +265,8 @@ export class FacturaComponent {
               type: 'none',
               ul: [
                 'Condicion de IVA: {iva.cliente}',
-                'CUIT: cliente.cuit',
-                'Condicion de Pago: {formadepago}']
+                'CUIT: ' + venta.datosCliente.cuil,
+                'Condicion de Pago: ' + venta.metodoDePago]
             }
           ]
         },
@@ -276,16 +274,8 @@ export class FacturaComponent {
           text: ' '
         },
 
-        {
-          table: {
-            widths: [50, 'auto', '*'],
-            body: [
-              ['Cant', 'Cod', 'Descripcion'],
-              ['5', 'man01', 'Manaos Uva'],
-              ['1', 'EVA01', 'Kenji te vas a subir al Eva o no la concha de tu madre'],
-            ]
-          }
-        },
+        this.getTablaFactura(venta),
+
         { text: ' ' },
         { text: ' ' },
         {
@@ -344,23 +334,29 @@ export class FacturaComponent {
         }
       }
     }
+
+    getTablaRemito(venta: Venta) {
+      let articulos = venta.ventas;
+      return {
+          table: {
+            widths: [50, 'auto', '*'],
+            body: [
+              [{
+                text: 'Cantidad',
+              },
+              {
+                text: 'Cod',
+              },
+              {
+                text: 'Descripcion',
+              },
+              ],
+              ...articulos.map(art => {
+                return [art.cantidad, art.datosArticulo.nombre, art.datosArticulo.descripcion];
+              })
+            ]
+          }
+        }
+      }
   }
-  /*
-  buildTableBody(venta: Venta, columns) {
-    var body = [];
-    var art = venta.ventas;
-    body.push(columns);
-    
-    art.forEach(function(row) {
-        var dataRow = [];
-    
-        columns.forEach(function(column) {
-        //    alert(row[column].toString())
-            dataRow.push(row[column].toString());
-            });
-    
-        body.push(dataRow);
-    });
-    
-    return body;
-  }*/
+  
