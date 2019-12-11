@@ -92,7 +92,8 @@ export class FacturaComponent {
   }
 
   verTipoFactura(venta: Venta) {
-    return venta.datosCliente.tipoFactura === "B"
+    if (venta.datosCliente !== undefined){
+      return venta.datosCliente.tipoFactura === "B"}
   }
 
   facturado(tipo: String, letra: String, venta: Venta) {
