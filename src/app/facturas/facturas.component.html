@@ -42,7 +42,12 @@
         <ng-container matColumnDef="remito">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Remito</th>
             <td mat-cell *matCellDef="let venta">
-            <button (click)="generarRemito(venta)" mat-stroked-button>Remito</button>
+                <div *ngIf="esConEnvio(venta); then conEnvio else sinEnvio"></div>
+                <ng-template #conEnvio>
+                    <button (click)="generarRemito(venta)" mat-stroked-button>Remito</button> </ng-template>
+                <ng-template #sinEnvio>
+                    <p><i>Venta sin envío.</i></p>
+                </ng-template>
         </ng-container>
 
 

@@ -15,6 +15,8 @@ export class Venta {
         public observaciones: string,
         public desgravado: number,
         public montoTotal: number,
+        public direccionEnvio?: string,
+        public formaEnvio?: string,
         public datosCliente?: Cliente,
     ) { }
 }

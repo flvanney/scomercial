@@ -33,7 +33,9 @@ export class AgregarVentaComponent implements OnInit {
     vendedor: [null, Validators.required],
     ventas: this.fb.array([this.crearVenta()]),
     metodoDePago: [null, Validators.required],
-    envio: ["1", Validators.required],
+    envio: ["0", Validators.required],
+    direccionEnvio: null,
+    formaEnvio: null,
     desgravado: [0, Validators.required],
     observaciones: null,
     montoTotal: null
@@ -89,12 +91,11 @@ export class AgregarVentaComponent implements OnInit {
     } else if (this.esConCredito() && !this.esCliente()) {
       this.abrirSnackBar('El cliente no tiene una cuenta corriente habilitada', 'snack-roja');
     } else {
-      console.log(this.ventaForm.value);
       this.abrirSnackBar('Venta registrada con éxito', 'snack-verde');
       this.articulosService.actualizarStock(this.ventaForm.value);
       this.calcularTotalesFila();
       this.ventasService.cargarVenta(this.ventaForm.value);
-      this.ventaForm.reset({ fecha: this.getFechaHoy(), envio: "1" });
+      this.ventaForm.reset({ fecha: this.getFechaHoy(), envio: "0" });
       this.limpiarErroresForm();
     }
   }
@@ -257,5 +258,18 @@ export class AgregarVentaComponent implements OnInit {
         horizontalPosition: 'center',
         panelClass: [clase]
       })
+  }
+
+  esConEnvio() {
+    return this.ventaForm.value.envio == "1";
+  }
+
+  getDireccionCliente() {
+    if (this.ventaForm.value.cliente !== null && this.ventaForm.controls.direccionEnvio.untouched) {
+      const cliente = this.buscarCliente(this.ventaForm.value.cliente);
+      return cliente.direccion;
+    } else {
+      return null;
+    }
   }
 }

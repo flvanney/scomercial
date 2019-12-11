@@ -5,6 +5,8 @@ import { ArticulosService } from 'src/app/articulos/articulos.service';
 import { Articulo } from 'src/app/articulos/articulo';
 import { Venta } from 'src/app/ventas/venta';
 
+import { formatCurrency } from '@angular/common';
+
 @Component({
   selector: 'app-dialogo-ventas',
   templateUrl: './dialogo-ventas.component.html',
@@ -23,7 +25,7 @@ export class DialogoVentasComponent {
     this.titulo = `Últimas compras de ${data.nombre} ${data.apellido}.`;
     this.dialogRef.updateSize('800vw', '800vw');
     this.ventasService.historialComprasCliente(data._id).subscribe((compras: Venta[]) => {
-      
+
       // Todas las compras del cliente cuyo ID se pasó como parámetro.
       this.compras = compras;
 
@@ -48,8 +50,16 @@ export class DialogoVentasComponent {
     return `${fecha.getDate()}/${fecha.getMonth()}/${fecha.getFullYear()}`;
   }
 
+  redondear(cifra) {
+    return Math.round(cifra * 100) / 100;
+  }
+
+  formatearMoneda(monto: number) {
+    return formatCurrency(monto, 'esAR', '$', 'ARS');
+  }
+
   formatearVenta(venta) {
-    return `El ${this.formatearFecha(venta.fecha)} compró por un total de \$${JSON.stringify(venta.montoTotal)}:`;
+    return `El ${this.formatearFecha(venta.fecha)} compró por un total de ${this.formatearMoneda(this.redondear(venta.montoTotal))}:`;
   }
 
   formatearFilaVenta(filaVenta) {

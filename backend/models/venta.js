@@ -18,7 +18,9 @@ const ventaSchema = Schema({
     envio: Boolean,
     observaciones: String,
     desgravado: Number,
-    montoTotal: Number
+    montoTotal: Number,
+    direccionEnvio: String,
+    formaEnvio: String,
 });
 
 module.exports = mongoose.model('Venta', ventaSchema);

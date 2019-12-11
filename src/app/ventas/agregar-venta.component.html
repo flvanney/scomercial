@@ -58,6 +58,23 @@
 
       </div>
 
+      <div *ngIf="esConEnvio()">
+
+        <mat-form-field class="child">
+          <input matInput placeholder="Dirección de envío" formControlName="direccionEnvio"
+            [value]="getDireccionCliente()">
+        </mat-form-field>
+
+        <mat-form-field class="child">
+          <mat-select placeholder="Forma de envío" formControlName="formaEnvio">
+            <mat-option value="Mercado Envíos">Mercado Envíos</mat-option>
+            <mat-option value="OCA">OCA</mat-option>
+            <mat-option value="Particular">Particular</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </div>
+
       <button mat-stroked-button color="primary" type="button" (click)="agregarFilaVenta()" [disabled]="mayorANueve()">
         <mat-icon>add</mat-icon>
         Añadir fila
@@ -123,7 +140,8 @@
                 </mat-form-field>
 
                 <mat-form-field class="child g-1">
-                  <input disabled matInput placeholder="Importe (sin IVA)" [value]="formatearMoneda(calcularImporte(i))">
+                  <input disabled matInput placeholder="Importe (sin IVA)"
+                    [value]="formatearMoneda(calcularImporte(i))">
                 </mat-form-field>
 
                 <div class="child">
@@ -210,7 +228,8 @@
 
             <div class="flex" style="margin-left: 1.5%;" *ngIf="!ventasIncompletas() && esCliente() && tieneGuita()">
               <mat-icon class="verde">check_circle</mat-icon> Actualmente, el cliente tiene un crédito disponible de
-              &nbsp; <strong>{{ formatearMoneda(this.getGuitaCliente()) }}</strong>, y se le descontará &nbsp; <strong>{{ formatearMoneda(this.importeTotalConIva) }}</strong>
+              &nbsp; <strong>{{ formatearMoneda(this.getGuitaCliente()) }}</strong>, y se le descontará &nbsp;
+              <strong>{{ formatearMoneda(this.importeTotalConIva) }}</strong>
               &nbsp; del mismo,
               quedándole para uso posterior un monto de &nbsp;
               <strong> {{ formatearMoneda(getGuitaCliente() - importeTotalConIva) }}</strong>.

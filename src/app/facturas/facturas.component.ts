@@ -91,6 +91,12 @@ export class FacturaComponent {
     }
   }
 
+  esConEnvio(venta: Venta) {
+    if (typeof venta != "undefined") {
+      return venta.envio;
+    }
+  }
+
   facturado(tipo: String, letra: String, nombreArchivo: string, venta: Venta) {
     let fecha = this.getFechaHoy();
     let IVACliente = "Responsable Inscripto";
@@ -204,7 +210,6 @@ export class FacturaComponent {
     return this.remitado('REMITO ORIGINAL', 'REMITO ORIGINAL', venta), this.remitado('REMITO COPIA', 'REMITO DUPLICADO', venta), this.remitado('REMITO COPIA', 'REMITO TRIPLICADO', venta);
   }
 
-
   remitado(tipo: String, nombreArchivo: String, venta: Venta) {
     let fecha = this.getFechaHoy();
     const remito = {
@@ -279,9 +284,9 @@ export class FacturaComponent {
         {
           type: 'none',
           ul: [
-            'Lugar entrega:..............................................................................',
+            'Lugar entrega: ' + venta.direccionEnvio,
             'Fecha entrega:..............................................................................',
-            'Forma envio:................................................................................',
+            'Forma envio: ' + venta.formaEnvio,
           ],
         },
         { text: ' ' },
@@ -306,7 +311,6 @@ export class FacturaComponent {
 
   getTablaFactura(venta: Venta) {
     let articulos = venta.ventas;
-    console.log(articulos);
 
     return {
       table: {
