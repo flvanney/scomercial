@@ -33,7 +33,7 @@ export class FacturaComponent {
     private clientesService: ClientesService
   ) { }
 
-  displayedColumns = ['nombre', 'fecha', 'montoTotal', 'factura'];
+  displayedColumns = ['nombre', 'fecha', 'montoTotal', 'factura', 'remito'];
   dataSource = new MatTableDataSource();
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -274,7 +274,7 @@ export class FacturaComponent {
           text: ' '
         },
 
-        this.getTablaFactura(venta),
+        this.getTablaRemito(venta),
 
         { text: ' ' },
         { text: ' ' },
@@ -359,4 +359,3 @@ export class FacturaComponent {
         }
       }
   }
-  
